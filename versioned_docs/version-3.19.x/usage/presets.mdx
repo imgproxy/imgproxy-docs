@@ -1,0 +1,35 @@
+---
+description: Learn about how to shorten your imgproxy URLs using presets
+---
+
+# Presets
+
+An imgproxy preset is a named set of processing or info options. Presets can be used in [processing URLs](./processing.mdx#preset) to make them shorter and more human-readable.
+
+## Presets definition
+
+A preset definition looks like this:
+
+```imgproxy_presets
+%preset_name=%options
+```
+
+Options should be defined in the same way they are defined in [processing URLs](./processing.mdx#processing-options). For example, here's a preset named `awesome` that sets the resizing type to `fill` and the resulting format to `jpg`:
+
+```imgproxy_presets
+awesome=resizing_type:fill/format:jpg
+```
+
+Read how to specify your presets with imgproxy in the [Configuration options](../configuration/options.mdx#presets) guide.
+
+## Default preset
+
+A preset named `default` will be applied to each image. This is useful when you want your default processing options to be different from the default imgproxy options.
+
+## Only presets
+
+Setting `IMGPROXY_ONLY_PRESETS` to `true` switches imgproxy into presets-only mode. In this mode, imgproxy accepts a presets list as processing options just like you'd specify them for the `preset` option:
+
+```imgproxy_url_only_presets
+http://imgproxy.example.com/unsafe/thumbnail:blurry:watermarked/plain/http://example.com/images/curiosity.jpg@png
+```

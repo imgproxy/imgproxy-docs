@@ -1,0 +1,18 @@
+{
+  "theme.docs.versions.unreleasedVersionLabel": {
+    "message": "This is documentation for the {versionLabel} build of imgproxy.",
+    "description": "The label used to tell the user that he's browsing an unreleased doc version"
+  },
+  "theme.docs.versions.unmaintainedVersionLabel": {
+    "message": "This is documentation for imgproxy {versionLabel}, which is no longer actively maintained.",
+    "description": "The label used to tell the user that he's browsing an unmaintained doc version"
+  },
+  "theme.docs.versions.latestVersionSuggestionLabel": {
+    "message": "For up-to-date documentation, see the {latestVersionLink} ({versionLabel}).",
+    "description": "The label used to tell the user to check the latest version"
+  },
+  "theme.docs.versions.latestVersionLinkLabel": {
+    "message": "latest stable version",
+    "description": "The label used for the latest version suggestion link label"
+  }
+}

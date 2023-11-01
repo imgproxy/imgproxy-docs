@@ -1,0 +1,9 @@
+a.code-anchor {
+  color: #ffcb6b;
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
+}
+
+a.code-anchor:hover {
+  text-decoration-style: dotted;
+  text-underline-offset: 0.25em;
+}

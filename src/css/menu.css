@@ -1,0 +1,13 @@
+.menu {
+  font-weight: var(--ifm-font-weight-normal);
+}
+
+.menu__link--sublist {
+  font-weight: var(--ifm-font-weight-semibold);
+}
+
+/* Add a bit blank space to the side menu bottom
+ */
+.menu>.menu__list:last-child {
+  margin-bottom: 2rem;
+}

@@ -1,0 +1,75 @@
+#
+# Redirects for compatibility with the previous version of docs
+#
+
+/GETTING_STARTED /getting_started
+/configuration /configuration/options
+/loading_environment_variables /configuration/loading_environment_variables
+/generating_the_url /usage/processing
+/getting_the_image_info /usage/getting_info
+/signing_the_url /usage/signing_url
+/encrypting_the_source_url /usage/encrypting_source_url
+/presets /usage/presets
+/watermark /features/watermark
+/object_detection /features/object_detection
+/autoquality /features/autoquality
+/best_format /features/best_format
+/chained_pipelines /features/chained_pipelines
+/serving_local_files /image_sources/local_files
+/serving_files_from_s3 /image_sources/amazon_s3
+/serving_files_from_google_cloud_storage /image_sources/google_cloud_storage
+/serving_files_from_azure_blob_storage /image_sources/azure_blob_storage
+/serving_files_from_openstack_swift /image_sources/openstack_swift
+/new_relic /monitoring/new_relic
+/prometheus /monitoring/prometheus
+/datadog /monitoring/datadog
+/open_telemetry /monitoring/open_telemetry
+/cloud_watch /monitoring/cloud_watch
+
+/latest/GETTING_STARTED /latest/getting_started
+/latest/configuration /latest/configuration/options
+/latest/loading_environment_variables /latest/configuration/loading_environment_variables
+/latest/generating_the_url /latest/usage/processing
+/latest/getting_the_image_info /latest/usage/getting_info
+/latest/signing_the_url /latest/usage/signing_url
+/latest/encrypting_the_source_url /latest/usage/encrypting_source_url
+/latest/presets /latest/usage/presets
+/latest/watermark /latest/features/watermark
+/latest/object_detection /latest/features/object_detection
+/latest/autoquality /latest/features/autoquality
+/latest/best_format /latest/features/best_format
+/latest/chained_pipelines /latest/features/chained_pipelines
+/latest/serving_local_files /latest/image_sources/local_files
+/latest/serving_files_from_s3 /latest/image_sources/amazon_s3
+/latest/serving_files_from_google_cloud_storage /latest/image_sources/google_cloud_storage
+/latest/serving_files_from_azure_blob_storage /latest/image_sources/azure_blob_storage
+/latest/serving_files_from_openstack_swift /latest/image_sources/openstack_swift
+/latest/new_relic /latest/monitoring/new_relic
+/latest/prometheus /latest/monitoring/prometheus
+/latest/datadog /latest/monitoring/datadog
+/latest/open_telemetry /latest/monitoring/open_telemetry
+/latest/cloud_watch /latest/monitoring/cloud_watch
+
+/3.19/GETTING_STARTED /3.19.x/getting_started
+/3.19/configuration /3.19.x/configuration/options
+/3.19/loading_environment_variables /3.19.x/configuration/loading_environment_variables
+/3.19/generating_the_url /3.19.x/usage/processing
+/3.19/getting_the_image_info /3.19.x/usage/getting_info
+/3.19/signing_the_url /3.19.x/usage/signing_url
+/3.19/encrypting_the_source_url /3.19.x/usage/encrypting_source_url
+/3.19/presets /3.19.x/usage/presets
+/3.19/watermark /3.19.x/features/watermark
+/3.19/object_detection /3.19.x/features/object_detection
+/3.19/autoquality /3.19.x/features/autoquality
+/3.19/best_format /3.19.x/features/best_format
+/3.19/chained_pipelines /3.19.x/features/chained_pipelines
+/3.19/serving_local_files /3.19.x/image_sources/local_files
+/3.19/serving_files_from_s3 /3.19.x/image_sources/amazon_s3
+/3.19/serving_files_from_google_cloud_storage /3.19.x/image_sources/google_cloud_storage
+/3.19/serving_files_from_azure_blob_storage /3.19.x/image_sources/azure_blob_storage
+/3.19/serving_files_from_openstack_swift /3.19.x/image_sources/openstack_swift
+/3.19/new_relic /3.19.x/monitoring/new_relic
+/3.19/prometheus /3.19.x/monitoring/prometheus
+/3.19/datadog /3.19.x/monitoring/datadog
+/3.19/open_telemetry /3.19.x/monitoring/open_telemetry
+/3.19/cloud_watch /3.19.x/monitoring/cloud_watch
