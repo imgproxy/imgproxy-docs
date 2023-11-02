@@ -17,7 +17,7 @@ http://imgproxy.example.com/info/%signature/%info_options/enc/%encrypted_source_
 
 ## Signature
 
-:::caution[Warning]
+:::warning
 The signature part should always be present in a URL. If the signature check is disabled (no key/salt pairs are provided), the signature part may contain anything (for example, `unsafe` or `_`).
 :::
 
@@ -498,7 +498,7 @@ msr:%resolution
 
 Allows redefining [IMGPROXY_MAX_SRC_RESOLUTION](../configuration/options.mdx#IMGPROXY_MAX_SRC_RESOLUTION) config.
 
-:::caution[Warning]
+:::warning
 Since this option allows redefining a security restriction, its usage is not allowed unless the [IMGPROXY_ALLOW_SECURITY_OPTIONS](../configuration/options.mdx#IMGPROXY_ALLOW_SECURITY_OPTIONS) config is set to `true`.
 :::
 
@@ -511,7 +511,7 @@ msfs:%size
 
 Allows redefining [IMGPROXY_MAX_SRC_FILE_SIZE](../configuration/options.mdx#IMGPROXY_MAX_SRC_FILE_SIZE) config.
 
-:::caution[Warning]
+:::warning
 Since this option allows redefining a security restriction, its usage is not allowed unless the [IMGPROXY_ALLOW_SECURITY_OPTIONS](../configuration/options.mdx#IMGPROXY_ALLOW_SECURITY_OPTIONS) config is set to `true`.
 :::
 

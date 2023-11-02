@@ -22,7 +22,7 @@ Check out the [example](#example) at the end of this guide.
 
 ## Signature
 
-:::caution[Warning]
+:::warning
 The signature part should always be present in a URL. If the signature check is disabled (no key/salt pairs are provided), the signature part may contain anything (for example, `unsafe` or `_`).
 :::
 
@@ -119,7 +119,7 @@ mw:%width
 
 Defines the minimum width of the resulting image.
 
-:::caution[Warning]
+:::warning
 When both `width` and `min-width` are set, the final image will be cropped according to `width`, so use this combination with care.
 :::
 
@@ -134,7 +134,7 @@ mh:%height
 
 Defines the minimum height of the resulting image.
 
-:::caution[Warning]
+:::warning
 When both `height` and `min-height` are set, the final image will be cropped according to `height`, so use this combination with care.
 :::
 
@@ -268,7 +268,7 @@ Removes surrounding background.
 * `equal_hor` - _(optional)_ set to `1`, `t` or `true`, imgproxy will cut only equal parts from left and right sides. That means that if 10px of background can be cut off from the left and 5px from the right, then 5px will be cut off from both sides. For example, this can be useful if objects on your images are centered but have non-symmetrical shadow.
 * `equal_ver` - _(optional)_ acts like `equal_hor` but for top/bottom sides.
 
-:::caution[Warning]
+:::warning
 Trimming requires an image to be fully loaded into memory. This disables scale-on-load and significantly increases memory usage and processing time. Use it carefully with large images.
 :::
 
@@ -652,7 +652,7 @@ aq:%method:%target:%min_quality:%max_quality:%allowed_error
 
 Redefines autoquality settings. All arguments have the same meaning as [Autoquality](../configuration/options.mdx#autoquality) configs. All arguments are optional and can be omitted.
 
-:::caution[Warning]
+:::warning
 Autoquality requires the image to be saved several times. Use it only when you prefer the resulting size and quality over the speed.
 :::
 
@@ -669,7 +669,7 @@ When set, imgproxy automatically degrades the quality of the image until the ima
 Applicable only to `jpg`, `webp`, `heic`, and `tiff`.
 :::
 
-:::caution[Warning]
+:::warning
 When `max_bytes` is set, imgproxy saves image multiple times to achieve the specified image size.
 :::
 
@@ -880,7 +880,7 @@ msr:%resolution
 
 Allows redefining [IMGPROXY_MAX_SRC_RESOLUTION](../configuration/options.mdx#IMGPROXY_MAX_SRC_RESOLUTION) config.
 
-:::caution[Warning]
+:::warning
 Since this option allows redefining a security restriction, its usage is not allowed unless the [IMGPROXY_ALLOW_SECURITY_OPTIONS](../configuration/options.mdx#IMGPROXY_ALLOW_SECURITY_OPTIONS) config is set to `true`.
 :::
 
@@ -893,7 +893,7 @@ msfs:%size
 
 Allows redefining [IMGPROXY_MAX_SRC_FILE_SIZE](../configuration/options.mdx#IMGPROXY_MAX_SRC_FILE_SIZE) config.
 
-:::caution[Warning]
+:::warning
 Since this option allows redefining a security restriction, its usage is not allowed unless the [IMGPROXY_ALLOW_SECURITY_OPTIONS](../configuration/options.mdx#IMGPROXY_ALLOW_SECURITY_OPTIONS) config is set to `true`.
 :::
 
@@ -906,7 +906,7 @@ maf:%size
 
 Allows redefining [IMGPROXY_MAX_ANIMATION_FRAMES](../configuration/options.mdx#IMGPROXY_MAX_ANIMATION_FRAMES) config.
 
-:::caution[Warning]
+:::warning
 Since this option allows redefining a security restriction, its usage is not allowed unless the [IMGPROXY_ALLOW_SECURITY_OPTIONS](../configuration/options.mdx#IMGPROXY_ALLOW_SECURITY_OPTIONS) config is set to `true`.
 :::
 
@@ -919,7 +919,7 @@ mafr:%size
 
 Allows redefining [IMGPROXY_MAX_ANIMATION_FRAME_RESOLUTION](../configuration/options.mdx#IMGPROXY_MAX_ANIMATION_FRAME_RESOLUTION) config.
 
-:::caution[Warning]
+:::warning
 Since this option allows redefining a security restriction, its usage is not allowed unless the [IMGPROXY_ALLOW_SECURITY_OPTIONS](../configuration/options.mdx#IMGPROXY_ALLOW_SECURITY_OPTIONS) config is set to `true`.
 :::
 
