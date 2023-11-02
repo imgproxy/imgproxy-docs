@@ -17,7 +17,7 @@ http://imgproxy.example.com/info/%signature/%info_options/enc/%encrypted_source_
 
 ## Signature
 
-:::caution Warning
+:::caution[Warning]
 The signature part should always be present in a URL. If the signature check is disabled (no key/salt pairs are provided), the signature part may contain anything (for example, `unsafe` or `_`).
 :::
 
@@ -239,7 +239,7 @@ Default: `true`.
 
 ### Detect objects
 
-:::slow Slow
+:::slow[Slow]
 This option requires the image to be fully downloaded and processed.
 :::
 
@@ -285,7 +285,7 @@ Default: `false`.
 
 ### Crop coordinates {#crop}
 
-:::slow Slow
+:::slow[Slow]
 This option requires the image to be fully downloaded and processed.
 :::
 
@@ -315,7 +315,7 @@ Default: `0:0:ce`.
 
 ### Palette
 
-:::slow Slow
+:::slow[Slow]
 This option requires the image to be fully downloaded and processed.
 :::
 
@@ -345,7 +345,7 @@ Default: `0`.
 
 ### Average color {#average}
 
-:::slow Slow
+:::slow[Slow]
 This option requires the image to be fully downloaded and processed.
 :::
 
@@ -369,7 +369,7 @@ Default: `false:true`
 
 ### Dominant colors
 
-:::slow Slow
+:::slow[Slow]
 This option requires the image to be fully downloaded and processed.
 :::
 
@@ -400,7 +400,7 @@ Default: `false:false`
 
 ### BlurHash
 
-:::slow Slow
+:::slow[Slow]
 This option requires the image to be fully downloaded and processed.
 :::
 
@@ -498,7 +498,7 @@ msr:%resolution
 
 Allows redefining `IMGPROXY_MAX_SRC_RESOLUTION` config.
 
-:::caution Warning
+:::caution[Warning]
 Since this option allows redefining a security restriction, its usage is not allowed unless the `IMGPROXY_ALLOW_SECURITY_OPTIONS` config is set to `true`.
 :::
 
@@ -511,7 +511,7 @@ msfs:%size
 
 Allows redefining `IMGPROXY_MAX_SRC_FILE_SIZE` config.
 
-:::caution Warning
+:::caution[Warning]
 Since this option allows redefining a security restriction, its usage is not allowed unless the `IMGPROXY_ALLOW_SECURITY_OPTIONS` config is set to `true`.
 :::
 

@@ -73,11 +73,29 @@
 .navbar-sidebar .navbar__link--icon span {
   display: inline;
 }
+
 .navbar-sidebar .navbar__link--icon::before {
   background: none;
   width: auto;
   height: auto;
 }
+
 .navbar-sidebar .navbar__link--icon:hover::before {
   opacity: 1;
+}
+
+.navbar-sidebar .navbar__link--github::before {
+  content: 'GitHub';
+}
+
+.navbar-sidebar .navbar__link--twitter::before {
+  content: 'Twitter';
+}
+
+.navbar-sidebar .navbar__link--discord::before {
+  content: 'Discord';
+}
+
+.navbar-sidebar .navbar__link--sponsor::before {
+  content: 'Sponsor imgproxy';
 }

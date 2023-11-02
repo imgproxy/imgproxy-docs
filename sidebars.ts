@@ -1,7 +1,6 @@
-// @ts-check
+import { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
-/** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
-const sidebars = {
+const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     'getting_started',
     {
@@ -114,4 +113,4 @@ const sidebars = {
   ],
 };
 
-module.exports = sidebars;
+export default sidebars;

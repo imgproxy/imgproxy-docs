@@ -1,9 +1,13 @@
+import { Grammar } from 'prismjs';
+
+const Prism = globalThis.Prism;
+
 Prism.languages.imgproxy_url_option = {
   comment: /\.\.\./,
 	keyword: /^[^:]+/m,
 	'function-variable': /[^:]+/,
 	punctuation: /[:]/,
-};
+} as Grammar;
 
 Prism.languages.imgproxy_url = {
   'host-info-sig': {
@@ -63,7 +67,7 @@ Prism.languages.imgproxy_url = {
     pattern: /^\s*\^.*$/g,
     alias: 'comment',
   },
-};
+} as Grammar;
 
 Prism.languages.imgproxy_url_only_presets = Prism.languages.extend('imgproxy_url', {
   option: {
@@ -73,7 +77,7 @@ Prism.languages.imgproxy_url_only_presets = Prism.languages.extend('imgproxy_url
     	punctuation: /[:]/,
     },
   },
-});
+}) as Grammar;
 
 Prism.languages.imgproxy_presets = {
 	comment: /^#.*/m,
@@ -91,7 +95,7 @@ Prism.languages.imgproxy_presets = {
 			punctuation: /=/,
 		}
 	},
-};
+} as Grammar;
 
 Prism.languages.imgproxy_url_template = {
   comment: /^\s*#.*$/gm,
@@ -102,6 +106,6 @@ Prism.languages.imgproxy_url_template = {
   'function-variable': /@%extension|\.%extension/,
   attribute: /info|plain|enc/,
   operator: /\//,
-}
+} as Grammar;
 
 
