@@ -278,6 +278,13 @@ const config: Config = {
       } as SearchPluginOptions & PluginOptions,
     ],
   ],
+
+  markdown: {
+    mdx1Compat: {
+      comments: false,
+      admonitions: false,
+    },
+  },
 };
 
 export default config;
