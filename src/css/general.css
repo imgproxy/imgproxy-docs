@@ -6,12 +6,12 @@
   --ifm-color-primary-dark: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 58%);
   --ifm-color-primary-darker: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 53%);
   --ifm-color-primary-darkest: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 48%);
-  --ifm-color-primary-light: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 68%);;
-  --ifm-color-primary-lighter: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 73%);;
-  --ifm-color-primary-lightest: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 78%);;
+  --ifm-color-primary-light: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 68%);
+  --ifm-color-primary-lighter: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 73%);
+  --ifm-color-primary-lightest: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 78%);
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.2);
 
-  --ifm-code-background: hsla(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 78%, 0.2);
+  --ifm-code-background: rgba(255, 255, 255, 0.15);
 
   --ifm-background-color: hsl(225, 24%, 7%);
 
