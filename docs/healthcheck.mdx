@@ -12,7 +12,7 @@ You can use this for readiness/liveness probes when deploying with a container o
 
 ## imgproxy health
 
-imgproxy provides an `imgproxy health` command that makes an HTTP request to the health endpoint based on the `IMGPROXY_BIND` and `IMGPROXY_NETWORK` configs. It exits with `0` when the request is successful and with `1` otherwise. The command is handy to use with Docker Compose:
+imgproxy provides an `imgproxy health` command that makes an HTTP request to the health endpoint based on the [IMGPROXY_BIND](./configuration/options.mdx#IMGPROXY_BIND) and [IMGPROXY_NETWORK](./configuration/options.mdx#IMGPROXY_NETWORK) configs. It exits with `0` when the request is successful and with `1` otherwise. The command is handy to use with Docker Compose:
 
 ```yaml
 healthcheck:

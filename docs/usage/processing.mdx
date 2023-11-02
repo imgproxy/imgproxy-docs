@@ -630,7 +630,7 @@ quality:%quality
 q:%quality
 ```
 
-Redefines quality of the resulting image, as a percentage. When set to `0`, quality is assumed based on `IMGPROXY_QUALITY` and [format_quality](#format-quality).
+Redefines quality of the resulting image, as a percentage. When set to `0`, quality is assumed based on [IMGPROXY_QUALITY](../configuration/options.mdx#IMGPROXY_QUALITY) and [format_quality](#format-quality).
 
 Default: 0.
 
@@ -641,7 +641,7 @@ format_quality:%format1:%quality1:%format2:%quality2:...:%formatN:%qualityN
 fq:%format1:%quality1:%format2:%quality2:...:%formatN:%qualityN
 ```
 
-Adds or redefines `IMGPROXY_FORMAT_QUALITY` values.
+Adds or redefines [IMGPROXY_FORMAT_QUALITY](../configuration/options.mdx#IMGPROXY_FORMAT_QUALITY) values.
 
 ### Autoquality ((pro)) {#autoquality}
 
@@ -762,7 +762,7 @@ video_thumbnail_second:%second
 vts:%second
 ```
 
-Allows redefining `IMGPROXY_VIDEO_THUMBNAIL_SECOND` config.
+Allows redefining [IMGPROXY_VIDEO_THUMBNAIL_SECOND](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_SECOND) config.
 
 ### Video thumbnail keyframes ((pro)) {#video-thumbnail-keyframes}
 
@@ -771,7 +771,7 @@ video_thumbnail_keyframes:%keyframes
 vts:%keyframes
 ```
 
-Allows redefining `IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES` config.
+Allows redefining [IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES) config.
 
 ### Video thumbnail tile ((pro)) {#video-thumbnail-tile}
 
@@ -789,9 +789,9 @@ When `step` is larger than `0`, imgproxy will generate a tiled sprite using the 
 * `extend_tile`: _(optional)_ when set to `1`, `t` or `true`, imgproxy will extend each tile to the requested size using a black background
 * `trim`: _(optional)_ when set to `1`, `t` or `true`, imgproxy will trim the unused space from the sprite
 
-The timestamp of the first frame can be set using the `IMGPROXY_VIDEO_THUMBNAIL_SECOND` config or the [video_thumbnail_second](#video-thumbnail-keyframes) option.
+The timestamp of the first frame can be set using the [IMGPROXY_VIDEO_THUMBNAIL_SECOND](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_SECOND) config or the [video_thumbnail_second](#video-thumbnail-keyframes) option.
 
-You can make imgproxy use only keyframes with the `IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES` config or the [video_thumbnail_keyframes](#video-thumbnail-keyframes) option.
+You can make imgproxy use only keyframes with the [IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES) config or the [video_thumbnail_keyframes](#video-thumbnail-keyframes) option.
 
 Default: `0:0:0:0:0`
 
@@ -838,7 +838,7 @@ When set to `1`, `t` or `true`, imgproxy will respond with a raw unprocessed, an
 * While the `skip_processing` option has some conditions to skip the processing, the `raw` option allows to skip processing no matter what
 * With the `raw` option set, imgproxy doesn't check the source image's type, resolution, and file size. Basically, the `raw` option allows streaming of any file type
 * With the `raw` option set, imgproxy won't download the whole image to the memory. Instead, it will stream the source image directly to the response lowering memory usage
-* The requests with the `raw` option set are not limited by the `IMGPROXY_WORKERS` config
+* The requests with the `raw` option set are not limited by the [IMGPROXY_WORKERS](../configuration/options.mdx#IMGPROXY_WORKERS) config
 
 Default: `false`
 
@@ -909,10 +909,10 @@ max_src_resolution:%resolution
 msr:%resolution
 ```
 
-Allows redefining `IMGPROXY_MAX_SRC_RESOLUTION` config.
+Allows redefining [IMGPROXY_MAX_SRC_RESOLUTION](../configuration/options.mdx#IMGPROXY_MAX_SRC_RESOLUTION) config.
 
 :::caution[Warning]
-Since this option allows redefining a security restriction, its usage is not allowed unless the `IMGPROXY_ALLOW_SECURITY_OPTIONS` config is set to `true`.
+Since this option allows redefining a security restriction, its usage is not allowed unless the [IMGPROXY_ALLOW_SECURITY_OPTIONS](../configuration/options.mdx#IMGPROXY_ALLOW_SECURITY_OPTIONS) config is set to `true`.
 :::
 
 ### Max src file size
@@ -922,10 +922,10 @@ max_src_file_size:%size
 msfs:%size
 ```
 
-Allows redefining `IMGPROXY_MAX_SRC_FILE_SIZE` config.
+Allows redefining [IMGPROXY_MAX_SRC_FILE_SIZE](../configuration/options.mdx#IMGPROXY_MAX_SRC_FILE_SIZE) config.
 
 :::caution[Warning]
-Since this option allows redefining a security restriction, its usage is not allowed unless the `IMGPROXY_ALLOW_SECURITY_OPTIONS` config is set to `true`.
+Since this option allows redefining a security restriction, its usage is not allowed unless the [IMGPROXY_ALLOW_SECURITY_OPTIONS](../configuration/options.mdx#IMGPROXY_ALLOW_SECURITY_OPTIONS) config is set to `true`.
 :::
 
 ### Max animation frames
@@ -935,10 +935,10 @@ max_animation_frames:%size
 maf:%size
 ```
 
-Allows redefining `IMGPROXY_MAX_ANIMATION_FRAMES` config.
+Allows redefining [IMGPROXY_MAX_ANIMATION_FRAMES](../configuration/options.mdx#IMGPROXY_MAX_ANIMATION_FRAMES) config.
 
 :::caution[Warning]
-Since this option allows redefining a security restriction, its usage is not allowed unless the `IMGPROXY_ALLOW_SECURITY_OPTIONS` config is set to `true`.
+Since this option allows redefining a security restriction, its usage is not allowed unless the [IMGPROXY_ALLOW_SECURITY_OPTIONS](../configuration/options.mdx#IMGPROXY_ALLOW_SECURITY_OPTIONS) config is set to `true`.
 :::
 
 ### Max animation frame resolution
@@ -948,10 +948,10 @@ max_animation_frame_resolution:%size
 mafr:%size
 ```
 
-Allows redefining `IMGPROXY_MAX_ANIMATION_FRAME_RESOLUTION` config.
+Allows redefining [IMGPROXY_MAX_ANIMATION_FRAME_RESOLUTION](../configuration/options.mdx#IMGPROXY_MAX_ANIMATION_FRAME_RESOLUTION) config.
 
 :::caution[Warning]
-Since this option allows redefining a security restriction, its usage is not allowed unless the `IMGPROXY_ALLOW_SECURITY_OPTIONS` config is set to `true`.
+Since this option allows redefining a security restriction, its usage is not allowed unless the [IMGPROXY_ALLOW_SECURITY_OPTIONS](../configuration/options.mdx#IMGPROXY_ALLOW_SECURITY_OPTIONS) config is set to `true`.
 :::
 
 ## Source URL
