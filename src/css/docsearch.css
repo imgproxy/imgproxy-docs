@@ -1,7 +1,7 @@
 [data-theme='dark'] .DocSearch {
   --docsearch-text-color: var(--ifm-font-color-base);
   --docsearch-muted-color: var(--ifm-color-secondary-darkest);
-  --docsearch-container-background: rgba(47, 55, 69, 0.7);
+  --docsearch-container-background: hsla(225, 24%, 78%, 0.2);
   /* Modal */
   --docsearch-modal-background: var(--ifm-background-color);
   /* Search box */

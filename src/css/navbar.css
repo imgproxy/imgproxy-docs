@@ -1,5 +1,5 @@
 [data-theme='dark']:root {
-  --ifm-navbar-background-color: hsla(225, 24%, 5%);
+  --ifm-navbar-background-color: hsl(225, 24%, 5%);
 
   --ifm-navbar-search-input-background-color: rgba(255, 255, 255, 0.2);
   --ifm-navbar-search-input-icon: url('/img/search.svg');
