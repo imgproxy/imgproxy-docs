@@ -18,6 +18,10 @@
   <a href="https://discord.gg/5GgpXgtC9u">Discord</a>
 </h4>
 
+<p align="center">
+<a href="https://github.com/imgproxy/imgproxy-docs/actions"><img alt="GH Lint" src="https://img.shields.io/github/actions/workflow/status/imgproxy/imgproxy-docs/lint.yml?branch=master&label=Lint&style=for-the-badge" /></a>
+</p>
+
 ---
 
 This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
