@@ -1,9 +1,8 @@
-import { Config, PluginOptions } from "@docusaurus/types";
+import { Config } from "@docusaurus/types";
 import {
   Options as PresetClassicOptions,
   ThemeConfig as PresetClassicThemeConfig,
 } from "@docusaurus/preset-classic";
-import { PluginOptions as SearchPluginOptions } from "@easyops-cn/docusaurus-search-local";
 
 import badgeRemarkPlugin from "./src/remark/badge";
 import codeAnchorRemarkPlugin from "./src/remark/code-anchor";
@@ -111,6 +110,7 @@ const config: Config = {
           customCss: [
             require.resolve("./src/css/general.css"),
             require.resolve("./src/css/navbar.css"),
+            require.resolve("./src/css/docsearch.css"),
             require.resolve("./src/css/menu.css"),
             require.resolve("./src/css/badge.css"),
             require.resolve("./src/css/code-anchor.css"),
@@ -259,19 +259,13 @@ const config: Config = {
       theme: prismTheme,
       darkTheme: prismTheme,
     },
-  } as PresetClassicThemeConfig,
 
-  themes: [
-    [
-      require.resolve("@easyops-cn/docusaurus-search-local"),
-      {
-        indexBlog: false,
-        docsRouteBasePath: "/",
-        hashed: true,
-        ignoreCssSelectors: [".badge"],
-      } as SearchPluginOptions & PluginOptions,
-    ],
-  ],
+    algolia: {
+      appId: "PJDUFM5BYU",
+      apiKey: "4233fb28085f0a6ad2922954762bf39b",
+      indexName: "imgproxy",
+    },
+  } as PresetClassicThemeConfig,
 
   markdown: {
     mdx1Compat: {

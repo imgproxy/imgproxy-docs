@@ -16,21 +16,6 @@
 }
 
 
-.navbar__search-input {
-  min-width: 25vw;
-}
-
-.navbar__search kbd {
-  background-color: transparent;
-}
-
-@media (max-width: 996px) {
-  .navbar__search-input {
-    min-width: 0;
-  }
-}
-
-
 .navbar__items--right {
   margin-right: 1em;
 }
