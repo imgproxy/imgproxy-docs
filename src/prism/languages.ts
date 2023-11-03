@@ -1,4 +1,4 @@
-import { Grammar } from "prismjs";
+import { Grammar, TokenObject } from "prismjs";
 
 const Prism = globalThis.Prism;
 
@@ -110,3 +110,15 @@ Prism.languages.imgproxy_url_template = {
   attribute: /info|plain|enc/,
   operator: /\//,
 } as Grammar;
+
+// A dirty hack to add more "functions" to bash highlighting
+const bash_function = Prism.languages.bash?.function as TokenObject;
+if (bash_function?.pattern?.source) {
+  bash_function.pattern = new RegExp(
+    bash_function.pattern.source.replace(
+      "|bash|",
+      "|bash|imgproxy|helm|heroku|brew|go|base64|",
+    ),
+    bash_function.pattern.flags,
+  );
+}
