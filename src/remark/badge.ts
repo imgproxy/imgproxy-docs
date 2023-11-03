@@ -1,30 +1,42 @@
-import { visit } from 'unist-util-visit';
-import { Transformer } from 'unified';
-import { Text, Parent } from 'mdast';
+import { visit } from "unist-util-visit";
+import { Transformer } from "unified";
+import { Text, Parent } from "mdast";
 
 const plugin = (): Transformer => {
   const textNode = (value) => ({
-    type: 'text',
+    type: "text",
     value,
   });
 
   const badgeNode = (label) => {
     const node = {
-      type: 'mdxJsxFlowElement',
-      name: 'i',
+      type: "mdxJsxFlowElement",
+      name: "i",
       attributes: [
-        { type: 'mdxJsxAttribute', name: 'className', value: `badge badge--${label}` },
+        {
+          type: "mdxJsxAttribute",
+          name: "className",
+          value: `badge badge--${label}`,
+        },
       ],
       children: [textNode(label)],
     };
 
     switch (label) {
-      case 'pro':
-        node.name = 'a';
+      case "pro":
+        node.name = "a";
         node.attributes.push(
-          { type: 'mdxJsxAttribute', name: 'href', value: 'https://imgproxy.net/#pro' },
-          { type: 'mdxJsxAttribute', name: 'title', value: 'This feature is awailable in imgproxy Pro' },
-          { type: 'mdxJsxAttribute', name: 'target', value: '_blank' },
+          {
+            type: "mdxJsxAttribute",
+            name: "href",
+            value: "https://imgproxy.net/#pro",
+          },
+          {
+            type: "mdxJsxAttribute",
+            name: "title",
+            value: "This feature is awailable in imgproxy Pro",
+          },
+          { type: "mdxJsxAttribute", name: "target", value: "_blank" },
         );
         break;
     }
@@ -32,12 +44,12 @@ const plugin = (): Transformer => {
     return node;
   };
 
-  return async (ast) => {
-    visit(ast, 'text', (node: Text, index: number, parent: Parent) => {
+  return (ast) => {
+    visit(ast, "text", (node: Text, index: number, parent: Parent) => {
       if (!node.value) return;
 
       let rest = node.value;
-      let replacement = [];
+      const replacement = [];
 
       const re = /\(\((\S+)\)\)/;
       let match;
@@ -51,8 +63,7 @@ const plugin = (): Transformer => {
         replacement.push(badgeNode(match[1]));
       }
 
-      if (rest)
-        replacement.push(textNode(rest));
+      if (rest) replacement.push(textNode(rest));
 
       if (replacement.length > 1)
         parent.children.splice(index, 1, ...replacement);

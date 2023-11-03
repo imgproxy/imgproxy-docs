@@ -1,0 +1,9 @@
+pre-commit:
+  parallel: true
+  commands:
+    eslint:
+      glob: "*.{js,ts,jsx,tsx}"
+      run: yarn eslint {staged_files}
+    typecheck:
+      glob: "*.{js,ts,jsx,tsx}"
+      run: yarn run typecheck
