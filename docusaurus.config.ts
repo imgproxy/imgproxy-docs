@@ -98,7 +98,7 @@ const config: Config = {
           },
 
           editUrl:
-            'https://github.com/imgproxy/imgproxy-docs/tree/main/',
+            'https://github.com/imgproxy/imgproxy-docs/tree/master/',
 
           admonitions: {
             // tag: ':::',
