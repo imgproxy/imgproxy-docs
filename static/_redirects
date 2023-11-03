@@ -73,3 +73,7 @@
 /3.19/datadog /3.19.x/monitoring/datadog
 /3.19/open_telemetry /3.19.x/monitoring/open_telemetry
 /3.19/cloud_watch /3.19.x/monitoring/cloud_watch
+
+# Paths from ancient times
+/generating_the_url_basic /usage/processing
+/generating_the_url_advanced /usage/processing
