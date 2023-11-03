@@ -1,6 +1,26 @@
-# Website
+<p align="center">
+  <a href="https://imgproxy.net">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="static/img/logo-docs-dark.svg?sanitize=true">
+      <source media="(prefers-color-scheme: light)" srcset="static/img/logo-docs-light.svg?sanitize=true">
+      <img alt="imgproxy logo" src="static/img/logo-docs-light.svg?sanitize=true">
+    </picture>
+  </a>
+</p>
 
-This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+<h4 align="center">
+  <a href="https://imgproxy.net">Website</a> |
+  <a href="https://imgproxy.net/blog/">Blog</a> |
+  <a href="https://docs.imgproxy.net">Documentation</a> |
+  <a href="https://imgproxy.net/#pro">imgproxy Pro</a> |
+  <a href="https://hub.docker.com/r/darthsim/imgproxy/">Docker</a> |
+  <a href="https://twitter.com/imgproxy_net">Twitter</a> |
+  <a href="https://discord.gg/5GgpXgtC9u">Discord</a>
+</h4>
+
+---
+
+This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
 ### Installation
 
@@ -23,19 +43,3 @@ $ yarn build
 ```
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-### Deployment
-
-Using SSH:
-
-```
-$ USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
