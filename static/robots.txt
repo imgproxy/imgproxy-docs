@@ -1,0 +1,27 @@
+User-agent: *
+Sitemap: https://docs.imgproxy.net/sitemap.xml
+
+# Exclude paths from the the previous version of docs
+Disallow: /GETTING_STARTED
+Disallow: /configuration
+Disallow: /loading_environment_variables
+Disallow: /generating_the_url
+Disallow: /getting_the_image_info
+Disallow: /signing_the_url
+Disallow: /encrypting_the_source_url
+Disallow: /presets
+Disallow: /watermark
+Disallow: /object_detection
+Disallow: /autoquality
+Disallow: /best_format
+Disallow: /chained_pipelines
+Disallow: /serving_local_files
+Disallow: /serving_files_from_s3
+Disallow: /serving_files_from_google_cloud_storage
+Disallow: /serving_files_from_azure_blob_storage
+Disallow: /serving_files_from_openstack_swift
+Disallow: /new_relic
+Disallow: /prometheus
+Disallow: /datadog
+Disallow: /open_telemetry
+Disallow: /cloud_watch
