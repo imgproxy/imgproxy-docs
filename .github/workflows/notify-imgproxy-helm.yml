@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - docs/configuration/options.mdx
+      - docs/configuration/**.mdx
 jobs:
   notify-imgproxy-helm:
     runs-on: ubuntu-latest
@@ -16,4 +16,4 @@ jobs:
           token: ${{ secrets.HELM_REPO_ACCESS_TOKEN }}
           repository: imgproxy/imgproxy-helm
           event-type: imgproxy-config-updated
-          client-payload: '{"actor":"{{ github.actor }}","link":"https://github.com/imgproxy/imgproxy-docs/commit/{{ github.sha }}"}'
+          client-payload: '{"actor":"${{ github.actor }}","link":"https://github.com/imgproxy/imgproxy-docs/commit/${{ github.sha }}"}'
