@@ -1,3 +1,12 @@
+@font-face {
+  font-display: swap;
+  font-family: 'Martian Grotesk';
+  font-stretch: condensed normal;
+  font-style: normal italic;
+  font-weight: 200 300 700 800;
+  src: url('https://cdn.evilmartians.com/front/fonts/MartianGrotesk-1.0.woff2') format("woff2");
+}
+
 [data-theme='dark']:root {
   --ifm-color-primary-h: 208;
   --ifm-color-primary-s: 100%;
@@ -15,11 +24,18 @@
 
   --ifm-background-color: hsl(225, 24%, 7%);
 
-  --ifm-font-family-base: 'Roboto', sans-serif;
-  --ifm-font-family-monospace: 'Martian Mono', monospace;
-  --ifm-font-size-base: 110%;
+  --ifm-font-weight-light: 200;
+  --ifm-font-weight-normal: 300;
+  --ifm-font-weight-semibold: 700;
+  --ifm-font-weight-bold: 800;
 
-  --ifm-heading-font-family: 'Roboto Condensed', 'Roboto', sans-serif;
+  --ifm-font-family-base: 'Martian Grotesk', 'Roboto', sans-serif;
+  --ifm-font-family-monospace: 'Martian Mono', monospace;
+  --ifm-font-size-base: 16px;
+  --ifm-font-weight-base: var(--ifm-font-weight-normal);
+  --ifm-line-height-base: 2;
+
+  --ifm-heading-font-family: 'Martian Grotesk', 'Roboto', sans-serif;
 
   --ifm-table-stripe-background: rgba(255, 255, 255, 0.05);
 }
@@ -28,6 +44,14 @@
   --ifm-footer-background-color: #ffffff0d;
 }
 
-pre {
-  font-weight: 300;
+html {
+  font-weight: var(--ifm-font-weight-base);
+}
+
+.markdown {
+  font-size: 18px;
+}
+
+h1, h2, h3 {
+  font-stretch: condensed;
 }

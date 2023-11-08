@@ -1,5 +1,6 @@
 .menu {
   font-weight: var(--ifm-font-weight-normal);
+  font-stretch: condensed;
 }
 
 .menu__link--sublist {

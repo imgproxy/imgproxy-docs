@@ -14,6 +14,7 @@
   font-style: var(--ifm-font-weight-bold);
   font-weight: var(--ifm-font-weight-bold);
   font-size: 0.75em;
+  font-stretch: normal;
   line-height: 1;
   text-transform: uppercase;
   padding: var(--ifm-badge-padding-vertical) var(--ifm-badge-padding-horizontal);

@@ -12,7 +12,7 @@
 
 .navbar__title {
   font-family: var(--ifm-font-family-monospace);
-  font-weight: 300;
+  font-weight: var(--ifm-font-weight-normal);
 }
 
 
