@@ -3,7 +3,7 @@
   font-family: 'Martian Grotesk';
   font-stretch: condensed normal;
   font-style: normal italic;
-  font-weight: 200 300 700 800;
+  font-weight: 200 300 700 800 900;
   src: url('https://cdn.evilmartians.com/front/fonts/MartianGrotesk-1.0.woff2') format("woff2");
 }
 
@@ -52,6 +52,10 @@ html {
   font-size: 18px;
 }
 
-h1, h2, h3 {
+h1 {
+  font-weight: 900;
+}
+
+h2, h3 {
   font-stretch: condensed;
 }
