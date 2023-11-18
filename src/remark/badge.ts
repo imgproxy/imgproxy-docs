@@ -34,7 +34,7 @@ const plugin = (): Transformer => {
           {
             type: "mdxJsxAttribute",
             name: "title",
-            value: "This feature is awailable in imgproxy Pro",
+            value: "This feature is available in imgproxy Pro",
           },
           { type: "mdxJsxAttribute", name: "target", value: "_blank" },
         );
