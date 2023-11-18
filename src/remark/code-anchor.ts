@@ -1,6 +1,6 @@
 import { visit } from "unist-util-visit";
 import { Transformer } from "unified";
-import { Text, Parent, RootContent } from "mdast";
+import { Text, Link, Parent, RootContent } from "mdast";
 import { MdxJsxFlowElement } from "mdast-util-mdx-jsx";
 
 const plugin = (): Transformer => {
@@ -35,7 +35,7 @@ const plugin = (): Transformer => {
         },
         {
           type: "mdxJsxFlowElement",
-          name: "a",
+          name: "span",
           attributes: [
             { type: "mdxJsxAttribute", name: "id", value: id },
             {
@@ -43,9 +43,14 @@ const plugin = (): Transformer => {
               name: "className",
               value: `code-anchor`,
             },
-            { type: "mdxJsxAttribute", name: "href", value: `#${id}` },
           ],
-          children: [code as any],
+          children: [
+            code as any,
+            {
+              type: "link",
+              url: `#${id}`,
+            } as Link,
+          ],
         } as MdxJsxFlowElement,
         {
           type: "text",

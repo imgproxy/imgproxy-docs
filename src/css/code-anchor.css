@@ -1,9 +1,14 @@
-a.code-anchor {
-  color: #ffcb6b;
+.code-anchor {
   scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
 }
 
-a.code-anchor:hover {
-  text-decoration-style: dotted;
-  text-underline-offset: 0.25em;
+.code-anchor code {
+  color: #ffcb6b;
+}
+
+.code-anchor a::after {
+  content: "#";
+  font-family: var(--ifm-font-family-monospace);
+  font-size: var(--ifm-code-font-size);
+  padding: 0 0.2em;
 }
