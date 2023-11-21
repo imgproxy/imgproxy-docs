@@ -285,6 +285,99 @@ Default: `false`.
 }
 ```
 
+### Colorspace
+
+:::slow[Slow]
+This option requires the image to be fully downloaded.
+:::
+
+```imgproxy_url_option
+colorspace:%colorspace
+cs:%colorspace
+```
+
+When set to `1`, `t`, or `true`, imgproxy will return the image's colorspace (`srgb`, `cmyk`, etc).
+
+Default: `false`.
+
+**Response example:**
+
+```json
+{
+  "colorspace": "srgb"
+}
+```
+
+### Bands
+
+:::slow[Slow]
+This option requires the image to be fully downloaded.
+:::
+
+```imgproxy_url_option
+bands:%bands
+b:%bands
+```
+
+When set to `1`, `t`, or `true`, imgproxy will return the number image's bands.
+
+Default: `false`.
+
+**Response example:**
+
+```json
+{
+  "bands": 3
+}
+```
+
+### Sample format
+
+:::slow[Slow]
+This option requires the image to be fully downloaded.
+:::
+
+```imgproxy_url_option
+sample_format:%sample_format
+sf:%sample_format
+```
+
+When set to `1`, `t`, or `true`, imgproxy will return the image's sample format (`uchar`, `ushort`, `float`, etc).
+
+Default: `false`.
+
+**Response example:**
+
+```json
+{
+  "sample_format": "uchar"
+}
+```
+
+### Alpha
+
+:::slow[Slow]
+This option requires the image to be fully downloaded and processed.
+:::
+
+```imgproxy_url_option
+alpha:%alpha:%check_transparency
+a:%alpha:%check_transparency
+```
+
+* `alpha` – when set to `1`, `t`, or `true`, imgproxy will check if the image has an alpha channel.
+* `check_transparency` – _(optional)_ when set to `1`, `t`, or `true`, imgproxy will additionally check if the image has actual transparency (pixels that have non-max alpha value).
+
+Default: `false`.
+
+**Response example:**
+
+```json
+{
+  "sample_format": "uchar"
+}
+```
+
 ### Crop coordinates {#crop}
 
 :::slow[Slow]
