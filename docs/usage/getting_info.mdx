@@ -354,6 +354,29 @@ Default: `false`.
 }
 ```
 
+### Pages number
+
+:::slow[Slow]
+This option requires the image to be fully downloaded.
+:::
+
+```imgproxy_url_option
+pages_number:%pages_number
+pn:%pages_number
+```
+
+When set to `1`, `t`, or `true`, imgproxy will return the number of pages the image contains. For animated images, it'll return the number of animation frames.
+
+Default: `false`.
+
+**Response example:**
+
+```json
+{
+  "pages_number": 10
+}
+```
+
 ### Alpha
 
 :::slow[Slow]
