@@ -229,7 +229,9 @@ When imgproxy needs to cut some parts of the image, it is guided by the gravity 
   * `soea`: south-east (bottom-right corner)
   * `sowe`: south-west (bottom-left corner)
   * `ce`: center
-* `x_offset`, `y_offset` - (optional) specifies the gravity offset along the X and Y axes.
+* `x_offset`, `y_offset` - (optional) specifies the gravity offset along the X and Y axes:
+  * When `x_offset` or `y_offset` is greater than or equal to `1`, imgproxy treats it as an absolute value.
+  * When `x_offset` or `y_offset` is less than `1`, imgproxy treats it as a relative value.
 
 Default: `ce:0:0`
 
@@ -502,7 +504,10 @@ Places a watermark on the processed image.
   * `soea`: south-east (bottom-right corner)
   * `sowe`: south-west (bottom-left corner)
   * `re`: repeat and tile the watermark to fill the entire image
-* `x_offset`, `y_offset` - (optional) specify watermark offset by X and Y axes. When using `re` position, these values define the spacing between the tiles.
+* `x_offset`, `y_offset` - (optional) specify watermark offset by X and Y axes:
+  * When `x_offset` or `y_offset` is greater than or equal to `1` or less than or equal to `-1`, imgproxy treats it as an absolute value.
+  * When `x_offset` or `y_offset` is less than `1` and greater than `-1`, imgproxy treats it as a relative value.
+  * When using `re` position, these values define the spacing between the tiles.
 * `scale`: (optional) a floating-point number that defines the watermark size relative to the resultant image size. When set to `0` or when omitted, the watermark size won't be changed.
 
 Default: disabled
