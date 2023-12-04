@@ -40,7 +40,7 @@ echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
 * [`IMGPROXY_WORKERS`]: _(alias: `IMGPROXY_CONCURRENCY`)_ the maximum number of images an imgproxy instance can process simultaneously without creating a queue. Default: the number of CPU cores multiplied by two
 * [`IMGPROXY_REQUESTS_QUEUE_SIZE`]: the maximum number of image requests that can be put in the queue. Requests that exceed this limit are rejected with `429` HTTP status. When set to `0`, the requests queue is unlimited. Default: `0`
 * [`IMGPROXY_MAX_CLIENTS`]: the maximum number of simultaneous active connections. When set to `0`, connection limit is disabled. Default: `2048`
-* [`IMGPROXY_TTL`]: a duration (in seconds) sent via the `Expires` and `Cache-Control: max-age` HTTP headers. Default: `31536000` (1 year)
+* [`IMGPROXY_TTL`]: a duration (in seconds) sent via the `Cache-Control: max-age` HTTP header. Default: `31536000` (1 year)
 * [`IMGPROXY_CACHE_CONTROL_PASSTHROUGH`]: when `true` and the source image response contains the `Expires` or `Cache-Control` headers, reuse those headers. Default: false
 * [`IMGPROXY_SET_CANONICAL_HEADER`]: when `true` and the source image has an `http` or `https` scheme, set a `rel="canonical"` HTTP header to the value of the source image URL. More details [here](https://developers.google.com/search/docs/advanced/crawling/consolidate-duplicate-urls#rel-canonical-header-method). Default: `false`
 * [`IMGPROXY_SO_REUSEPORT`]: when `true`, enables `SO_REUSEPORT` socket option (currently only available on Linux and macOS);
@@ -342,7 +342,7 @@ You can set up a fallback image that will be used in case imgproxy is unable to 
 * [`IMGPROXY_FALLBACK_IMAGE_PATH`]: the path to the locally stored image
 * [`IMGPROXY_FALLBACK_IMAGE_URL`]: the fallback image URL
 * [`IMGPROXY_FALLBACK_IMAGE_HTTP_CODE`]: the HTTP code for the fallback image response. When set to zero, imgproxy will respond with the usual HTTP code. Default: `200`
-* [`IMGPROXY_FALLBACK_IMAGE_TTL`]: a duration (in seconds) sent via the `Expires` and `Cache-Control: max-age` HTTP headers when a fallback image was used. When blank or `0`, the value from `IMGPROXY_TTL` is used.
+* [`IMGPROXY_FALLBACK_IMAGE_TTL`]: a duration (in seconds) sent via the `Cache-Control: max-age` HTTP header when a fallback image was used. When blank or `0`, the value from `IMGPROXY_TTL` is used.
 * [`IMGPROXY_FALLBACK_IMAGES_CACHE_SIZE`]: ((pro)) the size of custom fallback images cache. When set to `0`, the fallback image cache is disabled. 256 fallback images are cached by default.
 
 ## Presets
