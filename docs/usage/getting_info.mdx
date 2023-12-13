@@ -541,6 +541,36 @@ Default: `0:0`
 }
 ```
 
+### Calc hashsums
+
+:::slow[Slow]
+This option requires the image to be fully downloaded.
+:::
+
+```imgproxy_url_option
+calc_hashsum:%hashsum_type1:%hashsum_type2:...:%hashsum_typeN
+chs:%hashsum_type1:%hashsum_type2:...:%hashsum_typeN
+```
+
+When hashsum types list is not empty, imgproxy will calculate and return the hashsums of the source image. Available hashsum types are: `md5`, `sha1`, `sha256`, and `sha512`.
+
+Default: empty
+
+**Response example:**
+
+```json
+{
+  "hashsums": {
+    "md5": "cc507f81206a4c7d0a995a07c3d9f43a",
+    "sha256": "621f6c6d68de754c6cdf3d286b7837634ce9f273f30f377b3e0df0568a23cee0"
+  }
+}
+```
+
+:::warning
+Calculation of video file hashsums is not supported as it would require downloading the whole video file. imgproxy won't throw an error if you try to calculate the hashsum of a video file but it will skip the `hashsums` field
+:::
+
 ### Page
 
 ```imgproxy_url_option
@@ -606,6 +636,33 @@ Defines a list of presets to be used by imgproxy. Feel free to use as many prese
 Read more about presets in the [Presets](./presets.mdx) guide.
 
 Default: empty
+
+### Hashsum
+
+:::slow[Slow]
+This option requires the image to be fully downloaded.
+:::
+
+```imgproxy_url_option
+hashsum:%hashsum_type:%hashsum
+hs:%hashsum_type:%hashsum
+```
+
+When `hashtype` is not `none`, imgproxy will calculate the hashsum of the source image and compare it with the provided `hashsum`. If they don't match, imgproxy will respond with 422.
+
+* `hashsum_type`: specifies the hashsum type. Available values:
+  * `none`: don't check the hashsum
+  * `md5`: use MD5 hashsum
+  * `sha1`: use SHA1 hashsum
+  * `sha256`: use SHA256 hashsum
+  * `sha512`: use SHA512 hashsum
+* `hashsum`: the expected hex-encoded hashsum of the source image. If `hashsum_type` is `none`, this argument is ignored and can be omitted
+
+Default: `none`
+
+:::warning
+Checking video file hashsums is not supported as it would require downloading the whole video file. imgproxy won't throw an error if you try to check the hashsum of a video file but it will skip the hashsum check
+:::
 
 ### Max src resolution
 

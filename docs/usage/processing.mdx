@@ -907,6 +907,29 @@ Read more about presets in the [Presets](./presets.mdx) guide.
 
 Default: empty
 
+### Hashsum ((pro)) {#hashsum}
+
+```imgproxy_url_option
+hashsum:%hashsum_type:%hashsum
+hs:%hashsum_type:%hashsum
+```
+
+When `hashsum_type` is not `none`, imgproxy will calculate the hashsum of the source image and compare it with the provided hashsum. If they don't match, imgproxy will respond with 422.
+
+* `hashsum_type`: specifies the hashsum type. Available values:
+  * `none`: don't check the hashsum
+  * `md5`: use MD5 hashsum
+  * `sha1`: use SHA1 hashsum
+  * `sha256`: use SHA256 hashsum
+  * `sha512`: use SHA512 hashsum
+* `hashsum`: the expected hex-encoded hashsum of the source image. If `hashsum_type` is `none`, this argument is ignored and can be omitted
+
+Default: `none`
+
+:::warning
+Checking video file hashsums is not supported as it would require downloading the whole video file. imgproxy won't throw an error if you try to check the hashsum of a video file but it will skip the hashsum check
+:::
+
 ### Max src resolution
 
 ```imgproxy_url_option
