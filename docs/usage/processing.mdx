@@ -785,9 +785,11 @@ video_thumbnail_tile:%step:%columns:%rows:%tile_width:%tile_height:%extend_tile:
 vtt:%step:%columns:%rows:%tile_width:%tile_height:%extend_tile:%trim
 ```
 
-When `step` is larger than `0`, imgproxy will generate a tiled sprite using the source video frames.
+When `step` is not `0`, imgproxy will generate a tiled sprite using the source video frames.
 
-* `step`: the step of timestamp (in seconds) between video frames that should be used for the sprite generation
+* `step`: the step of timestamp (in seconds) between video frames that should be used for the sprite generation:
+  * When `step` value is positive, imgproxy will use it as an absolute value
+  * When `step` value is negative, imgproxy will calculate the actual step as `video_duration / (columns * rows)`
 * `columns`: the number of columns in the sprite
 * `rows`: the number of rows in the sprite
 * `tile_width`, `tile_height`: the width and height of each tile in the sprite. imgproxy will resize each used frame to fit the provided size
@@ -797,6 +799,10 @@ When `step` is larger than `0`, imgproxy will generate a tiled sprite using the 
 The timestamp of the first frame can be set using the [IMGPROXY_VIDEO_THUMBNAIL_SECOND](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_SECOND) config or the [video_thumbnail_second](#video-thumbnail-keyframes) option.
 
 You can make imgproxy use only keyframes with the [IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES) config or the [video_thumbnail_keyframes](#video-thumbnail-keyframes) option.
+
+:::info
+If the `step` value is less than the interframe interval, some frames may be used for more than one tile.
+:::
 
 Default: `0:0:0:0:0`
 
