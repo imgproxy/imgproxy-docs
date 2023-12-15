@@ -290,6 +290,7 @@ imgproxy Pro can extract specific video frames to create thumbnails. This featur
 * [`IMGPROXY_ENABLE_VIDEO_THUMBNAILS`]: ((pro)) when `true`, enables video thumbnail generation. Default: `false`
 * [`IMGPROXY_VIDEO_THUMBNAIL_SECOND`]: ((pro)) the timestamp of the frame (in seconds) that will be used for a thumbnail. Default: `1`
 * [`IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES`]: ((pro)) when `true`, imgproxy will use the latest keyframe before `IMGPROXY_VIDEO_THUMBNAIL_SECOND` for video thumbnail generation. This makes video thumbnail generation faster yet the used frame timestamp will not be exactly equal to the requested one. Default: `false`
+* [`IMGPROXY_VIDEO_THUMBNAIL_TILE_AUTO_KEYFRAMES`]: ((pro)) when `true` and the `step` argument value of the `video_thumbnail_tile` processing option is greater than the interval between keyframes, imgproxy will use only keyframes. This allows to speed up `video_thumbnail_tile` for long steps between tiles yet keep it precise for short ones. Default: `false`
 * [`IMGPROXY_VIDEO_THUMBNAIL_PROBE_SIZE`]: ((pro)) the maximum amount of bytes used to determine the format. Lower values can decrease memory usage but can produce inaccurate data, or even lead to errors. Default: 5000000
 * [`IMGPROXY_VIDEO_THUMBNAIL_MAX_ANALYZE_DURATION`]: ((pro)) the maximum number of milliseconds used to get the stream info. Lower values can decrease memory usage but can produce inaccurate data, or even lead to errors. When set to `0`, the heuristic is used. Default: `0`
 

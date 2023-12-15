@@ -798,7 +798,7 @@ When `step` is not `0`, imgproxy will generate a tiled sprite using the source v
 
 The timestamp of the first frame can be set using the [IMGPROXY_VIDEO_THUMBNAIL_SECOND](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_SECOND) config or the [video_thumbnail_second](#video-thumbnail-keyframes) option.
 
-You can make imgproxy use only keyframes with the [IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES) config or the [video_thumbnail_keyframes](#video-thumbnail-keyframes) option.
+You can make imgproxy use only keyframes with the [IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES) config or the [video_thumbnail_keyframes](#video-thumbnail-keyframes) option. Also, [IMGPROXY_VIDEO_THUMBNAIL_TILE_AUTO_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_TILE_AUTO_KEYFRAMES) config makes imgproxy automatically use keyframes when the `step` value is greater than the interframe interval.
 
 :::info
 If the `step` value is less than the interframe interval, some frames may be used for more than one tile.
