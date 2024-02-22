@@ -28,6 +28,8 @@ If you need a random key/salt pair really fast, as an example, you can quickly g
 echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
 ```
 
+* [`IMGPROXY_TRUSTED_SIGNATURES`]: a list of trusted signatures, comma divided. When set, imgproxy will trust the signatures from the list and won't check them even if `IMGPROXY_KEY` and `IMGPROXY_SALT` are set. Default: blank
+
 ## Server
 
 * [`IMGPROXY_BIND`]: the address and port or Unix socket to listen to. Default: `:8080`
