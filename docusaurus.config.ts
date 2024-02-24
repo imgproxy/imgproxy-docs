@@ -57,15 +57,9 @@ const config: Config = {
     {
       tagName: "link",
       attributes: {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
-      },
-    },
-    {
-      tagName: "link",
-      attributes: {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap",
+        rel: "preconnect",
+        href: "https://cdn.evilmartians.com",
+        crossorigin: "crossorigin",
       },
     },
     {
