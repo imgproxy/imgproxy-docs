@@ -59,3 +59,7 @@ h1 {
 h2, h3 {
   font-stretch: condensed;
 }
+
+pre {
+  font-weight: var(--ifm-font-weight-base);
+}
