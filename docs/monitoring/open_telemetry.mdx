@@ -62,7 +62,7 @@ If `IMGPROXY_OPEN_TELEMETRY_ENABLE_METRICS` is set to `true`, imgproxy will also
 
 ## Configuration
 
-imgproxy supports the standart [general](https://opentelemetry.io/docs/languages/sdk-configuration/general/) and [OTLP exporter-specific](https://opentelemetry.io/docs/languages/sdk-configuration/otlp-exporter/) environment variables with the following specifics:
+imgproxy supports the standard [general](https://opentelemetry.io/docs/languages/sdk-configuration/general/) and [OTLP exporter-specific](https://opentelemetry.io/docs/languages/sdk-configuration/otlp-exporter/) environment variables with the following specifics:
 
 * `http/json` protocol` is not supported.
 * `OTEL_TRACES_EXPORTER` and `OTEL_METRICS_EXPORTER` environment variables are ignored as imgproxy always uses the OTLP exporter.
