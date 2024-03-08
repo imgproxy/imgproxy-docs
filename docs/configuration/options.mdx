@@ -566,6 +566,10 @@ imgproxy always uses structured log format for syslog.
 * [`IMGPROXY_LICENSE_KEY`]: ((pro)) the imgproxy Pro license key. When not provided, imgproxy Pro will run in development mode with a limit of 100 requests per minute. Default: blank
 * [`IMGPROXY_LICENSE_DEVELOPMENT_MODE`]: ((pro)) when `true`, enables development mode even if `IMGPROXY_LICENSE_KEY` is provided. In development mode, imgproxy Pro will run with a limit of 100 requests per minute but won't meter the license usage. Default: `false`
 
+:::info
+If you bought imgproxyPro in a cloud marketplace (like AWS Marketplace), you don't need to set `IMGPROXY_LICENSE_KEY`. You can still use `IMGPROXY_LICENSE_DEVELOPMENT_MODE` to enable development mode for local testing.
+:::
+
 ## Memory usage tweaks
 
 :::danger
