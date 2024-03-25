@@ -208,6 +208,10 @@ Autoquality requires the image to be saved several times. Use it only when you p
 * [`IMGPROXY_AUTOQUALITY_WEBP_NET`]: ((pro)) the path to the neural network for WebP.
 * [`IMGPROXY_AUTOQUALITY_AVIF_NET`]: ((pro)) the path to the neural network for AVIF.
 
+## SVG processing
+* [`IMGPROXY_SVG_FIX_UNSUPPORTED`]: when `true`, imgproxy will try to replace SVG features unsupported by librsvg to minimize SVG rendering error. This config only takes effect on SVG rasterization. Default: `false`
+* [`IMGPROXY_ALWAYS_RASTERIZE_SVG`]: when `true`, imgproxy will always rasterize SVG images unless SVG processing is not [skipped](#skip-processing). Default: `false`
+
 ## AVIF/WebP support detection
 
 imgproxy can use the `Accept` HTTP header to detect if the browser supports AVIF or WebP and use it as the default format. This feature is disabled by default and can be enabled by the following options:
@@ -595,6 +599,5 @@ We highly recommended reading the [Memory usage tweaks](../memory_usage_tweaks.m
 * [`IMGPROXY_AUTO_ROTATE`]: when `true`, imgproxy will automatically rotate images based on the EXIF Orientation parameter (if available in the image meta data). The orientation tag will be removed from the image in all cases. Default: `true`
 * [`IMGPROXY_ENFORCE_THUMBNAIL`]: when `true` and the source image has an embedded thumbnail, imgproxy will always use the embedded thumbnail instead of the main image. Currently, only thumbnails embedded in `heic` and `avif` are supported. Default: `false`
 * [`IMGPROXY_RETURN_ATTACHMENT`]: when `true`, response header `Content-Disposition` will include `attachment`. Default: `false`
-* [`IMGPROXY_SVG_FIX_UNSUPPORTED`]: when `true`, imgproxy will try to replace SVG features unsupported by librsvg to minimize SVG rendering error. This config only takes effect on SVG rasterization. Default: `false`
 * [`IMGPROXY_HEALTH_CHECK_MESSAGE`]: ((pro)) the content of the health check response. Default: `imgproxy is running`
 * [`IMGPROXY_HEALTH_CHECK_PATH`]: an additional path of the health check. Default: blank
