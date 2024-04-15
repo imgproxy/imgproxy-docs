@@ -123,6 +123,18 @@ You can limit allowed source URLs with the following variable:
 * [`IMGPROXY_ALLOW_LINK_LOCAL_SOURCE_ADDRESSES`]:  when `true`, allows connecting to link-local multicast and unicast IP addresses (`224.0.0.1`-`224.0.0.255`, `169.254.0.1`-`169.254.255.255`, and IPv6 analogues) when requesting source images. Default: `false`
 * [`IMGPROXY_ALLOW_PRIVATE_SOURCE_ADDRESSES`]: when `true`, allows connecting to private IP addresses (`10.0.0.0 - 10.255.255.255`, `172.16.0.0 - 172.31.255.255`, `192.168.0.0 - 192.168.255.255`, and IPv6 analogues) when requesting source images. Default: `true`
 
+* [`IMGPROXY_PNG_UNLIMITED`]: when `true`, disables the limit on the number of PNG chunks. Default: `false`
+
+  :::warning
+  Disabling the limit on the number of PNG chunks can lead to memory exhaustion and DoS attacks.
+  :::
+
+* [`IMGPROXY_SVG_UNLIMITED`]: when `true`, disables the limit on the SVG file size (10MB). Default: `false`
+
+  :::warning
+  Disabling the limit on the SVG file size can lead to memory exhaustion and DoS attacks.
+  :::
+
 * [`IMGPROXY_SANITIZE_SVG`]: when `true`, imgproxy will remove scripts from SVG images to prevent XSS attacks. Defaut: `true`
 
 When using imgproxy in a development environment, it can be useful to ignore SSL verification:
