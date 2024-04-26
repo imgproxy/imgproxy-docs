@@ -504,10 +504,11 @@ Places a watermark on the processed image.
   * `soea`: south-east (bottom-right corner)
   * `sowe`: south-west (bottom-left corner)
   * `re`: repeat and tile the watermark to fill the entire image
+  * `ch`: ((pro)) same as `re` but watermarks are placed in a chessboard order
 * `x_offset`, `y_offset` - (optional) specify watermark offset by X and Y axes:
   * When `x_offset` or `y_offset` is greater than or equal to `1` or less than or equal to `-1`, imgproxy treats it as an absolute value.
   * When `x_offset` or `y_offset` is less than `1` and greater than `-1`, imgproxy treats it as a relative value.
-  * When using `re` position, these values define the spacing between the tiles.
+  * When using `re` or `ch` position, these values define the spacing between the tiles.
 * `scale`: (optional) a floating-point number that defines the watermark size relative to the resultant image size. When set to `0` or when omitted, the watermark size won't be changed.
 
 Default: disabled
@@ -557,12 +558,25 @@ This processing option takes effect only when the `scale` argument of the `water
 
 Default: `0:0`
 
+### Watermark rotate ((pro)) {#watermark-rotate}
+
+```imgproxy_url_option
+watermark_rotate:%angle
+wm_ror:%angle
+wmr:%angle
+```
+
+Rotates the watermark on the specified angle (clockwise). The orientation from the image metadata is applied before the rotation.
+
+Default: `0`
+
 ### Watermark shadow ((pro)) {#watermark-shadow}
 
 ```imgproxy_url_option
 watermark_shadow:%sigma
 wmsh:%sigma
 ```
+
 When set, imgproxy will add a shadow to the watermark. The value of `sigma` defines the size of the mask imgproxy will use to blur the shadow.
 
 Default: disabled
