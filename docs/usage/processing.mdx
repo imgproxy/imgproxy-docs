@@ -781,8 +781,8 @@ Allows redefining [IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES](../configuration/options.
 ### Video thumbnail tile ((pro)) {#video-thumbnail-tile}
 
 ```imgproxy_url_option
-video_thumbnail_tile:%step:%columns:%rows:%tile_width:%tile_height:%extend_tile:%trim
-vtt:%step:%columns:%rows:%tile_width:%tile_height:%extend_tile:%trim
+video_thumbnail_tile:%step:%columns:%rows:%tile_width:%tile_height:%extend_tile:%trim:%fill:%focus_x:%focus_y
+vtt:%step:%columns:%rows:%tile_width:%tile_height:%extend_tile:%trim:%fill:%focus_x:%focus_y
 ```
 
 When `step` is not `0`, imgproxy will generate a tiled sprite using the source video frames.
@@ -795,6 +795,8 @@ When `step` is not `0`, imgproxy will generate a tiled sprite using the source v
 * `tile_width`, `tile_height`: the width and height of each tile in the sprite. imgproxy will resize each used frame to fit the provided size
 * `extend_tile`: _(optional)_ when set to `1`, `t` or `true`, imgproxy will extend each tile to the requested size using a black background
 * `trim`: _(optional)_ when set to `1`, `t` or `true`, imgproxy will trim the unused space from the sprite
+* `fill`: _(optional)_ when set to `1`, `t` or `true`, imgproxy will use the `fill` resizing type for the tiles
+* `focus_x`, `focus_y`: _(optional)_ floating point numbers between 0 and 1 that define the coordinates of the center of the resulting tile (as in the `fp` gravity type). Treat 0 and 1 as right/left for `x` and top/bottom for `y`. Applicable only when `fill` is set. Default: `0.5:0.5`
 
 The timestamp of the first frame can be set using the [IMGPROXY_VIDEO_THUMBNAIL_SECOND](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_SECOND) config or the [video_thumbnail_second](#video-thumbnail-keyframes) option.
 
