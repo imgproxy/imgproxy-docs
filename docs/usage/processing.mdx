@@ -476,11 +476,13 @@ Places a gradient on the processed image. The placed gradient transitions from t
 
 * `opacity`: specifies gradient opacity. When set to `0`, gradient is not applied.
 * `color`:  _(optional)_ a hex-coded value of the gradient color. Default: `000` (black).
-* `direction`: _(optional)_ specifies the direction of the gradient. Available values:
-  * `down`: _(default)_ the top side of the gradient is transparrent, the bottom side is opaque
-  * `up`: the bottom side of the gradient is transparrent, the top side is opaque
-  * `right`: the left side of the gradient is transparrent, the right side is opaque
-  * `left`: the right side of the gradient is transparrent, the left side is opaque
+* `direction`: _(optional)_ specifies the direction of the gradient. The direction can be specified in two ways:
+  * An angle in degrees (clockwise). For example, `0` will create a gradient from top to down (the top side is transparrent, the bottom side is opaque), and `90` will create a gradient from right to left (the right side is transparrent, the left side is opaque).
+  * A string value. Available values:
+    * `down`: _(default)_ the top side of the gradient is transparrent, the bottom side is opaque
+    * `up`: the bottom side of the gradient is transparrent, the top side is opaque
+    * `right`: the left side of the gradient is transparrent, the right side is opaque
+    * `left`: the right side of the gradient is transparrent, the left side is opaque
 * `start`, `stop`: floating point numbers that define relative positions of where the gradient starts and where it ends. Default values are `0.0` and `1.0` respectively.
 
 ### Watermark
