@@ -313,7 +313,7 @@ auto_rotate:%auto_rotate
 ar:%auto_rotate
 ```
 
-When set to `1`, `t` or `true`, imgproxy will automatically rotate images based on the EXIF Orientation parameter (if available in the image meta data). The orientation tag will be removed from the image in all cases. Normally this is controlled by the [IMGPROXY_AUTO_ROTATE](../configuration/options.mdx#IMGPROXY_AUTO_ROTATE) configuration but this procesing option allows the configuration to be set for each request.
+When set to `1`, `t` or `true`, imgproxy will automatically rotate images based on the EXIF Orientation parameter (if available in the image meta data). The orientation tag will be removed from the image in all cases. Normally this is controlled by the [IMGPROXY_AUTO_ROTATE](../configuration/options.mdx#IMGPROXY_AUTO_ROTATE) configuration but this processing option allows the configuration to be set for each request.
 
 ### Rotate
 
@@ -580,7 +580,7 @@ strip_metadata:%strip_metadata
 sm:%strip_metadata
 ```
 
-When set to `1`, `t` or `true`, imgproxy will strip the metadata (EXIF, IPTC, etc.) on JPEG and WebP output images. This is normally controlled by the [IMGPROXY_STRIP_METADATA](../configuration/options.mdx#IMGPROXY_STRIP_METADATA) configuration but this procesing option allows the configuration to be set for each request.
+When set to `1`, `t` or `true`, imgproxy will strip the metadata (EXIF, IPTC, etc.) on JPEG and WebP output images. This is normally controlled by the [IMGPROXY_STRIP_METADATA](../configuration/options.mdx#IMGPROXY_STRIP_METADATA) configuration but this processing option allows the configuration to be set for each request.
 
 ### Keep copyright
 
@@ -589,7 +589,7 @@ keep_copyright:%keep_copyright
 kcr:%keep_copyright
 ```
 
-When set to `1`, `t` or `true`, imgproxy will not remove copyright info while stripping metadata. This is normally controlled by the [IMGPROXY_KEEP_COPYRIGHT](../configuration/options.mdx#IMGPROXY_KEEP_COPYRIGHT) configuration but this procesing option allows the configuration to be set for each request.
+When set to `1`, `t` or `true`, imgproxy will not remove copyright info while stripping metadata. This is normally controlled by the [IMGPROXY_KEEP_COPYRIGHT](../configuration/options.mdx#IMGPROXY_KEEP_COPYRIGHT) configuration but this processing option allows the configuration to be set for each request.
 
 ### DPI ((pro)) {#dpi}
 
@@ -612,7 +612,7 @@ strip_color_profile:%strip_color_profile
 scp:%strip_color_profile
 ```
 
-When set to `1`, `t` or `true`, imgproxy will transform the embedded color profile (ICC) to sRGB and remove it from the image. Otherwise, imgproxy will try to keep it as is. This is normally controlled by the [IMGPROXY_STRIP_COLOR_PROFILE](../configuration/options.mdx#IMGPROXY_STRIP_COLOR_PROFILE) configuration but this procesing option allows the configuration to be set for each request.
+When set to `1`, `t` or `true`, imgproxy will transform the embedded color profile (ICC) to sRGB and remove it from the image. Otherwise, imgproxy will try to keep it as is. This is normally controlled by the [IMGPROXY_STRIP_COLOR_PROFILE](../configuration/options.mdx#IMGPROXY_STRIP_COLOR_PROFILE) configuration but this processing option allows the configuration to be set for each request.
 
 ### Enforce thumbnail
 
@@ -621,7 +621,7 @@ enforce_thumbnail:%enforce_thumbnail
 eth:%enforce_thumbnail
 ```
 
-When set to `1`, `t` or `true` and the source image has an embedded thumbnail, imgproxy will always use the embedded thumbnail instead of the main image. Currently, only thumbnails embedded in `heic` and `avif` are supported. This is normally controlled by the [IMGPROXY_ENFORCE_THUMBNAIL](../configuration/options.mdx#IMGPROXY_ENFORCE_THUMBNAIL) configuration but this procesing option allows the configuration to be set for each request.
+When set to `1`, `t` or `true` and the source image has an embedded thumbnail, imgproxy will always use the embedded thumbnail instead of the main image. Currently, only thumbnails embedded in `heic` and `avif` are supported. This is normally controlled by the [IMGPROXY_ENFORCE_THUMBNAIL](../configuration/options.mdx#IMGPROXY_ENFORCE_THUMBNAIL) configuration but this processing option allows the configuration to be set for each request.
 
 ### Quality
 
@@ -856,7 +856,7 @@ return_attachment:%return_attachment
 att:%return_attachment
 ```
 
-When set to `1`, `t` or `true`, imgproxy will return `attachment` in the `Content-Disposition` header, and the browser will open a 'Save as' dialog. This is normally controlled by the [IMGPROXY_RETURN_ATTACHMENT](../configuration/options.mdx#IMGPROXY_RETURN_ATTACHMENT) configuration but this procesing option allows the configuration to be set for each request.
+When set to `1`, `t` or `true`, imgproxy will return `attachment` in the `Content-Disposition` header, and the browser will open a 'Save as' dialog. This is normally controlled by the [IMGPROXY_RETURN_ATTACHMENT](../configuration/options.mdx#IMGPROXY_RETURN_ATTACHMENT) configuration but this processing option allows the configuration to be set for each request.
 
 ### Preset
 
