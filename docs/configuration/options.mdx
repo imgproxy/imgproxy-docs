@@ -420,6 +420,8 @@ imgproxy can process files from Amazon S3 buckets, but this feature is disabled 
 * [`IMGPROXY_S3_ENDPOINT`]: a custom S3 endpoint to being used by imgproxy
 * [`IMGPROXY_S3_MULTI_REGION`]: when `true`, allows using S3 buckets from different regions. Default: `false`
 * [`IMGPROXY_S3_USE_DECRYPTION_CLIENT`]: when `true`, enables client-side decryption. Default: `false`
+* [`IMGPROXY_S3_ASSUME_ROLE_ARN`]: a custom role to assume 
+* [`IMGPROXY_S3_ASSUME_ROLE_EXTERNAL_ID`]: the external ID required to assume a custom role
 
 Check out the [Serving files from S3](../image_sources/amazon_s3.mdx) guide to learn more.
 
