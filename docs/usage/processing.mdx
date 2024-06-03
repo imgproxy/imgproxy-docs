@@ -465,6 +465,19 @@ dd:%draw:%class_name1:%class_name2:...:%class_nameN
 
 When `draw` is set to `1`, `t` or `true`, imgproxy [detects objects](../features/object_detection.mdx) of the provided classes and draws their bounding boxes. If class names are omitted, imgproxy draws the bounding boxes of all the detected objects.
 
+### Colorize ((pro)) {#colorize}
+
+```imgproxy_url_option
+colorize:%opacity:%color:%keep_alpha
+col:%opacity:%color:%keep_alpha
+```
+
+Places a color overlay on the processed image.
+
+* `opacity`: specifies the overlay opacity. When set to `0`, overlay is not applied.
+* `color`:  _(optional)_ a hex-coded value of the overlay color. Default: `000` (black).
+* `keep_alpha`: _(optional)_ when set to `1`, `t` or `true`, imgproxy will keep the alpha channel of the original image. Default: `false`
+
 ### Gradient ((pro)) {#gradient}
 
 ```imgproxy_url_option
