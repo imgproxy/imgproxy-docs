@@ -22,6 +22,12 @@ docker build -f docker/Dockerfile -t imgproxy .
 docker run -p 8080:8080 -it imgproxy
 ```
 
+## Unraid
+
+imgproxy is available in the [Community Apps](https://unraid.net/community/apps) store on Unraid. After [installing the Community Apps plugin](https://forums.unraid.net/topic/38582-plug-in-community-applications/) on your Unraid machine, simply search for "imgproxy" and select the resulting app (provided by grtgbln's repository).
+
+Follow the on-screen instructions to set up the container, including mapping the Web UI port.
+
 ## Helm
 
 imgproxy can be easily deployed to your Kubernetes cluster using Helm and our official Helm chart:
