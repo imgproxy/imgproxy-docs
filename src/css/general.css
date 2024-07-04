@@ -48,8 +48,16 @@ html {
   font-weight: var(--ifm-font-weight-base);
 }
 
-.markdown {
-  font-size: 18px;
+.markdown details summary {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding-left: 0;
+}
+
+.markdown details summary::before {
+  position: unset;
+  margin-right: 0.25em;
 }
 
 h1 {
