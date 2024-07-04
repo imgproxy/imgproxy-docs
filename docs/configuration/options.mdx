@@ -347,12 +347,16 @@ imgproxy Pro can apply unsharp masking to your images.
 
 imgproxy can detect objects on the image and use them to perform smart cropping, to blur the detections, or to draw the detections.
 
-* [`IMGPROXY_OBJECT_DETECTION_CONFIG`]: ((pro)) the path to the neural network config. Default: blank
-* [`IMGPROXY_OBJECT_DETECTION_WEIGHTS`]: ((pro)) the path to the neural network weights. Default: blank
+* [`IMGPROXY_OBJECT_DETECTION_CONFIG`]: ((pro)) the path to the neural network config in DarkNet format. Default: blank
+* [`IMGPROXY_OBJECT_DETECTION_WEIGHTS`]: ((pro)) the path to the neural network weights in DarkNet format. Default: blank
+* [`IMGPROXY_OBJECT_DETECTION_NET`]: ((pro)) a path to the neural network model in ONNX format. Default: blank
+* [`IMGPROXY_OBJECT_DETECTION_NET_TYPE`]: ((pro)) the type of the neural network model. Default: `yolox`
 * [`IMGPROXY_OBJECT_DETECTION_CLASSES`]: ((pro)) the path to the text file with the classes names, one per line. Default: blank
 * [`IMGPROXY_OBJECT_DETECTION_NET_SIZE`]: ((pro)) the size of the neural network input. The width and the heights of the inputs should be the same, so this config value should be a single number. Default: 416
 * [`IMGPROXY_OBJECT_DETECTION_CONFIDENCE_THRESHOLD`]: ((pro)) detections with confidences below this value will be discarded. Default: 0.2
 * [`IMGPROXY_OBJECT_DETECTION_NMS_THRESHOLD`]: ((pro)) non-max supression threshold. Don't change this if you don't know what you're doing. Default: 0.4
+
+Read the [Object Detection guide](../features/object_detection.mdx) for more info.
 
 ## Fallback image
 
@@ -420,7 +424,7 @@ imgproxy can process files from Amazon S3 buckets, but this feature is disabled 
 * [`IMGPROXY_S3_ENDPOINT`]: a custom S3 endpoint to being used by imgproxy
 * [`IMGPROXY_S3_MULTI_REGION`]: when `true`, allows using S3 buckets from different regions. Default: `false`
 * [`IMGPROXY_S3_USE_DECRYPTION_CLIENT`]: when `true`, enables client-side decryption. Default: `false`
-* [`IMGPROXY_S3_ASSUME_ROLE_ARN`]: a custom role to assume 
+* [`IMGPROXY_S3_ASSUME_ROLE_ARN`]: a custom role to assume
 * [`IMGPROXY_S3_ASSUME_ROLE_EXTERNAL_ID`]: the external ID required to assume a custom role
 
 Check out the [Serving files from S3](../image_sources/amazon_s3.mdx) guide to learn more.
