@@ -322,6 +322,7 @@ Though using `IMGPROXY_VIDEO_THUMBNAIL_PROBE_SIZE` and `IMGPROXY_VIDEO_THUMBNAIL
 * [`IMGPROXY_WATERMARK_DATA`]: Base64-encoded image data. You can easily calculate it with `base64 tmp/watermark.png | tr -d '\n'`.
 * [`IMGPROXY_WATERMARK_PATH`]: the path to the locally stored image
 * [`IMGPROXY_WATERMARK_URL`]: the watermark image URL
+* [`IMGPROXY_WATERMARK_PREPROCESS_URL`]: ((pro)) when `true`, imgproxy will apply `IMGPROXY_URL_REPLACEMENTS` and `IMGPROXY_BASE_URL` to values of the `watermark_url` processing option.
 * [`IMGPROXY_WATERMARK_OPACITY`]: the watermark's base opacity
 * [`IMGPROXY_WATERMARKS_CACHE_SIZE`]: ((pro)) custom watermarks cache size. When set to `0`, the watermark cache is disabled. 256 watermarks are cached by default.
 
@@ -365,6 +366,7 @@ You can set up a fallback image that will be used in case imgproxy is unable to 
 * [`IMGPROXY_FALLBACK_IMAGE_DATA`]: Base64-encoded image data. You can easily calculate it with `base64 tmp/fallback.png | tr -d '\n'`.
 * [`IMGPROXY_FALLBACK_IMAGE_PATH`]: the path to the locally stored image
 * [`IMGPROXY_FALLBACK_IMAGE_URL`]: the fallback image URL
+* [`IMGPROXY_FALLBACK_IMAGE_PREPROCESS_URL`]: ((pro)) when `true`, imgproxy will apply `IMGPROXY_URL_REPLACEMENTS` and `IMGPROXY_BASE_URL` to values of the `fallback_image_url` processing option.
 * [`IMGPROXY_FALLBACK_IMAGE_HTTP_CODE`]: the HTTP code for the fallback image response. When set to zero, imgproxy will respond with the usual HTTP code. Default: `200`
 * [`IMGPROXY_FALLBACK_IMAGE_TTL`]: a duration (in seconds) sent via the `Cache-Control: max-age` HTTP header when a fallback image was used. When blank or `0`, the value from `IMGPROXY_TTL` is used.
 * [`IMGPROXY_FALLBACK_IMAGES_CACHE_SIZE`]: ((pro)) the size of custom fallback images cache. When set to `0`, the fallback image cache is disabled. 256 fallback images are cached by default.
