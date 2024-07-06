@@ -381,6 +381,7 @@ There are two ways to define presets:
 
 * [`IMGPROXY_PRESETS`]: a set of processing preset definitions, comma divided. Example: `default=resizing_type:fill/enlarge:1,sharp=sharpen:0.7,blurry=blur:2`. Default: blank
 * [`IMGPROXY_INFO_PRESETS`]: ((pro)) a set of info preset definitions, comma divided. Example: `default=xmp:0/blurhash:4:3`. Default: blank
+* [`IMGPROXY_PRESETS_SEPARATOR`]: a string that will be used as a presets' separator. Default: `,`
 
 #### Using a command line argument
 
@@ -610,6 +611,7 @@ We highly recommended reading the [Memory usage tweaks](../memory_usage_tweaks.m
 
 ## Miscellaneous
 
+* [`IMGPROXY_ARGUMENTS_SEPARATOR`]: a string that will be used as a processing/info options arguments' separator. Default: `:`
 * [`IMGPROXY_USE_LINEAR_COLORSPACE`]: when `true`, imgproxy will process images in linear colorspace. This will slow down processing. Note that images won't be fully processed in linear colorspace while shrink-on-load is enabled (see below).
 * [`IMGPROXY_DISABLE_SHRINK_ON_LOAD`]: when `true`, disables shrink-on-load for JPEGs and WebP files. Allows processing the entire image in linear colorspace but dramatically slows down resizing and increases memory usage when working with large images.
 * [`IMGPROXY_STRIP_METADATA`]: when `true`, imgproxy will strip all metadata (EXIF, IPTC, etc.) from JPEG and WebP output images. Default: `true`

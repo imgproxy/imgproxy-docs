@@ -38,7 +38,17 @@ Processing options should be specified as URL parts divided by slashes (`/`). A 
 %option_name:%argument1:%argument2:...:%argumentN
 ```
 
+:::tip
+You can redefine the arguments separator with the the [IMGPROXY_ARGUMENTS_SEPARATOR](../configuration/options.mdx#IMGPROXY_ARGUMENTS_SEPARATOR) config. For example, if you set `IMGPROXY_ARGUMENTS_SEPARATOR=","`, processing options will have the following format:
+
+```
+%option_name,%argument1,%argument2,...,%argumentN
+```
+:::
+
+:::info
 The list of processing options does not define imgproxy's processing pipeline. Instead, imgproxy already comes with a specific, built-in image processing pipeline for maximum performance. Read more about this in the [About processing pipeline](../about_processing_pipeline.mdx) guide.
+:::
 
 imgproxy supports the following processing options:
 

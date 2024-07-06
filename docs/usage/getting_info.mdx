@@ -33,6 +33,14 @@ Info options should be specified as URL parts divided by slashes (`/`). An info 
 %option_name:%argument1:%argument2:...:%argumentN
 ```
 
+:::tip
+You can redefine the arguments separator with the the [IMGPROXY_ARGUMENTS_SEPARATOR](../configuration/options.mdx#IMGPROXY_ARGUMENTS_SEPARATOR) config. For example, if you set `IMGPROXY_ARGUMENTS_SEPARATOR=","`, info options will have the following format:
+
+```
+%option_name,%argument1,%argument2,...,%argumentN
+```
+:::
+
 ### Size
 
 ```imgproxy_url_option
