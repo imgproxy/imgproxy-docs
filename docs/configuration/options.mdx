@@ -343,6 +343,9 @@ imgproxy Pro can apply unsharp masking to your images.
 ## Smart crop
 
 * [`IMGPROXY_SMART_CROP_ADVANCED`]: ((pro)) when `true`, enables usage of the advanced smart crop method. Advanced smart crop may take more time than regular one, yet it produces better results.
+* [`IMGPROXY_SMART_CROP_ADVANCED_MODE`]: ((pro)) the mode of the advanced smart crop method. Supported values are:
+  * `max_score_area`: _(default)_ in this mode, imgproxy builds a featres map and selects the area with the highest sum of feature scores.
+  * `center_of_mass`: in this mode, imgproxy calculates the center of mass of the features map and selects the area around it.
 * [`IMGPROXY_SMART_CROP_FACE_DETECTION`]: ((pro)) when `true`, adds an additional fast face detection step to smart crop.
 
 ## Object detection
