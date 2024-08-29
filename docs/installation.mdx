@@ -82,6 +82,88 @@ imgproxy can be deployed to [Dome](https://trydome.io/) with the click of a butt
 
 ## Packages
 
+### Building Linux packages
+
+We don't provide packages for imgproxy yet, but you can use the `imgproxy-build-package` script to export a DEB, RPM, or TAR package from a Docker image:
+
+```bash
+docker run -u0 --rm -it -v $(pwd):/dist darthsim/imgproxy:latest-amd64 imgproxy-build-package deb /dist
+```
+
+Where:
+* `darthsim/imgproxy:latest-amd64` is the imgproxy Docker image you want to export the package from. Take note that we used the `-amd64` suffix in the image tag. This suffix ensures that the image built for the `AMD64` CPU architecture will be used. If you're using an `ARM64` CPU, you should replace the `-amd64` suffix with `-arm64`.
+* `$(pwd)` is the directory on your host machine where the package will be saved. `$(pwd)` is a shell command that returns the current working directory. You can replace it with the path to the directory where you want to save the package.
+* `deb` is the package format you want to export. You can replace it with `rpm` or `tar` to export an RPM or TAR package.
+
+:::info
+imgproxy binaries are linked against **libc 2.31** and **libstdc++ 10.2.1**, so you need to have these versions or newer on your system to run imgproxy. Here's a list of some Linux distributions that have these versions or newer:
+
+* Ubuntu 20.04+ (Focal Fossa and newer)
+* Debian 11+ (Bullseye and newer)
+* Fedora 33+
+* CentOS/RHEL 9+
+:::
+
+#### Installing a DEB package (Debian/Ubuntu)
+
+You can install a DEB package on your Debian/Ubuntu system using the following command:
+
+```bash
+sudo dpkg -i imgproxy-3.25.0.arm64.deb
+```
+
+Where `imgproxy-3.25.0.arm64.deb` is the name of the DEB package you've exported.
+
+If you don't have some of the required dependencies installed on your system, the installation process may fail. You fix the issue by running the following command:
+
+```bash
+sudo apt-get install -f
+```
+
+This command will install the missing dependencies and finish the installation of the imgproxy package.
+
+:::tip
+The package contains an `/etc/imgproxy.rc` file that you can use to configure imgproxy by exporting required environment variables.
+:::
+
+#### Installing an RPM package (Fedora/CentOS/RHEL)
+
+You can install an RPM package on your RHEL/Fedora/CentOS system using the following command:
+
+```bash
+sudo rpm -i imgproxy-3.25.0.arm64.rpm
+```
+
+Where `imgproxy-3.25.0.arm64.rpm` is the name of the RPM package you've exported.
+
+If you don't have some of the required dependencies installed on your system, the installation process may fail. You need to install the missing dependencies manually.
+
+:::tip
+The package contains an `/etc/imgproxy.rc` file that you can use to configure imgproxy by exporting required environment variables.
+:::
+
+#### Installing a TAR package
+
+You can extract the TAR package on your system using the following command:
+
+```bash
+tar -xzf imgproxy-3.25.0.arm64.tar.gz -C /opt
+```
+
+Where:
+* `imgproxy-3.25.0.arm64.tar.gz` is the name of the TAR package you've exported.
+* `/opt` is the directory where you want to extract the package. We'll refer to it as `%output_dir` from now on.
+
+Use the `%output_dir/imgproxy/bin/imgproxy` script to run imgproxy. You can create a symlink to this script in the `/usr/local/bin` directory or add the `%output_dir/imgproxy/bin` directory to your `PATH` environment variable to make the `imgproxy` command available system-wide.
+
+:::tip
+The package contains an `%output_dir/imgproxy/imgproxy.rc` file that you can use to configure imgproxy by exporting required environment variables.
+:::
+
+:::warning
+Take care to not overwrite the existing `%output_dir/imgproxy/imgproxy.rc` file when updating imgproxy. If you've made any changes to the configuration, you should merge them manually.
+:::
+
 ### Arch Linux and derivatives
 
 [imgproxy](https://aur.archlinux.org/packages/imgproxy/) package is available from AUR.
