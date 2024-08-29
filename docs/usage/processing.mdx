@@ -865,12 +865,42 @@ When `step` is not `0`, imgproxy will generate a tiled sprite using the source v
 * `fill`: _(optional)_ when set to `1`, `t` or `true`, imgproxy will use the `fill` resizing type for the tiles
 * `focus_x`, `focus_y`: _(optional)_ floating point numbers between 0 and 1 that define the coordinates of the center of the resulting tile (as in the `fp` gravity type). Treat 0 and 1 as right/left for `x` and top/bottom for `y`. Applicable only when `fill` is set. Default: `0.5:0.5`
 
-The timestamp of the first frame can be set using the [IMGPROXY_VIDEO_THUMBNAIL_SECOND](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_SECOND) config or the [video_thumbnail_second](#video-thumbnail-keyframes) option.
+The timestamp of the first source video frame can be set using the [IMGPROXY_VIDEO_THUMBNAIL_SECOND](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_SECOND) config or the [video_thumbnail_second](#video-thumbnail-keyframes) option.
 
 You can make imgproxy use only keyframes with the [IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES) config or the [video_thumbnail_keyframes](#video-thumbnail-keyframes) option. Also, [IMGPROXY_VIDEO_THUMBNAIL_TILE_AUTO_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_TILE_AUTO_KEYFRAMES) config makes imgproxy automatically use keyframes when the `step` value is greater than the interframe interval.
 
 :::info
 If the `step` value is less than the interframe interval, some frames may be used for more than one tile.
+:::
+
+Default: `0:0:0:0:0`
+
+### Video thumbnail animation ((pro)) {#video-thumbnail-animation}
+
+```imgproxy_url_option
+video_thumbnail_animation:%step:%delay:%frames:%frame_width:%frame_height:%extend_frame:%trim:%fill:%focus_x:%focus_y
+vta:%step:%delay:%frames:%frame_width:%frame_height:%extend_frame:%trim:%fill:%focus_x:%focus_y
+```
+
+When `step` is not `0`, imgproxy will generate an animated image using the source video frames.
+
+* `step`: the step of timestamp (in seconds) between video frames that should be used for the animation generation:
+  * When `step` value is positive, imgproxy will use it as an absolute value
+  * When `step` value is negative, imgproxy will calculate the actual step as `video_duration / frames`
+* `delay`: the delay between animation frames in milliseconds
+* `frames`: the number of animation frames
+* `frame_width`, `frame_height`: the width and height of animation frames. imgproxy will resize each used frame to fit the provided size
+* `extend_frame`: _(optional)_ when set to `1`, `t` or `true`, imgproxy will extend each animation frame to the requested size using a black background
+* `trim`: _(optional)_ when set to `1`, `t` or `true`, imgproxy will trim the unused frames from the animation
+* `fill`: _(optional)_ when set to `1`, `t` or `true`, imgproxy will use the `fill` resizing type for the animation frames
+* `focus_x`, `focus_y`: _(optional)_ floating point numbers between 0 and 1 that define the coordinates of the center of the resulting animation frame (as in the `fp` gravity type). Treat 0 and 1 as right/left for `x` and top/bottom for `y`. Applicable only when `fill` is set. Default: `0.5:0.5`
+
+The timestamp of the first video source frame can be set using the [IMGPROXY_VIDEO_THUMBNAIL_SECOND](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_SECOND) config or the [video_thumbnail_second](#video-thumbnail-keyframes) option.
+
+You can make imgproxy use only keyframes with the [IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES) config or the [video_thumbnail_keyframes](#video-thumbnail-keyframes) option. Also, [IMGPROXY_VIDEO_THUMBNAIL_TILE_AUTO_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_TILE_AUTO_KEYFRAMES) config makes imgproxy automatically use keyframes when the `step` value is greater than the interframe interval.
+
+:::info
+If the `step` value is less than the interframe interval, some video frames may be used for more than one animation frame.
 :::
 
 Default: `0:0:0:0:0`
