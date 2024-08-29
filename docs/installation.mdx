@@ -177,6 +177,10 @@ brew install imgproxy
 
 ## From the source
 
+:::warning
+imgproxy depends on [libvips](https://github.com/libvips/libvips) which has a lot of its own dependencies. We can't guarantee that the imgproxy dependencies installed in your system don't contain any bugs or vulnerabilities. We _highly_ recommend running imgproxy in a [Docker container](#docker) or using a [Linux package](#building-linux-packages) exported from a Docker image.
+:::
+
 You can get the imgproxy source code by cloning the GitHub repo:
 
 ```bash
@@ -204,17 +208,14 @@ curl -Ls https://github.com/imgproxy/imgproxy/archive/v3.20.0.tar.gz \
 
 ### Ubuntu
 
-First, install [libvips](https://github.com/libvips/libvips).
-
-The Ubuntu apt repository contains a pretty old version of libvips. You can use PPA to access a  more recent version of libvips:
+First, install [libvips](https://github.com/libvips/libvips). The easiest way is to use the apt package manager:
 
 ```bash
-sudo add-apt-repository ppa:dhor/myway
 sudo apt-get update
 sudo apt-get install libvips-dev
 ```
 
-But if you want to use all the features of imgproxy, it's recommended to build libvips from the source: [https://github.com/libvips/ libvips/wiki/Build-for-Ubuntu](https://github.com/libvips/libvips/wiki/Build-for-Ubuntu)
+However, the version of libvips in the Ubuntu repositories may be outdated, so you may want to build it from the source: [https://github.com/libvips/libvips/wiki/Build-for-Ubuntu](https://github.com/libvips/libvips/wiki/Build-for-Ubuntu)
 
 Next, [install the latest version of Go](https://go.dev/doc/install).
 
