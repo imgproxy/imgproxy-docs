@@ -429,6 +429,7 @@ imgproxy can process files from Amazon S3 buckets, but this feature is disabled 
 * [`IMGPROXY_USE_S3`]: when `true`, enables image fetching from Amazon S3 buckets. Default: `false`
 * [`IMGPROXY_S3_REGION`]: an S3 buckets region
 * [`IMGPROXY_S3_ENDPOINT`]: a custom S3 endpoint to being used by imgproxy
+* [`IMGPROXY_S3_ENDPOINT_USE_PATH_STYLE`]: controls how the S3 bucket endpoint is constructed. When `true`, the endpoint will be constructed using the path style (`https://your-endpoint.com/%bucket`). When `false`, the endpoint will be constructed using the virtual host style (`https://%bucket.your-endpoint.com`). Default: `true`
 * [`IMGPROXY_S3_MULTI_REGION`]: when `true`, allows using S3 buckets from different regions. Default: `false`
 * [`IMGPROXY_S3_USE_DECRYPTION_CLIENT`]: when `true`, enables client-side decryption. Default: `false`
 * [`IMGPROXY_S3_ASSUME_ROLE_ARN`]: a custom role to assume
