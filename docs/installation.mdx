@@ -74,6 +74,14 @@ Take a note that the example is using a tag suffixed with `-amd64` when pulling 
 If the machine where you're running these commands uses an `ARM64` CPU (such as Apple Silicone ones) and you don't use the `-amd64` suffix, `docker pull` will download an image built for the `ARM64` CPU architecture, and it won't be able to launch on Heroku.
 :::
 
+### AWS Lambda
+
+You can find a step-by-step guide on how to deploy imgproxy to AWS Lambda in [our blog post](https://imgproxy.net/blog/almost-free-image-processing-with-imgproxy-and-aws-lambda/).
+
+### AWS Elastic Container Service (ECS)
+
+You can deploy imgproxy to AWS ECS using the [official imgproxy CloudFormation template](https://github.com/imgproxy/imgproxy-cloudformation).
+
 ### Dome
 
 imgproxy can be deployed to [Dome](https://trydome.io/) with the click of a button:
