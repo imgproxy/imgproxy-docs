@@ -25,7 +25,7 @@ You need to define the following config variables to enable object detection wit
 
 * [`IMGPROXY_OBJECT_DETECTION_CONFIG`]: a path to the neural network config in DarkNet format
 * [`IMGPROXY_OBJECT_DETECTION_WEIGHTS`]: a path to the neural network weights in DarkNet format
-* [`IMGPROXY_OBJECT_DETECTION_CLASSES`]: a path to the text file with the classes names, one per line
+* [`IMGPROXY_OBJECT_DETECTION_CLASSES`]: a path to the [class names file](#class-names-file)
 
 ### ONNX model format
 
@@ -222,7 +222,7 @@ You need to define the following config variables to enable object detection wit
       )
       ```
     </details>
-* [`IMGPROXY_OBJECT_DETECTION_CLASSES`]: a path to the text file with the classes names, one per line
+* [`IMGPROXY_OBJECT_DETECTION_CLASSES`]: a path to the [class names file](#class-names-file)
 
 ### Common config options
 
@@ -230,14 +230,50 @@ You need to define the following config variables to enable object detection wit
 * [`IMGPROXY_OBJECT_DETECTION_CONFIDENCE_THRESHOLD`]: detections with confidence below this value will be discarded. Default: 0.2
 * [`IMGPROXY_OBJECT_DETECTION_NMS_THRESHOLD`]: non-max supression threshold. Don't change this if you don't know what you're doing. Default: 0.4
 
+### Class names file
+
+The class names file is used to map the class indexes from the neural network output to human-readable class names. The path to the class names file should be defined in the `IMGPROXY_OBJECT_DETECTION_CLASSES` config variable.
+
+The class names file should contain one class name per line. The class names should be in the same order as the classes in the neural network output. Example:
+
+```text
+person
+dog
+cat
+```
+
+By default, during the object-oriented crop, all the detected objects have the default weight of `1`. You can change the weight of the detected objects by adding the `=%weight` suffix to the object class name. Example:
+
+```text
+person=2
+dog
+cat=3
+```
+
+In this example, the detected `person` and `cat` objects will have the weight of `2` and `3` respectively. The `dog` object will have the default weight of `1`.
+
 ## Usage examples
 ### Object-oriented crop
 
 You can [crop](../usage/processing.mdx#crop) your images and keep objects of desired classes in frame:
 
 ```imgproxy_url
-.../crop:256:256/g:obj:face/...
+.../crop:256:256/gravity:obj:face:cat:dog/...
 ```
+
+Also, you can use the `objw` gravity type to redefine the weights of the detected objects:
+
+```imgproxy_url
+.../crop:256:256/gravity:objw:face:2:cat:3:dog:4/...
+```
+
+The `all` pseudo-class matches all the detected objects. You can use it to set the weight for all the detected objects:
+
+```imgproxy_url
+.../crop:256:256/gravity:objw:all:2:face:10/...
+```
+
+In this example, all the detected objects will have the weight of `2`, except for the `face` objects, which will have the weight of `10`.
 
 ### Blurring detections
 
