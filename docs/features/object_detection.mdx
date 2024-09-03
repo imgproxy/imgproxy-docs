@@ -229,6 +229,7 @@ You need to define the following config variables to enable object detection wit
 * [`IMGPROXY_OBJECT_DETECTION_NET_SIZE`]: the size of the neural network input. The inputs' width and heights should be the same, so this config value should be a single number. Default: 416
 * [`IMGPROXY_OBJECT_DETECTION_CONFIDENCE_THRESHOLD`]: detections with confidence below this value will be discarded. Default: 0.2
 * [`IMGPROXY_OBJECT_DETECTION_NMS_THRESHOLD`]: non-max supression threshold. Don't change this if you don't know what you're doing. Default: 0.4
+* [`IMGPROXY_OBJECT_DETECTION_FALLBACK_TO_SMART_CROP`]: ((pro)) defines imgproxy's behavior when object-oriented crop gravity is used but no objects are detected. When set to `true`, imgproxy will fallback to smart crop. When set to `false`, imgproxy will fallback to the center gravity. Default: `true`
 
 ### Class names file
 
