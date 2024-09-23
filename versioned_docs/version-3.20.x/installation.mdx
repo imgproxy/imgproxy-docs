@@ -65,7 +65,7 @@ heroku container:login
 docker pull darthsim/imgproxy:v3-amd64
 docker tag darthsim/imgproxy:v3-amd64 registry.heroku.com/your-application/web
 docker push registry.heroku.com/your-application/web
-heroku container:release your-application -a your-application
+heroku container:release web -a your-application
 ```
 
 :::warning
