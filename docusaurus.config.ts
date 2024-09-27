@@ -109,12 +109,12 @@ const config: Config = {
             require.resolve("./src/css/badge.css"),
             require.resolve("./src/css/code-anchor.css"),
             require.resolve("./src/css/heading-pattern.css"),
+            require.resolve("./src/css/iubenda.css"),
           ],
         },
 
-        gtag: {
-          trackingID: "G-4ME3KE3EJC",
-          anonymizeIP: true,
+        googleTagManager: {
+          containerId: "GTM-K5CRKPFN",
         },
       } as PresetClassicOptions,
     ],
@@ -237,11 +237,18 @@ const config: Config = {
           items: [
             {
               label: "Privacy policy",
-              href: "https://imgproxy.net/privacy/",
+              href: "https://www.iubenda.com/privacy-policy/30074201",
             },
             {
               label: "Cookie policy",
-              href: "https://imgproxy.net/cookie/",
+              href: "https://www.iubenda.com/privacy-policy/30074201/cookie-policy",
+              class: "footer__link-item",
+            },
+            {
+              html: `<a href='#' class='iubenda-cs-preferences-link footer__link-item'>Your Privacy Choices</a>`,
+            },
+            {
+              html: `<a href='#' class='iubenda-cs-uspr-link footer__link-item'>Notice at Collection</a>`,
             },
           ],
         },
