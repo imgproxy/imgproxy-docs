@@ -243,3 +243,37 @@ PKG_CONFIG_PATH="$(brew --prefix libffi)/lib/pkgconfig" \
   CGO_CFLAGS_ALLOW="-Xpreprocessor" \
   go build -o /usr/local/bin/imgproxy
 ```
+
+## Systemd Service
+Create file `/etc/systemd/system/imgproxy.service` with these contents:
+```
+[Unit]
+Description=imgproxy
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/imgproxy
+
+Restart=on-failure
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target
+```
+
+move `imgproxy` binary to `/usr/local/bin/imgproxy` 
+
+enable & start service:
+```bash
+sudo systemctl enable imgproxy
+sudo systemctl start imgproxy
+```
+
+check output:
+```bash
+journalctl -u imgproxy -n 50 -f
+```
+
+
+
