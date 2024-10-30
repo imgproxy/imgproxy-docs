@@ -80,6 +80,29 @@ imgproxy can be deployed to [Dome](https://trydome.io/) with the click of a butt
 
 [![Deploy to Dome](https://trydome.io/button.svg)](https://app.trydome.io/signup?package=imgproxy)
 
+### Zerops
+
+imgproxy can be deployed to [Zerops](https://zerops.io/) using their [official recipe](https://github.com/zeropsio/recip):
+
+You can use this import yaml in zerops gui to get started:
+
+```yml
+project:
+  name: recipe-imgproxy
+  tags:
+    - zerops-recipe
+
+services:
+  - hostname: imgproxy
+    type: "22.04"
+    buildFromGit: https://github.com/zeropsio/recipe-imgproxy
+    enableSubdomainAccess: true
+    envSecrets:
+      IMGPROXY_KEY: <@generateRandomString(<32>) | toHex>
+      IMGPROXY_SALT: <@generateRandomString(<32>) | toHex>
+      IMGPROXY_ALLOWED_SOURCES: ${storage_apiUrl}/${storage_bucketName}/
+```
+
 ## Packages
 
 ### Arch Linux and derivatives
