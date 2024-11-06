@@ -193,8 +193,8 @@ const config: Config = {
               href: "https://github.com/imgproxy",
             },
             {
-              label: "DockerHub",
-              href: "https://hub.docker.com/r/darthsim/imgproxy/",
+              label: "Docker",
+              href: "https://github.com/imgproxy/imgproxy/pkgs/container/imgproxy",
             },
             {
               label: "Sponsor imgproxy",

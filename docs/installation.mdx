@@ -8,11 +8,11 @@ There are multiple ways you can install imgproxy:
 
 ## Docker
 
-imgproxy can (and this is highly recommended) be used as a standalone application inside a Docker container. Just pull the official image from Docker Hub:
+imgproxy can (and this is highly recommended) be used as a standalone application inside a Docker container. Just pull the official image from GitHub Container Registry:
 
 ```bash
-docker pull darthsim/imgproxy:latest
-docker run -p 8080:8080 -it darthsim/imgproxy
+docker pull ghcr.io/imgproxy/imgproxy:latest
+docker run -p 8080:8080 -it ghcr.io/imgproxy/imgproxy:latest
 ```
 
 You can also build your own image. imgproxy is ready to be dockerized out of the box:
@@ -62,8 +62,8 @@ heroku create your-application
 heroku stack:set container -a your-application
 heroku container:login
 # Replace "v3" with the imgproxy version you want to deploy
-docker pull darthsim/imgproxy:v3-amd64
-docker tag darthsim/imgproxy:v3-amd64 registry.heroku.com/your-application/web
+docker pull ghcr.io/imgproxy/imgproxy:v3-amd64
+docker tag ghcr.io/imgproxy/imgproxy:v3-amd64 registry.heroku.com/your-application/web
 docker push registry.heroku.com/your-application/web
 heroku container:release web -a your-application
 ```
@@ -95,11 +95,11 @@ imgproxy can be deployed to [Dome](https://trydome.io/) with the click of a butt
 We don't provide packages for imgproxy yet, but you can use the `imgproxy-build-package` script to export a DEB, RPM, or TAR package from a Docker image:
 
 ```bash
-docker run -u0 --rm -it -v $(pwd):/dist darthsim/imgproxy:latest-amd64 imgproxy-build-package deb /dist
+docker run -u0 --rm -it -v $(pwd):/dist ghcr.io/imgproxy/imgproxy:latest-amd64 imgproxy-build-package deb /dist
 ```
 
 Where:
-* `darthsim/imgproxy:latest-amd64` is the imgproxy Docker image you want to export the package from. Take note that we used the `-amd64` suffix in the image tag. This suffix ensures that the image built for the `AMD64` CPU architecture will be used. If you're using an `ARM64` CPU, you should replace the `-amd64` suffix with `-arm64`.
+* `ghcr.io/imgproxy/imgproxy:latest-amd64` is the imgproxy Docker image you want to export the package from. Take note that we used the `-amd64` suffix in the image tag. This suffix ensures that the image built for the `AMD64` CPU architecture will be used. If you're using an `ARM64` CPU, you should replace the `-amd64` suffix with `-arm64`.
 * `$(pwd)` is the directory on your host machine where the package will be saved. `$(pwd)` is a shell command that returns the current working directory. You can replace it with the path to the directory where you want to save the package.
 * `deb` is the package format you want to export. You can replace it with `rpm` or `tar` to export an RPM or TAR package.
 

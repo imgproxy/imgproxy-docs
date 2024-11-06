@@ -8,11 +8,11 @@ There are four ways you can install imgproxy:
 
 ## Docker
 
-imgproxy can (and this is highly recommended) be used as a standalone application inside a Docker container. Just pull the official image from Docker Hub:
+imgproxy can (and this is highly recommended) be used as a standalone application inside a Docker container. Just pull the official image from GitHub Container Registry:
 
 ```bash
-docker pull darthsim/imgproxy:latest
-docker run -p 8080:8080 -it darthsim/imgproxy
+docker pull ghcr.io/imgproxy/imgproxy:latest
+docker run -p 8080:8080 -it ghcr.io/imgproxy/imgproxy:latest
 ```
 
 You can also build your own image. imgproxy is ready to be dockerized out of the box:
@@ -62,8 +62,8 @@ heroku create your-application
 heroku stack:set container -a your-application
 heroku container:login
 # Replace "v3" with the imgproxy version you want to deploy
-docker pull darthsim/imgproxy:v3-amd64
-docker tag darthsim/imgproxy:v3-amd64 registry.heroku.com/your-application/web
+docker pull ghcr.io/imgproxy/imgproxy:v3-amd64
+docker tag ghcr.io/imgproxy/imgproxy:v3-amd64 registry.heroku.com/your-application/web
 docker push registry.heroku.com/your-application/web
 heroku container:release web -a your-application
 ```
