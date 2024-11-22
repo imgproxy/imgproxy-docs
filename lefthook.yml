@@ -2,11 +2,11 @@ pre-commit:
   parallel: true
   commands:
     eslint:
-      glob: "*.{js,ts,jsx,tsx}"
-      run: yarn eslint {staged_files}
+      glob: "*.{js,ts,jsx,tsx,mjs}"
+      run: pnpm eslint {staged_files}
     typecheck:
-      glob: "*.{js,ts,jsx,tsx}"
-      run: yarn run typecheck
+      glob: "*.{js,ts,jsx,tsx,mjs}"
+      run: pnpm run typecheck
 
 pre-push:
   commands:
