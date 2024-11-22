@@ -36,6 +36,7 @@
   --ifm-line-height-base: 2;
 
   --ifm-heading-font-family: 'Martian Grotesk', 'Roboto', sans-serif;
+  --ifm-heading-font-weight: var(--ifm-font-weight-bold);
 
   --ifm-table-stripe-background: rgba(255, 255, 255, 0.05);
 }
@@ -44,8 +45,10 @@
   --ifm-footer-background-color: #ffffff0d;
 }
 
-html {
+body {
   font-weight: var(--ifm-font-weight-base);
+  font-variation-settings: 'wght' var(--ifm-font-weight-base);
+  font-synthesis-weight: none;
 }
 
 .markdown details summary {
@@ -61,13 +64,18 @@ html {
 }
 
 h1 {
-  font-weight: 900;
+  --ifm-heading-font-weight: 900;
 }
 
 h2, h3 {
   font-stretch: condensed;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-variation-settings: 'wght' var(--ifm-heading-font-weight);
+}
+
 pre {
   font-weight: var(--ifm-font-weight-base);
+  font-variation-settings: 'wght' var(--ifm-font-weight-base);
 }

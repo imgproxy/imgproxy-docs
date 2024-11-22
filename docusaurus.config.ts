@@ -66,7 +66,7 @@ const config: Config = {
       tagName: "link",
       attributes: {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Martian+Mono:wght@100..800&display=swap",
       },
     },
   ],
