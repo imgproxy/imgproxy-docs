@@ -193,7 +193,7 @@ ex:%extend:%gravity
 ```
 
 * When `extend` is set to `1`, `t` or `true`, imgproxy will extend the image if it is smaller than the given size.
-* `gravity` _(optional)_ accepts the same values as the [gravity](#gravity) option, except `sm`. When `gravity` is not set, imgproxy will use `ce` gravity without offsets.
+* `gravity` _(optional)_ accepts the same values as the [gravity](#gravity) option, except `sm`, `obj`, and `objw`. When `gravity` is not set, imgproxy will use `ce` gravity without offsets.
 
 Default: `false:ce:0:0`
 
@@ -206,7 +206,7 @@ exar:%extend:%gravity
 ```
 
 * When `extend` is set to `1`, `t` or `true`, imgproxy will extend the image to the requested aspect ratio.
-* `gravity` _(optional)_ accepts the same values as the [gravity](#gravity) option, except `sm`. When `gravity` is not set, imgproxy will use `ce` gravity without offsets.
+* `gravity` _(optional)_ accepts the same values as the [gravity](#gravity) option, except `sm`, `obj`, and `objw`. When `gravity` is not set, imgproxy will use `ce` gravity without offsets.
 
 Default: `false:ce:0:0`
 
@@ -239,7 +239,7 @@ Default: `ce:0:0`
 
 * `gravity:sm`: smart gravity. `libvips` detects the most "interesting" section of the image and considers it as the center of the resulting image. Offsets are not applicable here.
 * `gravity:obj:%class_name1:%class_name2:...:%class_nameN`: ((pro)) object-oriented gravity. imgproxy [detects objects](../features/object_detection.mdx) of provided classes on the image and calculates the resulting image center using their positions. If class names are omited, imgproxy will use all the detected objects.
-* `gravity:fp:%x:%y`: the gravity focus point . `x` and `y` are floating point numbers between 0 and 1 that define the coordinates of the center of the resulting image. Treat 0 and 1 as right/left for `x` and top/bottom for `y`.
+* `gravity:fp:%x:%y`: the gravity focus point. `x` and `y` are floating point numbers between 0 and 1 that define the coordinates of the center of the resulting image. Treat 0 and 1 as right/left for `x` and top/bottom for `y`.
 
 ### Crop
 
