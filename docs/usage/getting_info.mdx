@@ -439,6 +439,24 @@ Default: `0:0:ce`.
 }
 ```
 
+### Objcts position
+
+```imgproxy_url_option
+objects_position:%type:%x_offset:%y_offset
+obj_pos:%type:%x_offset:%y_offset
+op:%type:%x_offset:%y_offset
+```
+
+When the [crop](#crop) info option is used with the `obj`/`objw` gravity type, the `objects_position` option allows you to adjust the position of the detected objects on the crop area.
+
+This option takes the same arguments as the [objects_position](./processing.mdx#objects-position) processiong option.
+
+Default: `ce:0:0`
+
+:::tip
+If you need to get info about the objects position in the original image, you should use the [detect_objects](#detect-objects) info option.
+:::
+
 ### Palette
 
 :::slow[Slow]
