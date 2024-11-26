@@ -51,12 +51,14 @@
 #iubenda-iframe.iubenda-iframe-branded .purposes-header-title {
   font-size: 32px !important;
   font-weight: 800 !important;
+  font-variation-settings: 'wght' 800 !important;
   font-stretch: expanded !important;
 }
 
 #iubenda-iframe.iubenda-iframe-branded .purposes-header-text {
   font-size: 15px !important;
   font-weight: 300 !important;
+  font-variation-settings: 'wght' 300 !important;
   line-height: 20px;
 }
 

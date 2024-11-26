@@ -13,6 +13,7 @@
   display: inline-block;
   font-style: var(--ifm-font-weight-bold);
   font-weight: var(--ifm-font-weight-bold);
+  font-variation-settings: 'wght' var(--ifm-font-weight-bold);
   font-size: 0.6em;
   font-stretch: normal;
   line-height: 1;
