@@ -156,10 +156,16 @@ const config: Config = {
           title: "GitHub",
         },
         {
-          href: "https://twitter.com/imgproxy_net",
+          href: "https://bsky.app/profile/imgproxy.net",
+          position: "right",
+          className: "navbar__link--icon navbar__link--bluesky",
+          title: "Bluesky",
+        },
+        {
+          href: "https://x.com/imgproxy_net",
           position: "right",
           className: "navbar__link--icon navbar__link--twitter",
-          title: "Twitter",
+          title: "X (Twitter)",
         },
         {
           href: "https://discord.gg/5GgpXgtC9u",
@@ -206,8 +212,12 @@ const config: Config = {
           title: "Community",
           items: [
             {
-              label: "Twitter",
-              href: "https://twitter.com/imgproxy_net",
+              label: "Bluesky",
+              href: "https://bsky.app/profile/imgproxy.net",
+            },
+            {
+              label: "X (Twitter)",
+              href: "https://x.com/imgproxy_net",
             },
             {
               label: "Discord",

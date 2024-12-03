@@ -12,4 +12,4 @@ pre-push:
   commands:
     check-links:
       tags: docs
-      run: command -v lychee && lychee docs README.md --exclude localhost --exclude twitter.com
+      run: command -v lychee && lychee docs README.md --exclude localhost --exclude x.com --exclude twitter.com

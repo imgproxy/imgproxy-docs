@@ -27,4 +27,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          args: docs README.md --exclude localhost --exclude twitter.com -v
+          args: docs README.md --exclude localhost --exclude x.com --exclude twitter.com -v

@@ -43,6 +43,10 @@
   background-image: url('/img/github.svg');
 }
 
+.navbar__link--bluesky::before {
+  background-image: url('/img/bluesky.svg');
+}
+
 .navbar__link--twitter::before {
   background-image: url('/img/twitter.svg');
 }
