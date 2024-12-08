@@ -34,8 +34,8 @@ echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
 
 * [`IMGPROXY_BIND`]: the address and port or Unix socket to listen to. Default: `:8080`
 * [`IMGPROXY_NETWORK`]: the network to use. Known networks are `tcp`, `tcp4`, `tcp6`, `unix`, and `unixpacket`. Default: `tcp`
-* [`IMGPROXY_TIMEOUT`]: _(deprecated alias: IMGPROXY_WRITE_TIMEOUT)_ the maximum duration (in seconds) for processing the response. Default: `10`
-* [`IMGPROXY_READ_REQUEST_TIMEOUT`]: _(deprecated alias: IMGPROXY_READ_TIMEOUT)_ the maximum duration (in seconds) for reading the entire incoming HTTP request, including the body. Default: `10`
+* [`IMGPROXY_TIMEOUT`]: _(deprecated alias: [`IMGPROXY_WRITE_TIMEOUT`])_ the maximum duration (in seconds) for processing the response. Default: `10`
+* [`IMGPROXY_READ_REQUEST_TIMEOUT`]: _(deprecated alias: [`IMGPROXY_READ_TIMEOUT`])_ the maximum duration (in seconds) for reading the entire incoming HTTP request, including the body. Default: `10`
 * [`IMGPROXY_WRITE_RESPONSE_TIMEOUT`]: the maximum duration (in seconds) for writing the HTTP response body. Default: `10`
 * [`IMGPROXY_KEEP_ALIVE_TIMEOUT`]: the maximum duration (in seconds) to wait for the next request before closing the connection. When set to `0`, keep-alive is disabled. Default: `10`
 * [`IMGPROXY_CLIENT_KEEP_ALIVE_TIMEOUT`]: the maximum duration (in seconds) to wait for the next request before closing the HTTP client connection. The HTTP client is used to download source images. When set to `0`, keep-alive is disabled. Default: `90`
@@ -229,9 +229,9 @@ Autoquality requires the image to be saved several times. Use it only when you p
 
 imgproxy can use the `Accept` HTTP header to detect if the browser supports AVIF or WebP and use it as the default format. This feature is disabled by default and can be enabled by the following options:
 
-* [`IMGPROXY_ENABLE_WEBP_DETECTION`]: enables WebP support detection. When the file extension is omitted in the imgproxy URL and browser supports WebP, imgproxy will use it as the resulting format.
+* [`IMGPROXY_AUTO_WEBP`]: _(deprecated alias: [`IMGPROXY_ENABLE_WEBP_DETECTION`])_ enables WebP support detection. When the file extension is omitted in the imgproxy URL and browser supports WebP, imgproxy will use it as the resulting format.
 * [`IMGPROXY_ENFORCE_WEBP`]: enables WebP support detection and enforces WebP usage. If the browser supports WebP, it will be used as resulting format even if another extension is specified in the imgproxy URL.
-* [`IMGPROXY_ENABLE_AVIF_DETECTION`]: enables AVIF support detection. When the file extension is omitted in the imgproxy URL and browser supports AVIF, imgproxy will use it as the resulting format.
+* [`IMGPROXY_AUTO_AVIF`]: _(deprecated alias: [`IMGPROXY_ENABLE_AVIF_DETECTION`])_ enables AVIF support detection. When the file extension is omitted in the imgproxy URL and browser supports AVIF, imgproxy will use it as the resulting format.
 * [`IMGPROXY_ENFORCE_AVIF`]: enables AVIF support detection and enforces AVIF usage. If the browser supports AVIF, it will be used as resulting format even if another extension is specified in the imgproxy URL.
 
 :::info
