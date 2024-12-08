@@ -166,7 +166,7 @@ When cookie forwarding is activated, by default, imgproxy assumes the scope of t
 ## Compression
 
 * [`IMGPROXY_QUALITY`]: the default quality of the resultant image, percentage. Default: `80`
-* [`IMGPROXY_FORMAT_QUALITY`]: default quality of the resulting image per format, separated by commas. Example: `jpeg=70,avif=40,webp=60`. When a value for the resulting format is not set, the `IMGPROXY_QUALITY` value is used. Default: `avif=65,jxl=77`
+* [`IMGPROXY_FORMAT_QUALITY`]: default quality of the resulting image per format, separated by commas. Example: `jpeg=70,avif=40,webp=60`. When a value for the resulting format is not set, the `IMGPROXY_QUALITY` value is used. Default: `webp=79,avif=63,jxl=77`
 
 ### Advanced JPEG compression
 
@@ -199,7 +199,7 @@ When cookie forwarding is activated, by default, imgproxy assumes the scope of t
 
 ### Advanced AVIF compression
 
-* [`IMGPROXY_AVIF_SPEED`]: controls the CPU effort spent improving compression. The lowest speed is at 0 and the fastest is at 9. Default: `9`
+* [`IMGPROXY_AVIF_SPEED`]: controls the CPU effort spent improving compression. The lowest speed is at 0 and the fastest is at 9. Default: `8`
 
 ### Advanced JPEG XL compression
 
@@ -216,9 +216,9 @@ Autoquality requires the image to be saved several times. Use it only when you p
 * [`IMGPROXY_AUTOQUALITY_METHOD`]: ((pro)) the method of quality calculation. Default: `none`
 * [`IMGPROXY_AUTOQUALITY_TARGET`]: ((pro)) desired value of the autoquality method metric. Default: 0.02
 * [`IMGPROXY_AUTOQUALITY_MIN`]: ((pro)) minimal quality imgproxy can use. Default: 70
-* [`IMGPROXY_AUTOQUALITY_FORMAT_MIN`]: ((pro)) the minimal quality imgproxy can use per format, comma divided. Example: `jpeg=70,avif=40,webp=60`. When value for the resulting format is not set, `IMGPROXY_AUTOQUALITY_MIN` value is used. Default: `avif=40`
+* [`IMGPROXY_AUTOQUALITY_FORMAT_MIN`]: ((pro)) the minimal quality imgproxy can use per format, comma divided. Example: `jpeg=70,avif=40,webp=60`. When value for the resulting format is not set, `IMGPROXY_AUTOQUALITY_MIN` value is used. Default: `avif=60`
 * [`IMGPROXY_AUTOQUALITY_MAX`]: ((pro)) the maximum quality imgproxy can use. Default: 80
-* [`IMGPROXY_AUTOQUALITY_FORMAT_MAX`]: ((pro)) the maximum quality imgproxy can use per format, comma divided. Example: `jpeg=70,avif=40,webp=60`. When a value for the resulting format is not set, the `IMGPROXY_AUTOQUALITY_MAX` value is used. Default: `avif=50`
+* [`IMGPROXY_AUTOQUALITY_FORMAT_MAX`]: ((pro)) the maximum quality imgproxy can use per format, comma divided. Example: `jpeg=70,avif=40,webp=60`. When a value for the resulting format is not set, the `IMGPROXY_AUTOQUALITY_MAX` value is used. Default: `avif=65`
 * [`IMGPROXY_AUTOQUALITY_ALLOWED_ERROR`]: ((pro)) the allowed `IMGPROXY_AUTOQUALITY_TARGET` error. Applicable only to `dssim` and `ml` methods. Default: 0.001
 * [`IMGPROXY_AUTOQUALITY_MAX_RESOLUTION`]: ((pro)) when this value is greater then zero and the resultant resolution exceeds the value, autoquality won't be used. Default: 0
 * [`IMGPROXY_AUTOQUALITY_JPEG_NET`]: ((pro)) the path to the neural network for JPEG.
