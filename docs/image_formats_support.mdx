@@ -10,6 +10,7 @@ At the moment, imgproxy supports only the most popular image formats:
 | ----------------------------|-----------|--------------------------------|---------------------------|
 | PNG                         | `png`     | :white_check_mark:             | :white_check_mark:        |
 | JPEG                        | `jpg`     | :white_check_mark:             | :white_check_mark:        |
+| JPEG XL                     | `jxl`     | :white_check_mark:             | [See notes](#jxl-support) |
 | WebP                        | `webp`    | :white_check_mark:             | :white_check_mark:        |
 | AVIF                        | `avif`    | :white_check_mark:             | :white_check_mark:        |
 | GIF                         | `gif`     | :white_check_mark:             | :white_check_mark:        |
@@ -21,6 +22,12 @@ At the moment, imgproxy supports only the most popular image formats:
 | PDF ((pro))                 | `pdf`     | :white_check_mark:             | :x:                       |
 | MP4 (h264) ((pro))          | `mp4`     | [See notes](#video-thumbnails) | :white_check_mark:        |
 | Other video formats ((pro)) |           | [See notes](#video-thumbnails) | :x:                       |
+
+## JPEG XL support {#jxl-support}
+
+imgproxy supports JPEG XL as a source format without limitations.
+
+When JPEG XL is used as a result format, animations are not supported because animated JPEG XL is not yet supported by browsers.
 
 ## SVG support
 

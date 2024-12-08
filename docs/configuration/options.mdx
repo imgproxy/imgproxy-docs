@@ -166,7 +166,7 @@ When cookie forwarding is activated, by default, imgproxy assumes the scope of t
 ## Compression
 
 * [`IMGPROXY_QUALITY`]: the default quality of the resultant image, percentage. Default: `80`
-* [`IMGPROXY_FORMAT_QUALITY`]: default quality of the resulting image per format, separated by commas. Example: `jpeg=70,avif=40,webp=60`. When a value for the resulting format is not set, the `IMGPROXY_QUALITY` value is used. Default: `avif=65`
+* [`IMGPROXY_FORMAT_QUALITY`]: default quality of the resulting image per format, separated by commas. Example: `jpeg=70,avif=40,webp=60`. When a value for the resulting format is not set, the `IMGPROXY_QUALITY` value is used. Default: `avif=65,jxl=77`
 
 ### Advanced JPEG compression
 
@@ -201,6 +201,10 @@ When cookie forwarding is activated, by default, imgproxy assumes the scope of t
 
 * [`IMGPROXY_AVIF_SPEED`]: controls the CPU effort spent improving compression. The lowest speed is at 0 and the fastest is at 9. Default: `9`
 
+### Advanced JPEG XL compression
+
+* [`IMGPROXY_JXL_EFFORT`]: controls the CPU effort spent improving compression. The larger the value, the slower the encoding process but the better the compression. The value should be between 1 and 9. Default: `4`
+
 ### Autoquality
 
 imgproxy can calculate the quality of the resulting image based on selected metric. Read more in the [Autoquality](../features/autoquality.mdx) guide.
@@ -220,30 +224,37 @@ Autoquality requires the image to be saved several times. Use it only when you p
 * [`IMGPROXY_AUTOQUALITY_JPEG_NET`]: ((pro)) the path to the neural network for JPEG.
 * [`IMGPROXY_AUTOQUALITY_WEBP_NET`]: ((pro)) the path to the neural network for WebP.
 * [`IMGPROXY_AUTOQUALITY_AVIF_NET`]: ((pro)) the path to the neural network for AVIF.
+* [`IMGPROXY_AUTOQUALITY_JXL_NET`]: ((pro)) the path to the neural network for JPEG XL.
 
 ## SVG processing
 * [`IMGPROXY_SVG_FIX_UNSUPPORTED`]: when `true`, imgproxy will try to replace SVG features unsupported by librsvg to minimize SVG rendering error. This config only takes effect on SVG rasterization. Default: `false`
 * [`IMGPROXY_ALWAYS_RASTERIZE_SVG`]: when `true`, imgproxy will always rasterize SVG images unless SVG processing is not [skipped](#skip-processing). Default: `false`
 
-## AVIF/WebP support detection
+## AVIF/WebP/JPEG XL support detection
 
-imgproxy can use the `Accept` HTTP header to detect if the browser supports AVIF or WebP and use it as the default format. This feature is disabled by default and can be enabled by the following options:
+imgproxy can use the `Accept` HTTP header to detect if the browser supports AVIF, WebP, or JPEG XL and use it as the default format. This feature is disabled by default and can be enabled by the following options:
 
 * [`IMGPROXY_AUTO_WEBP`]: _(deprecated alias: [`IMGPROXY_ENABLE_WEBP_DETECTION`])_ enables WebP support detection. When the file extension is omitted in the imgproxy URL and browser supports WebP, imgproxy will use it as the resulting format.
 * [`IMGPROXY_ENFORCE_WEBP`]: enables WebP support detection and enforces WebP usage. If the browser supports WebP, it will be used as resulting format even if another extension is specified in the imgproxy URL.
 * [`IMGPROXY_AUTO_AVIF`]: _(deprecated alias: [`IMGPROXY_ENABLE_AVIF_DETECTION`])_ enables AVIF support detection. When the file extension is omitted in the imgproxy URL and browser supports AVIF, imgproxy will use it as the resulting format.
 * [`IMGPROXY_ENFORCE_AVIF`]: enables AVIF support detection and enforces AVIF usage. If the browser supports AVIF, it will be used as resulting format even if another extension is specified in the imgproxy URL.
+* [`IMGPROXY_AUTO_JXL`]: enables JPEG XL support detection. When the file extension is omitted in the imgproxy URL and browser supports JPEG XL, imgproxy will use it as the resulting format.
+* [`IMGPROXY_ENFORCE_JXL`]: enables JPEG XL support detection and enforces JPEG XL usage. If the browser supports JPEG XL, it will be used as the resulting format even if another extension is specified in the imgproxy URL.
 
 :::info
-imgproxy prefers AVIF over WebP. This means that if both AVIF and WebP detection/enforcement are enabled and the browser supports both of them, AVIF will be used.
+If multiple format detection/enforcement options are enabled, and the browser supports multiple of them, imgproxy will use the format with the highest priority. The priority is as follows (from the highest to the lowest): JPEG XL, AVIF, WebP
 :::
 
 :::info
 If both the source and the requested image formats support animation and AVIF detection/enforcement is enabled, AVIF won't be used as AVIF sequence is not supported yet.
 :::
 
+:::info
+If both the source and the requested image formats support animation and JPEG XL detection/enforcement is enabled, JPEG XL won't be used as animated JPEG XL is not widely supported by browsers yet.
+:::
+
 :::tip
-When AVIF/WebP support detection is enabled, please take care to configure your CDN or caching proxy to take the `Accept` HTTP header into account while caching.
+When AVIF/WebP/JPEG XL support detection is enabled, please take care to configure your CDN or caching proxy to take the `Accept` HTTP header into account while caching.
 :::
 
 :::warning
@@ -265,7 +276,7 @@ imgproxy is guided by the following rules when choosing the resulting format:
 5. If none of the preferred formats meet the requirements, the first preferred format is used
 
 :::info
-When AVIF/WebP support detection is enabled and the browser supports AVIF/WebP, it may be used as the resultant format even if the preferred formats list doesn't contain it.
+When AVIF/WebP/JPEG XL support detection is enabled and the browser supports AVIF/WebP/JPEG XL, it may be used as the resultant format even if the preferred formats list doesn't contain it.
 :::
 
 ## Skip processing
