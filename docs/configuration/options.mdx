@@ -371,8 +371,12 @@ imgproxy can detect objects on the image and use them to perform smart cropping,
 * [`IMGPROXY_OBJECT_DETECTION_NET_SIZE`]: ((pro)) the size of the neural network input. The width and the heights of the inputs should be the same, so this config value should be a single number. Default: 416
 * [`IMGPROXY_OBJECT_DETECTION_CONFIDENCE_THRESHOLD`]: ((pro)) detections with confidences below this value will be discarded. Default: 0.2
 * [`IMGPROXY_OBJECT_DETECTION_NMS_THRESHOLD`]: ((pro)) non-max supression threshold. Don't change this if you don't know what you're doing. Default: 0.4
-* [`IMGPROXY_OBJECT_DETECTION_SWAP_RB`]: when set to `true`, imgproxy will swap the R and B channels in the input image. Some models are trained on BGR images and perform incorrectly with RGB inputs. This option allows you to fix this issue. Default: `false`
+* [`IMGPROXY_OBJECT_DETECTION_SWAP_RB`]: ((pro)) when set to `true`, imgproxy will swap the R and B channels in the input image. Some models are trained on BGR images and perform incorrectly with RGB inputs. This option allows you to fix this issue. Default: `false`
 * [`IMGPROXY_OBJECT_DETECTION_FALLBACK_TO_SMART_CROP`]: ((pro)) defines imgproxy's behavior when object-oriented crop gravity is used but no objects are detected. When set to `true`, imgproxy will fallback to smart crop. When set to `false`, imgproxy will fallback to the center gravity. Default: `true`
+* [`IMGPROXY_OBJECT_DETECTION_GRAVITY_MODE`]: ((pro)) defines how imgproxy should use object-oriented crop gravity. Supported values are:
+  * `max_score_area`: _(default)_ in this mode, imgproxy will select the area that covers the most detected objects, respecting their weights.
+  * `one_best`: in this mode, imgproxy will focus on the object with the highest score based on its area, confidence, and class weight.
+  * `one_best_centermost`: the same as `one_best,` but imgproxy will add the object's proximity to the image center to its score.
 
 Read the [Object Detection guide](../features/object_detection.mdx) for more info.
 
