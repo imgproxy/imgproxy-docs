@@ -20,6 +20,7 @@ At the moment, imgproxy supports only the most popular image formats:
 | BMP                         | `bmp`     | :white_check_mark:             | :white_check_mark:        |
 | TIFF                        | `tiff`    | :white_check_mark:             | :white_check_mark:        |
 | PDF ((pro))                 | `pdf`     | :white_check_mark:             | :x:                       |
+| PSD ((pro))                 | `psd`     | [See notes](#psd-support)      | :x:                       |
 | MP4 (h264) ((pro))          | `mp4`     | [See notes](#video-thumbnails) | :white_check_mark:        |
 | Other video formats ((pro)) |           | [See notes](#video-thumbnails) | :x:                       |
 
@@ -47,6 +48,18 @@ Since the processing of animated images is a pretty heavy process, only one fram
 
 :::info
 imgproxy summarizes all frames resolutions while the checking source image resolution.
+:::
+
+## PSD support ((pro)) {#psd-support}
+
+PSD (Photoshop Document) and PSB (Photoshop Big) files are supported as source images, but there are some limitations:
+
+PSD/PSB files should be saved with Photoshop's "Maximize Compatibility" option enabled, which is enabled by default. If this option is disabled, imgproxy won't return an error but will render the PSD/PSB file as a solid white image.
+
+We tested imgproxy with all variants of PSD/PSB files that we could find or produce with Adobe Photoshop 2025. If you encounter any PSD/PSB file that imgproxy can't process, please let us know.
+
+:::warning
+We couldn't find any PSD/PSB files with their image data compressed with ZIP, so imgproxy renders them as solid white images. If you had such files, we would very much appreciate it if you could share them with us.
 :::
 
 ## Converting animated images to MP4 ((pro)) {#converting-animated-images-to-mp4}
