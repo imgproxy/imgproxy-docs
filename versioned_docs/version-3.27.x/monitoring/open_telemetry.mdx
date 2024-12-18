@@ -1,0 +1,108 @@
+---
+description: Learn about how to send imgproxy metrics to OpenTelemetry
+---
+
+# OpenTelemetry
+
+imgproxy can send request traces to an OpenTelemetry collector. To use this feature, do the following:
+
+1. Install & configure the [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
+2. Set the `IMGPROXY_OPEN_TELEMETRY_ENABLE` environment variable to `true` to enable sending request traces to the collector. Default: `false`.
+3. _(optional)_ Set the `IMGPROXY_OPEN_TELEMETRY_ENABLE_METRICS` environment variable to `true` to enable sending metrics to the collector. Default: `false`.
+4. _(optional)_ Specify the collector protocol with `OTEL_EXPORTER_OTLP_PROTOCOL` environment variable.
+    :::tip
+    You can specify different protocols for traces and metrics by using the `OTEL_EXPORTER_OTLP_TRACES_PROTOCOL` and `OTEL_EXPORTER_OTLP_METRICS_PROTOCOL` environment variables.
+    :::
+
+    Supported protocols are:
+    * `grpc` _(default)_
+    * `http/protobuf` (aliases: `http`, `https`)
+5. _(optional)_ Specify the collector endpoint with `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable.
+    :::tip
+    Use `https://` scheme for secure connections (you may need to configure [TLS certificates](#tls-configuration)) and `http://` for insecure connections.
+    :::
+
+    :::info
+    The `OTEL_EXPORTER_OTLP_ENDPOINT` path should not contain signal-specific paths like `/v1/traces` or `/v1/metrics`. The signal-specific paths are added automatically.
+    :::
+
+    :::tip
+    You can specify different endpoints for traces and metrics by using the `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` and `OTEL_EXPORTER_OTLP_METRICS_ENDPOINT` environment variables. If the `http/protobuf` protocol is used, these signal-specific endpoints should include the signal-specific paths like `/v1/traces` or `/v1/metrics`.
+    :::
+
+    Defaults are:
+    * For the `grpc` protocol: `https://localhost:4317`
+    * For the `http/protobuf` protocol: `https://localhost:4318`
+6. _(optional)_ Set the `OTEL_SERVICE_NAME` environment variable to be the desired service name. Default: `imgproxy`.
+7. _(optional)_ [Set up TLS certificates](#tls-configuration).
+8. _(optional)_ Set the `IMGPROXY_OPEN_TELEMETRY_TRACE_ID_GENERATOR` environment variable to be the desired trace ID generator. Supported values are:
+    * `xray`: _(default)_ Amazon X-Ray compatible trace ID generator
+    * `random`: random trace ID generator
+9. _(optional)_ Use [OpenTelemetry configuration environment variables](#configuration) to further customize the behavior.
+
+imgproxy will send the following info to the collector:
+
+* Response time
+* Queue time
+* Image downloading time
+* Image processing time
+* Errors that occurred while downloading and processing an image
+
+If `IMGPROXY_OPEN_TELEMETRY_ENABLE_METRICS` is set to `true`, imgproxy will also send the following metrics to the collector:
+
+* `requests_in_progress`: the number of requests currently in progress
+* `images_in_progress`: the number of images currently in progress
+* `buffer_size_bytes`: a histogram of buffer sizes (in bytes)
+* `buffer_default_size_bytes`: calibrated default buffer size (in bytes)
+* `buffer_max_size_bytes`: calibrated maximum buffer size (in bytes)
+* `vips_memory_bytes`: libvips memory usage
+* `vips_max_memory_bytes`: libvips maximum memory usage
+* `vips_allocs`: the number of active vips allocations
+* Some useful Go metrics like memstats and goroutines count
+
+## Configuration
+
+imgproxy supports the standard [general](https://opentelemetry.io/docs/languages/sdk-configuration/general/) and [OTLP exporter-specific](https://opentelemetry.io/docs/languages/sdk-configuration/otlp-exporter/) environment variables with the following specifics:
+
+* `http/json` protocol` is not supported.
+* `OTEL_TRACES_EXPORTER` and `OTEL_METRICS_EXPORTER` environment variables are ignored as imgproxy always uses the OTLP exporter.
+* Logs-related environment variables are ignored as imgproxy does not support sending logs to OpenTelemetry.
+
+Also, imgproxy supports the following environment variables:
+
+* `IMGPROXY_OPEN_TELEMETRY_TRACE_ID_GENERATOR`: the desired trace ID generator. Supported values are:
+    * `xray`: _(default)_ Amazon X-Ray compatible trace ID generator
+    * `random`: random trace ID generator
+* [TLS configuration](#tls-configuration) environment variables.
+
+## TLS Configuration
+
+If your OpenTelemetry collector is secured with TLS, you may need to specify the collector's certificate on the imgproxy side. You can do this by either providing a path to the certificate file or by specifying the certificate itself:
+
+* `IMGPROXY_OPEN_TELEMETRY_SERVER_CERT`: OpenTelemetry collector TLS certificate, PEM-encoded (you can replace line breaks with `\n`). Default: blank
+
+If your collector uses mTLS for mutual authentication, you'll also need to specify the client's certificate/key pair:
+
+* `IMGPROXY_OPEN_TELEMETRY_CLIENT_CERT`: OpenTelemetry client TLS certificate, PEM-encoded (you can replace line breaks with `\n`). Default: blank
+* `IMGPROXY_OPEN_TELEMETRY_CLIENT_KEY`: OpenTelemetry client TLS key, PEM-encoded (you can replace line breaks with `\n`). Default: blank
+
+:::warning
+If `IMGPROXY_OPEN_TELEMETRY_SERVER_CERT` is set and the `grpc` protocol is used, imgproxy will try to establish a secure connection to the collector even if the collector's endpoint scheme is `http://`.
+:::
+
+## Deprecated Environment Variables
+
+The following environment variables are deprecated and will be removed in the future:
+
+* `IMGPROXY_OPEN_TELEMETRY_ENDPOINT`: use `OTEL_EXPORTER_OTLP_ENDPOINT` instead and explicitly enable OpenTelemetry support with `IMGPROXY_OPEN_TELEMETRY_ENABLE` environment variable.
+    :::warning
+    Unlike `IMGPROXY_OPEN_TELEMETRY_ENDPOINT`, `OTEL_EXPORTER_OTLP_ENDPOINT` should contain a URL scheme (`http://` or `https://`).
+    :::
+* `IMGPROXY_OPEN_TELEMETRY_PROTOCOL`: use `OTEL_EXPORTER_OTLP_PROTOCOL` instead.
+* `IMGPROXY_OPEN_TELEMETRY_GRPC_INSECURE`: use `OTEL_EXPORTER_OTLP_ENDPOINT` with `http://` scheme instead.
+* `IMGPROXY_OPEN_TELEMETRY_SERVICE_NAME`: use `OTEL_SERVICE_NAME` instead.
+* `IMGPROXY_OPEN_TELEMETRY_PROPAGATORS`: use `OTEL_PROPAGATORS` instead.
+* `IMGPROXY_OPEN_TELEMETRY_CONNECTION_TIMEOUT`: use `OTEL_EXPORTER_OTLP_TIMEOUT` instead.
+    :::warning
+    Unlike `IMGPROXY_OPEN_TELEMETRY_CONNECTION_TIMEOUT`, `OTEL_EXPORTER_OTLP_TIMEOUT` should be specified in milliseconds instead of seconds.
+    :::

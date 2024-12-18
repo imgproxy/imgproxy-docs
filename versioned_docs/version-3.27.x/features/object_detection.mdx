@@ -1,0 +1,302 @@
+---
+title: Object detection
+description: Learn about how to detect objects in your images and use them with imgproxy
+---
+
+# Object detection ((pro))
+
+imgproxy can detect objects in the image and use them for smart cropping, blurring the detections, or drawing the detections. You can also [fetch the detected objects info](../usage/getting_info.mdx#detect-objects).
+
+For object purposes, imgproxy uses the YOLO (You Only Look Once) model family. imgproxy supports models in DarkNet or ONNX format. We provide Docker images with a model trained for face detection, but you can use any YOLO model found on the internet or train your own model.
+
+## Configuration
+
+:::tip
+You don't need to configure object detection if you're using an imgproxy Pro Docker image with a tag suffixed with `-ml` and you want to use the face detection model. The model is already included in the image and the configuration is already set up.
+:::
+
+:::info
+DarkNet model format has priority over ONNX model format. If you define both, imgproxy will use the DarkNet model.
+:::
+
+### DarkNet model format
+
+You need to define the following config variables to enable object detection with a [DarkNet](https://github.com/AlexeyAB/darknet) model:
+
+* [`IMGPROXY_OBJECT_DETECTION_CONFIG`]: a path to the neural network config in DarkNet format
+* [`IMGPROXY_OBJECT_DETECTION_WEIGHTS`]: a path to the neural network weights in DarkNet format
+* [`IMGPROXY_OBJECT_DETECTION_CLASSES`]: a path to the [class names file](#class-names-file)
+
+### ONNX model format
+
+You need to define the following config variables to enable object detection with an ONNX model:
+
+* [`IMGPROXY_OBJECT_DETECTION_NET`]: a path to the neural network model in ONNX format
+* [`IMGPROXY_OBJECT_DETECTION_NET_TYPE`]: the type of the neural network model. Possible values:
+  * `yolox`: _(default)_ [YOLOX](https://github.com/Megvii-BaseDetection/YOLOX) model
+    <details>
+      <summary>Export YOLOX to ONNX</summary>
+
+      ```bash
+      python tools/export_onnx.py \
+        -f /path/to/experiment.py \
+        -c /path/to/checkpoint.pth \
+        --output-name /path/to/output.onnx \
+        --decode_in_inference
+      ```
+    </details>
+  * `yolov4`: [YOLOv4](https://github.com/Tianxiaomo/pytorch-YOLOv4) model
+    <details>
+      <summary>Export YOLOv4 to ONNX</summary>
+
+      ```bash
+      pip install onnxruntime
+
+      python demo_pytorch2onnx.py <weight_file> <image_path> <batch_size> <n_classes> <input_width> <input_height>
+
+      # Example
+      python demo_pytorch2onnx.py yolov4.pth dog.jpg 1 80 416 416
+      ```
+    </details>
+  * `yolov5`: [YOLOv5](https://github.com/ultralytics/yolov5) model
+    <details>
+      <summary>Export YOLOv5 to ONNX</summary>
+
+      ```bash
+      # Export with FP32 precision
+      python export.py \
+        --weights yolov5s.pt \
+        --include onnx \
+        --simplify
+
+      # Export with FP16 precision (CUDA-compatible GPU is required)
+      python export.py \
+        --weights yolov5s.pt \
+        --include onnx \
+        --simplify \
+        --half
+      ```
+    </details>
+  * `yolov6`: [YOLOv6](https://github.com/meituan/YOLOv6) model
+    <details>
+      <summary>Export YOLOv6 to ONNX</summary>
+
+      ```bash
+      # Export with FP32 precision
+      python deploy/ONNX/export_onnx.py \
+        --weights yolov6s.pt \
+        --img 640 \
+        --batch 1 \
+        --simplify
+
+      # Export with FP16 precision (CUDA-compatible GPU is required)
+      python deploy/ONNX/export_onnx.py \
+        --weights yolov6s.pt \
+        --img 640 \
+        --batch 1 \
+        --simplify \
+        --half
+      ```
+    </details>
+  * `yolov7`: [YOLOv7](https://github.com/WongKinYiu/yolov7) model
+    <details>
+      <summary>Export YOLOv7 to ONNX</summary>
+
+      ```bash
+      # Export with FP32 precision
+      python export.py \
+        --weights yolov7-tiny.pt \
+        --grid \
+        --simplify \
+        --img-size 640 640 \
+        --max-wh 640
+
+      # Export with FP16 precision (CUDA-compatible GPU is required)
+      python export.py \
+        --weights yolov7-tiny.pt \
+        --grid \
+        --simplify \
+        --img-size 640 640 \
+        --max-wh 640 \
+        --fp16
+      ```
+    </details>
+  * `yolov8`: [YOLOv8](https://github.com/ultralytics/ultralytics) model
+    <details>
+      <summary>Export YOLOv8 to ONNX</summary>
+
+      ```bash
+      pip install ultralytics
+
+      # Export with FP32 precision
+      yolo export \
+        model=yolov8n.pt \
+        format=onnx \
+        simplify=True
+
+      # Export with FP16 precision (CUDA-compatible GPU is required)
+      yolo export \
+        model=yolov8n.pt \
+        format=onnx \
+        simplify=True \
+        half=True
+      ```
+    </details>
+  * `yolov9`: [YOLOv9](https://github.com/WongKinYiu/yolov9) model
+    <details>
+      <summary>Export YOLOv9 to ONNX</summary>
+
+      ```bash
+      # Export with FP32 precision
+      python export.py \
+        --weights yolov9-s.pt \
+        --include onnx \
+        --simplify
+
+      # Export with FP16 precision (CUDA-compatible GPU is required)
+      python export.py \
+        --weights yolov9-s.pt \
+        --include onnx \
+        --simplify \
+        --half
+      ```
+    </details>
+  * `yolov10`: [YOLOv10](https://github.com/THU-MIG/yolov10) model
+    <details>
+      <summary>Export YOLOv10 to ONNX</summary>
+
+      Unfortunately, the export script from the original YOLOv10 repository adds NMS and other postprocessing operations to the model and doesn't allow to disable them. You can apply a patch to the YOLOv10 code to fix this issue:
+
+      ```bash
+      curl -Ls https://gist.githubusercontent.com/DarthSim/216551dfd58e5628290e90c1d358704b/raw/27a828a48c84f93e0e70b14923bf697541ebe5a1/yolov10.patch | git apply
+      ```
+
+      ...and then export the model:
+
+      ```bash
+      # Export with FP32 precision
+      python export_opencv.py \
+        --weights yolov10s.pt \
+        --imgsz 640 640
+
+      # Export with FP16 precision (CUDA-compatible GPU is required)
+      python export_opencv.py \
+        --weights yolov10s.pt \
+        --imgsz 640 640 \
+        --half
+      ```
+    </details>
+  * `yolo-nas`: [YOLO-NAS](https://github.com/Deci-AI/super-gradients) model
+    <details>
+      <summary>Export YOLO-NAS to ONNX</summary>
+
+      ```python
+      from super_gradients.training import models
+      from super_gradients.common.object_names import Models
+      from super_gradients.conversion import DetectionOutputFormatMode
+      from super_gradients.conversion.conversion_enums import ExportQuantizationMode
+
+      # Load the model from the SuperGradients model zoo
+      model = models.get(
+        Models.YOLO_NAS_S,
+        pretrained_weights="coco"
+      )
+      # Or load the model from a checkpoint
+      model = models.get(
+        Models.YOLO_NAS_S,
+        num_classes=80,
+        checkpoint_path=f"neural-yolo_nas_s.pth"
+      )
+
+      model.eval()
+      model.prep_model_for_conversion(input_size=[1, 3, 640, 640])
+
+      # Disable preprocessing and postprocessing since imgproxy will handle it
+      model.export(
+        "/content/yolo_nas_s.onnx",
+        preprocessing=False,
+        postprocessing=False,
+        output_predictions_format=DetectionOutputFormatMode.FLAT_FORMAT,
+        input_image_shape=[640, 640],
+        quantization_mode=ExportQuantizationMode.FP16,
+      )
+      ```
+    </details>
+* [`IMGPROXY_OBJECT_DETECTION_CLASSES`]: a path to the [class names file](#class-names-file)
+
+### Common config options
+
+* [`IMGPROXY_OBJECT_DETECTION_NET_SIZE`]: the size of the neural network input. The inputs' width and heights should be the same, so this config value should be a single number. Default: 416
+* [`IMGPROXY_OBJECT_DETECTION_CONFIDENCE_THRESHOLD`]: detections with confidence below this value will be discarded. Default: 0.2
+* [`IMGPROXY_OBJECT_DETECTION_NMS_THRESHOLD`]: non-max supression threshold. Don't change this if you don't know what you're doing. Default: 0.4
+* [`IMGPROXY_OBJECT_DETECTION_SWAP_RB`]: when set to `true`, imgproxy will swap the R and B channels in the input image. Some models are trained on BGR images and perform incorrectly with RGB inputs. This option allows you to fix this issue. Default: `false`
+* [`IMGPROXY_OBJECT_DETECTION_FALLBACK_TO_SMART_CROP`]: ((pro)) defines imgproxy's behavior when object-oriented crop gravity is used but no objects are detected. When set to `true`, imgproxy will fallback to smart crop. When set to `false`, imgproxy will fallback to the center gravity. Default: `true`
+
+### Class names file
+
+The class names file is used to map the class indexes from the neural network output to human-readable class names. The path to the class names file should be defined in the `IMGPROXY_OBJECT_DETECTION_CLASSES` config variable.
+
+The class names file should contain one class name per line. The class names should be in the same order as the classes in the neural network output. Example:
+
+```text
+person
+dog
+cat
+```
+
+By default, during the object-oriented crop, all the detected objects have the default weight of `1`. You can change the weight of the detected objects by adding the `=%weight` suffix to the object class name. Example:
+
+```text
+person=2
+dog
+cat=3
+```
+
+In this example, the detected `person` and `cat` objects will have the weight of `2` and `3` respectively. The `dog` object will have the default weight of `1`.
+
+## Usage examples
+### Object-oriented crop
+
+You can [crop](../usage/processing.mdx#crop) your images and keep objects of desired classes in frame:
+
+```imgproxy_url
+.../crop:256:256/gravity:obj:face:cat:dog/...
+```
+
+Also, you can use the `objw` gravity type to redefine the weights of the detected objects:
+
+```imgproxy_url
+.../crop:256:256/gravity:objw:face:2:cat:3:dog:4/...
+```
+
+The `all` pseudo-class matches all the detected objects. You can use it to set the weight for all the detected objects:
+
+```imgproxy_url
+.../crop:256:256/gravity:objw:all:2:face:10/...
+```
+
+In this example, all the detected objects will have the weight of `2`, except for the `face` objects, which will have the weight of `10`.
+
+### Blurring detections
+
+You can [blur objects](../usage/processing.mdx#blur-detections) of desired classes, thus making anonymization or hiding NSFW content possible:
+
+```imgproxy_url
+.../blur_detections:7:face/...
+```
+
+### Draw detections
+
+You can make imgproxy [draw bounding boxes](../usage/processing.mdx#draw-detections) for the detected objects of the desired classes (this is handy for testing your models):
+
+```imgproxy_url
+.../draw_detections:1:face/...
+```
+
+### Fetch the detected objects' info
+
+You can [fetch the detected objects info](../usage/getting_info.mdx#detect-objects) using the `/info` endpoint:
+
+```imgproxy_url
+.../info/detect_objects:1/...
+```
