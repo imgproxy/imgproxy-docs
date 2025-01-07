@@ -9,6 +9,10 @@ imgproxy can be configured to process files from your local filesystem. To use t
 1. Set `IMGPROXY_LOCAL_FILESYSTEM_ROOT` environment variable to your local images directory path.
 2. Use `local:///path/to/image.jpg` as the source image URL.
 
+:::tip
+If filenames in your local filesystem may contain `?`, you may want to set [IMGPROXY_SOURCE_URL_QUERY_SEPARATOR](../configuration/options.mdx#IMGPROXY_SOURCE_URL_QUERY_SEPARATOR) to another string that is not used in filenames or set it to blank to disable query string extraction.
+:::
+
 ### Example
 
 Assume you want to process an image that is stored locally at `/path/to/project/images/logos/imgproxy.png`. Run imgproxy with `IMGPROXY_LOCAL_FILESYSTEM_ROOT` set to your images directory:

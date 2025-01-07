@@ -22,6 +22,16 @@ If you need to specify the version of the source object, you can use the query s
 s3://%bucket_name/%file_key?%version_id
 ```
 
+:::tip
+If filenames in your S3 may contain `?`, you may want to set [IMGPROXY_SOURCE_URL_QUERY_SEPARATOR](../configuration/options.mdx#IMGPROXY_SOURCE_URL_QUERY_SEPARATOR) to another string that is not used in filenames or set it to blank to disable query string extraction.
+
+For example, if you set `IMGPROXY_SOURCE_URL_QUERY_SEPARATOR` to `?version=`, you can specify the version like this:
+
+```
+s3://%bucket_name/%file_key?version=%version_id
+```
+:::
+
 ### Set up credentials
 
 There are three ways to specify your AWS credentials. The credentials need to have read rights for all of the buckets given in the source URLs:

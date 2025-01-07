@@ -17,6 +17,16 @@ If you need to specify generation of the source object, you can use the query st
 gs://%bucket_name/%file_key?%generation
 ```
 
+:::tip
+If filenames in your Google Cloud Storage may contain `?`, you may want to set [IMGPROXY_SOURCE_URL_QUERY_SEPARATOR](../configuration/options.mdx#IMGPROXY_SOURCE_URL_QUERY_SEPARATOR) to another string that is not used in filenames or set it to blank to disable query string extraction.
+
+For example, if you set `IMGPROXY_SOURCE_URL_QUERY_SEPARATOR` to `?generation=`, you can specify the generation like this:
+
+```
+gs://%bucket_name/%file_key?generation=%generation
+```
+:::
+
 ### Setup credentials
 
 If you run imgproxy inside Google Cloud infrastructure (Compute Engine, Kubernetes Engine, App Engine, and Cloud Functions, etc), and you have granted access to your bucket to the service account, you probably don't need to do anything here. imgproxy will try to use the credentials provided by Google.

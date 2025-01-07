@@ -431,6 +431,12 @@ imgproxy can be switched into "presets-only mode". In this mode, imgproxy accept
 
 ## Image sources
 
+* [`IMGPROXY_SOURCE_URL_QUERY_SEPARATOR`]: a string that will be used as a separator between non-HTTP(S) source URLs' paths and their query strings. When blank, imgproxy won't extract query string from non-HTTP(S) source URLs. Default: `?`
+
+:::tip
+If filenames in your S3/Google Cloud Storage/local filesystem/etc may contain `?`, you may want to set `IMGPROXY_SOURCE_URL_QUERY_SEPARATOR` to another string that is not used in filenames or set it to blank to disable query string extraction.
+:::
+
 ### Local files {#serving-local-files}
 
 imgproxy can serve your local images, but this feature is disabled by default. To enable it, specify your local filesystem root:

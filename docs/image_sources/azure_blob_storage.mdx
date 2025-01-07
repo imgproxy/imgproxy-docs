@@ -12,6 +12,10 @@ imgproxy can process images from Azure Blob Storage containers. To use this feat
 4. _(optional)_ Specify the Azure Blob Storage endpoint with `IMGPROXY_ABS_ENDPOINT`
 5. Use `abs://%bucket_name/%file_key` as the source image URL
 
+:::tip
+If filenames in your Azure Blob Storage may contain `?`, you may want to set [IMGPROXY_SOURCE_URL_QUERY_SEPARATOR](../configuration/options.mdx#IMGPROXY_SOURCE_URL_QUERY_SEPARATOR) to another string that is not used in filenames or set it to blank to disable query string extraction.
+:::
+
 ## Set up credentials
 
 ### Leverage Azure Managed Identity or Service Principal
