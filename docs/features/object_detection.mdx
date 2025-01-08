@@ -186,6 +186,27 @@ You need to define the following config variables to enable object detection wit
         --half
       ```
     </details>
+  * `yolov11`: [YOLOv11](https://github.com/ultralytics/ultralytics) model
+    <details>
+      <summary>Export YOLOv11 to ONNX</summary>
+
+      ```bash
+      pip install ultralytics
+
+      # Export with FP32 precision
+      yolo export \
+        model=yolov11n.pt \
+        format=onnx \
+        simplify=True
+
+      # Export with FP16 precision (CUDA-compatible GPU is required)
+      yolo export \
+        model=yolov11n.pt \
+        format=onnx \
+        simplify=True \
+        half=True
+      ```
+    </details>
   * `yolo-nas`: [YOLO-NAS](https://github.com/Deci-AI/super-gradients) model
     <details>
       <summary>Export YOLO-NAS to ONNX</summary>
