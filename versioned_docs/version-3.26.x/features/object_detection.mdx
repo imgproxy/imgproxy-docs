@@ -134,12 +134,21 @@ You need to define the following config variables to enable object detection wit
         format=onnx \
         simplify=True
 
-      # Export with FP16 precision (CUDA-compatible GPU is required)
+      # Export with FP16 precision using CUDA-compatible GPU
       yolo export \
         model=yolov8n.pt \
         format=onnx \
         simplify=True \
-        half=True
+        half=True \
+        device=0
+
+      # Export with FP16 precision using Apple Silicon GPU
+      yolo export \
+        model=yolov8n.pt \
+        format=onnx \
+        simplify=True \
+        half=True \
+        device=mps
       ```
     </details>
   * `yolov9`: [YOLOv9](https://github.com/WongKinYiu/yolov9) model
