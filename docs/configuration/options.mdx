@@ -508,6 +508,18 @@ Check out the [Serving files from OpenStack Object Storage](../image_sources/ope
 Replacements defined in `IMGPROXY_URL_REPLACEMENTS` are applied before `IMGPROXY_BASE_URL` is added.
 :::
 
+* [`IMGPROXY_BASE64_URL_INCLUDES_FILENAME`]: when `true` and the source image URL is Base64-encoded or encrypted, imgproxy will treat the part after the last slash (`/`) as an SEO-friendly filename and will discard it when decoding the URL. Default: `false`
+
+:::tip
+For example, if you have `IMGPROXY_BASE64_URL_INCLUDES_FILENAME` enabled and want to add a `puppy.jpg` filename to your imgproxy URL for SEO reasons, the URL will look like this:
+
+```
+https://my-imgproxy.dev/.../aHR0cDovL2V4YW1wbGUuY29tL3B1cHB5LmpwZw/puppy.jpg
+```
+
+imgproxy will treat `puppy.jpg` as an SEO-friendly filename and will use `aHR0cDovL2V4YW1wbGUuY29tL3B1cHB5LmpwZw` as a Base64-encoded source URL.
+:::
+
 ## Metrics
 
 ### New Relic {#new-relic-metrics}
