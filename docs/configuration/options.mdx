@@ -158,10 +158,17 @@ imgproxy can pass cookies in image requests. This can be activated with `IMGPROX
 
 When cookie forwarding is activated, by default, imgproxy assumes the scope of the cookies to be all URLs with the same hostname/port and request scheme as given by the headers `X-Forwarded-Host`, `X-Forwarded-Port`, `X-Forwarded-Scheme` or `Host`. To change that use `IMGPROXY_COOKIE_BASE_URL`.
 
+If you want to pass cookies to any image URL regardless of the hostname, path, or scheme, you can additionally set `IMGPROXY_COOKIE_PASSTHROUGH_ALL` to `true`.
+
 * [`IMGPROXY_COOKIE_PASSTHROUGH`]: when `true`, incoming cookies will be passed through the image request if they are applicable for the image URL. Default: `false`
 
-* [`IMGPROXY_COOKIE_BASE_URL`]: when set, assume that cookies have the scope of this URL for an incoming request (instead of using request headers). If the cookies are applicable to the image URL too, they will be passed along in the image request.
+* [`IMGPROXY_COOKIE_BASE_URL`]: when set, assume that cookies have the scope of this URL for an incoming request (instead of using request headers). If the cookies are applicable to the image URL too, they will be passed along in the image request
 
+* [`IMGPROXY_COOKIE_PASSTHROUGH_ALL`]: when `true`, all incoming cookies will be passed through the image request regardless of the image URL. Default: `false`
+
+:::warning
+Cookies can contain sensitive information. Be careful when using `IMGPROXY_COOKIE_PASSTHROUGH_ALL` and avoid its usage unless you completely trust the servers imgproxy will send image requests to.
+:::
 
 ## Compression
 
