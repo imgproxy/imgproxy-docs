@@ -67,10 +67,10 @@ format:%format
 f:%format
 ```
 
-When set to `1`, `t`, or `true`, imgproxy will return the image format.
+When set to `1`, `t`, or `true`, imgproxy will return the image format and MIME type.
 
 :::info
-For video files, imgproxy returns a list of predicted formats divided by comma.
+For video files, imgproxy returns a list of predicted formats divided by comma. The MIME type is determined based on the `Content-Type` HTTP header in the source URL response, file extension, or first bytes of the file.
 :::
 
 Default: `true`.
@@ -79,7 +79,8 @@ Default: `true`.
 
 ```json
 {
-  "format": "jpeg"
+  "format": "jpeg",
+  "mime_type": "image/jpeg"
 }
 ```
 
