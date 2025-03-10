@@ -16,4 +16,4 @@ jobs:
           token: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
           repository: imgproxy/imgproxy-helm
           event-type: imgproxy-config-updated
-          client-payload: '{"actor":"${{ github.actor }}","link":"https://github.com/imgproxy/imgproxy-docs/commit/${{ github.sha }}"}'
+          client-payload: '{"actor":"${{ github.actor }}","link":"${{ github.event.compare }}"}'
