@@ -22,12 +22,6 @@
   <a href="https://discord.gg/5GgpXgtC9u"><img alt="Discord" src="https://img.shields.io/badge/Discord-177bd3?style=for-the-badge&logo=discord&logoColor=fff" /></a>
 </p>
 
-<p align="center">
-  <a href="https://github.com/imgproxy/imgproxy/actions">
-    <img alt="CI" src="https://img.shields.io/github/actions/workflow/status/imgproxy/imgproxy/on-push.yml?branch=master&label=CI&style=for-the-badge" />
-  </a>
-</p>
-
 ---
 
 This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
