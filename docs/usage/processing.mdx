@@ -444,13 +444,13 @@ Default: 1
 ### Monochrome ((pro)) {#monochrome}
 
 ```imgproxy_url_option
-monochrome:%intencity:%color
-mc:%intencity:%color
+monochrome:%intensity:%color
+mc:%intensity:%color
 ```
 
-When `intencity` is greater than zero, imgproxy will convert the resulting image to monochrome.
+When `intensity` is greater than zero, imgproxy will convert the resulting image to monochrome.
 
-* `intencity` - a positive floating-point number between `0` and `1` that defines the intencity of the monochrome effect.
+* `intensity` - a positive floating-point number between `0` and `1` that defines the intensity of the monochrome effect.
 * `color` - _(optional)_ a hex-coded value of the color that will be used as a base for the monochrome palette.
 
 Default: `0:b3b3b3`
@@ -458,13 +458,13 @@ Default: `0:b3b3b3`
 ### Duotone ((pro)) {#duotone}
 
 ```imgproxy_url_option
-duotone:%intencity:%color1:%color2
-dt:%intencity:%color1:%color2
+duotone:%intensity:%color1:%color2
+dt:%intensity:%color1:%color2
 ```
 
-When `intencity` is greater than zero, imgproxy will convert the resulting image to duotone.
+When `intensity` is greater than zero, imgproxy will convert the resulting image to duotone.
 
-* `intencity` - a positive floating-point number between `0` and `1` that defines the intencity of the duotone effect.
+* `intensity` - a positive floating-point number between `0` and `1` that defines the intensity of the duotone effect.
 * `color1`, `color2` - _(optional)_ hex-coded values of the colors that will be used as a base for the duotone palette. `color1` is the color for the dark areas, `color2` is the color for the light areas.
 
 Default: `0:000000:ffffff`
