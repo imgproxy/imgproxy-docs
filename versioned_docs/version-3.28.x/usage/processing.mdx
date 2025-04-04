@@ -252,7 +252,7 @@ Default: `ce:0:0`
 * `gravity:objw:%class_name1:%class_weight1:%class_name2:%class_weight2:...:%class_nameN:%class_weightN`: ((pro)) object-oriented gravity with weights. The same as `gravity:obj` but with custom weights for each class. You can use the `all` pseudo-class to set the weight for all the detected objects. For example, `gravity:objw:all:2:face:3` will set the weight of all the detected objects to `2` and the weight of the detected faces to `3`. The default weight is `1`.
 * `gravity:fp:%x:%y`: the gravity focus point. `x` and `y` are floating point numbers between 0 and 1 that define the coordinates of the center of the resulting image. Treat 0 and 1 as right/left for `x` and top/bottom for `y`.
 
-### Objcts position ((pro)) {#objects-position}
+### Objects position ((pro)) {#objects-position}
 
 ```imgproxy_url_option
 objects_position:%type:%x_offset:%y_offset
@@ -476,7 +476,7 @@ blur:%sigma
 bl:%sigma
 ```
 
-When set, imgproxy will apply a gaussian blur filter to the resulting image. The value of `sigma` defines the size of the mask imgproxy will use.
+When set, imgproxy will apply a Gaussian blur filter to the resulting image. The value of `sigma` defines the size of the mask imgproxy will use.
 
 Default: disabled
 
@@ -558,12 +558,12 @@ Places a gradient on the processed image. The placed gradient transitions from t
 * `opacity`: specifies gradient opacity. When set to `0`, gradient is not applied.
 * `color`:  _(optional)_ a hex-coded value of the gradient color. Default: `000` (black).
 * `direction`: _(optional)_ specifies the direction of the gradient. The direction can be specified in two ways:
-  * An angle in degrees (clockwise). For example, `0` will create a gradient from top to down (the top side is transparrent, the bottom side is opaque), and `90` will create a gradient from right to left (the right side is transparrent, the left side is opaque).
+  * An angle in degrees (clockwise). For example, `0` will create a gradient from top to down (the top side is transparent, the bottom side is opaque), and `90` will create a gradient from right to left (the right side is transparent, the left side is opaque).
   * A string value. Available values:
-    * `down`: _(default)_ the top side of the gradient is transparrent, the bottom side is opaque
-    * `up`: the bottom side of the gradient is transparrent, the top side is opaque
-    * `right`: the left side of the gradient is transparrent, the right side is opaque
-    * `left`: the right side of the gradient is transparrent, the left side is opaque
+    * `down`: _(default)_ the top side of the gradient is transparent, the bottom side is opaque
+    * `up`: the bottom side of the gradient is transparent, the top side is opaque
+    * `right`: the left side of the gradient is transparent, the right side is opaque
+    * `left`: the right side of the gradient is transparent, the left side is opaque
 * `start`, `stop`: floating point numbers that define relative positions of where the gradient starts and where it ends. Default values are `0.0` and `1.0` respectively.
 
 ### Watermark
@@ -823,7 +823,7 @@ page:%page
 pg:%page
 ```
 
-When a source image supports pagination (PDF, TIFF) or animation (GIF, WebP), this option allows specifying the page to use. Page numeration starts from zero.
+When a source image supports pagination (PDF, TIFF) or animation (GIF, WebP), this option allows specifying the page to use. The page index starts from zero.
 
 :::info
 If both the source and the resulting image formats supoprt animation, imgproxy will ignore this option and use all the source image pages. Use the [disable_animation](#disable-animation) option to make imgproxy treat all images as not animated.
