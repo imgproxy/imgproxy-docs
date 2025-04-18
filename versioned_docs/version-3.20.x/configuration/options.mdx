@@ -578,7 +578,7 @@ We highly recommended reading the [Memory usage tweaks](../memory_usage_tweaks.m
 
 * [`IMGPROXY_USE_LINEAR_COLORSPACE`]: when `true`, imgproxy will process images in linear colorspace. This will slow down processing. Note that images won't be fully processed in linear colorspace while shrink-on-load is enabled (see below).
 * [`IMGPROXY_DISABLE_SHRINK_ON_LOAD`]: when `true`, disables shrink-on-load for JPEGs and WebP files. Allows processing the entire image in linear colorspace but dramatically slows down resizing and increases memory usage when working with large images.
-* [`IMGPROXY_STRIP_METADATA`]: when `true`, imgproxy will strip all metadata (EXIF, IPTC, etc.) from JPEG and WebP output images. Default: `true`
+* [`IMGPROXY_STRIP_METADATA`]: when `true`, imgproxy will strip the output images' metadata (EXIF, IPTC, etc.). Default: `true`
 * [`IMGPROXY_KEEP_COPYRIGHT`]: when `true`, imgproxy will not remove copyright info while stripping metadata. Default: `true`
 * [`IMGPROXY_STRIP_METADATA_DPI`]: ((pro)) the DPI metadata value that should be set for the image when its metadata is stripped. Default: `72.0`
 * [`IMGPROXY_STRIP_COLOR_PROFILE`]: when `true`, imgproxy will transform the embedded color profile (ICC) to sRGB and remove it from the image. Otherwise, imgproxy will try to keep it as is. Default: `true`
