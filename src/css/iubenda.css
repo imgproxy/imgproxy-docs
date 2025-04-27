@@ -1,86 +1,53 @@
-#iubenda-cs-banner.iubenda-cs-branded {
-  font-size: 13px !important;
-}
-
-#iubenda-cs-banner.iubenda-cs-branded [class*=" iub"],
-#iubenda-cs-banner.iubenda-cs-branded [class^=iub],
-#iubenda-cs-banner.iubenda-cs-branded .iubenda-banner-content:not(.iubenda-custom-content) * {
+#iubenda-cs-banner .iubenda-cs-container [class*=" iub"],
+#iubenda-cs-banner .iubenda-cs-container [class^=iub],
+#iubenda-cs-banner .iubenda-cs-container .iubenda-banner-content:not(.iubenda-custom-content) * {
   font-family: "Martian Grotesk", sans-serif !important;
 }
 
-#iubenda-cs-banner.iubenda-cs-branded .iubenda-cs-brand {
-  display: none !important;
-}
-
-#iubenda-cs-banner.iubenda-cs-branded .iub-p {
+#iubenda-cs-banner .iubenda-cs-container .iub-p {
   padding-bottom: 4px !important;
 }
 
-#iubenda-cs-banner.iubenda-cs-branded .iubenda-cs-content {
+#iubenda-cs-banner .iubenda-cs-container .iubenda-cs-content {
   border: 1px solid rgba(255, 255, 255, 0.8) !important;
-  border-radius: 0 !important;
 }
 
-#iubenda-cs-banner.iubenda-cs-branded .iubenda-banner-content a,
-#iubenda-cs-banner.iubenda-cs-branded .iubenda-banner-content button {
+#iubenda-cs-banner .iubenda-cs-container #iubenda-cs-paragraph.iubenda-cs-small-margin-top {
+  margin-top: 0 !important;
+}
+
+#iubenda-cs-banner .iubenda-cs-container .iubenda-banner-content a,
+#iubenda-cs-banner .iubenda-cs-container .iubenda-banner-content button {
   color: #40a6ff !important;
   text-decoration: none !important;
   opacity: 1 !important;
 }
 
-#iubenda-cs-banner.iubenda-cs-branded .iubenda-banner-content a:hover,
-#iubenda-cs-banner.iubenda-cs-branded .iubenda-banner-content button:hover {
+#iubenda-cs-banner .iubenda-cs-container .iubenda-banner-content a:hover,
+#iubenda-cs-banner .iubenda-cs-container .iubenda-banner-content button:hover {
   text-decoration: underline !important;
 }
 
-#iubenda-cs-banner.iubenda-cs-branded .iubenda-granular-controls-container .granular-control-checkbox input.style1:checked,
-#iubenda-cs-banner.iubenda-cs-branded .iub-toggle-checkbox input.style1:checked {
-  background-color: #5db200(--kermit-green) !important;
-}
-
-#iubenda-cs-banner.iubenda-cs-branded .iubenda-granular-controls-container .granular-control-checkbox input.style1:checked[value=partial],
-#iubenda-cs-banner.iubenda-cs-branded .iub-toggle-checkbox input.style1:checked.half,
-#iubenda-cs-banner.iubenda-cs-branded .iub-toggle-checkbox input.style1:checked[value=partial] {
-  background-color: #ffc600 !important;
-}
-
-#iubenda-iframe.iubenda-iframe-branded * {
-  font-family: "Martian Grotesk", sans-serif !important;
-}
-
-#iubenda-iframe.iubenda-iframe-branded .purposes-header-title {
-  font-size: 32px !important;
-  font-weight: 800 !important;
-  font-variation-settings: 'wght' 800 !important;
-  font-stretch: expanded !important;
-}
-
-#iubenda-iframe.iubenda-iframe-branded .purposes-header-text {
-  font-size: 15px !important;
-  font-weight: 300 !important;
-  font-variation-settings: 'wght' 300 !important;
-  line-height: 20px;
-}
-
-#iubenda-iframe.iubenda-iframe-branded .iubenda-iframe-footer {
-  box-shadow: none !important;
-  border-top: 1px solid rgba(0, 0, 0, .075) !important;
-}
-
-#iubenda-iframe.iubenda-iframe-branded .iub-toggle-checkbox input.style1:checked {
+#iubenda-cs-banner .iubenda-cs-container .iubenda-granular-controls-container .granular-control-checkbox input.style1:checked,
+#iubenda-cs-banner .iubenda-cs-container .iub-toggle-checkbox input.style1:checked {
   background-color: #5db200 !important;
 }
 
-#iubenda-iframe.iubenda-iframe-branded .iub-toggle-checkbox input.style1:checked.half,
-#iubenda-iframe.iubenda-iframe-branded .iub-toggle-checkbox input.style1:checked[value=partial] {
+#iubenda-cs-banner .iubenda-cs-container .iubenda-granular-controls-container .granular-control-checkbox input.style1:checked[value=partial],
+#iubenda-cs-banner .iubenda-cs-container .iub-toggle-checkbox input.style1:checked.half,
+#iubenda-cs-banner .iubenda-cs-container .iub-toggle-checkbox input.style1:checked[value=partial] {
   background-color: #ffc600 !important;
 }
 
-#iubenda-iframe.iubenda-iframe-branded .iub-btn {
-  border-radius: 0 !important;
+#iubenda-iframe #iubenda-iframe-content * {
+  font-family: "Martian Grotesk", sans-serif !important;
 }
 
-#iubenda-iframe.iubenda-iframe-branded #iubFooterBtnContainer button {
-  border-radius: 0 !important;
-  background-color: #177bd3 !important;
+#iubenda-iframe #iubenda-iframe-content .iub-toggle-checkbox input.style1:checked {
+  background-color: #5db200 !important;
+}
+
+#iubenda-iframe #iubenda-iframe-content .iub-toggle-checkbox input.style1:checked.half,
+#iubenda-iframe #iubenda-iframe-content .iub-toggle-checkbox input.style1:checked[value=partial] {
+  background-color: #ffc600 !important;
 }
