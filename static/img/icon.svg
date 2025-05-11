@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="112" fill="none">
+  <style>@media (prefers-color-scheme:dark){.a{fill:#005568}.b{fill:#53d1ff}}</style>
+  <path class="a" fill="#97E3F8" fill-opacity=".5" d="M72 22H20v6h52v-6Zm0 62H20v6h52v-6ZM0 42h6v28H0V42Zm92 0h-6v28h6V42Z"/>
+  <path class="b" fill="#0068F1" d="M8 22h14v6H8a2 2 0 0 0-2 2v14H0V30a8 8 0 0 1 8-8Zm62 0v6h14a2 2 0 0 1 2 2v14h6V30a8 8 0 0 0-8-8H70Zm14 62H70v6h14a8 8 0 0 0 8-8V68h-6v14a2 2 0 0 1-2 2ZM6 82V68H0v14a8 8 0 0 0 8 8h14v-6H8a2 2 0 0 1-2-2Zm43-38h-6v9h-9v6h9v9h6v-9h9v-6h-9v-9Zm43.608 48.229 4.578 16.787c.306 1.121 1.807 1.328 2.405.332L104 102l7.348-4.409c.996-.598.789-2.099-.332-2.405l-16.787-4.578a1.32 1.32 0 0 0-1.621 1.62Z"/>
+</svg>

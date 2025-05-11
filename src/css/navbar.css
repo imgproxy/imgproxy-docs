@@ -1,19 +1,14 @@
+:root {
+  --ifm-navbar-background-color: oklch(0.95 0.008252 271.3302);
+}
+
 [data-theme='dark']:root {
-  --ifm-navbar-background-color: hsl(225, 24%, 5%);
-
-  --ifm-navbar-search-input-background-color: rgba(255, 255, 255, 0.2);
-  --ifm-navbar-search-input-icon: url('/img/search.svg');
+  --ifm-navbar-background-color: oklch(0.2 0.0138 270.49);
 }
 
 
-.navbar__logo {
-  height: 2.5rem;
-}
-
-.navbar__title {
-  font-family: var(--ifm-font-family-monospace);
-  font-weight: var(--ifm-font-weight-normal);
-  font-variation-settings: 'wght' var(--ifm-font-weight-normal);
+.navbar__brand {
+  margin-right: var(--ifm-navbar-item-padding-horizontal);
 }
 
 
@@ -39,24 +34,54 @@
   opacity: 0.8;
 }
 
-.navbar__link--github::before {
-  background-image: url('/img/github.svg');
+.navbar__link--github {
+  &::before {
+    background-image: url('/img/github-light.svg');
+  }
+
+  [data-theme='dark'] &::before {
+    background-image: url('/img/github-dark.svg');
+  }
 }
 
-.navbar__link--bluesky::before {
-  background-image: url('/img/bluesky.svg');
+.navbar__link--bluesky {
+  &::before {
+    background-image: url('/img/bluesky-light.svg');
+  }
+
+  [data-theme='dark'] &::before {
+    background-image: url('/img/bluesky-dark.svg');
+  }
 }
 
-.navbar__link--twitter::before {
-  background-image: url('/img/twitter.svg');
+.navbar__link--x {
+  &::before {
+    background-image: url('/img/x-com-light.svg');
+  }
+
+  [data-theme='dark'] &::before {
+    background-image: url('/img/x-com-dark.svg');
+  }
 }
 
-.navbar__link--discord::before {
-  background-image: url('/img/discord.svg');
+.navbar__link--discord {
+  &::before {
+    background-image: url('/img/discord-light.svg');
+  }
+
+  [data-theme='dark'] &::before {
+    background-image: url('/img/discord-dark.svg');
+  }
 }
 
-.navbar__link--sponsor::before {
-  background-image: url('/img/heart.svg');
+.navbar__link--sponsor {
+  &::before {
+    background-image: url('/img/heart-light.svg');
+  }
+
+  [data-theme='dark'] &::before {
+    background-image: url('/img/heart-dark.svg');
+  }
 }
 
 
@@ -78,8 +103,12 @@
   content: 'GitHub';
 }
 
-.navbar-sidebar .navbar__link--twitter::before {
-  content: 'Twitter';
+.navbar-sidebar .navbar__link--bluesky::before {
+  content: 'Bluesky';
+}
+
+.navbar-sidebar .navbar__link--x::before {
+  content: 'X (Twitter)';
 }
 
 .navbar-sidebar .navbar__link--discord::before {

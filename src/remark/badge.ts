@@ -19,7 +19,7 @@ const plugin = (): Transformer => {
           value: `badge badge--${label}`,
         },
       ],
-      children: [textNode(label)],
+      children: [textNode(label.charAt(0).toUpperCase() + label.slice(1))],
     };
 
     switch (label) {

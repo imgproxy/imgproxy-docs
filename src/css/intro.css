@@ -1,0 +1,19 @@
+.intro__logo {
+  width: 330px;
+  max-width: 100%;
+}
+
+.intro__logo-light {
+  display: block;
+
+  [data-theme='dark'] & {
+    display: none;
+  }
+}
+.intro__logo-dark {
+  display: none;
+
+  [data-theme='dark'] & {
+    display: block;
+  }
+}

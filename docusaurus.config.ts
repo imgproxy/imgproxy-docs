@@ -7,7 +7,7 @@ import {
 import badgeRemarkPlugin from "./src/remark/badge";
 import codeAnchorRemarkPlugin from "./src/remark/code-anchor";
 
-import prismTheme from "./src/prism/theme";
+import prismThemes from "./src/prism/themes";
 
 const defaultUrl = "https://docs.imgproxy.net";
 
@@ -21,7 +21,6 @@ const getSiteUrl = (): string => {
 const config: Config = {
   title: "imgproxy documentation",
   tagline: "Optimize images for web on the fly",
-  favicon: "/img/favicon.ico",
 
   // Set the production url of your site here
   url: getSiteUrl(),
@@ -66,7 +65,30 @@ const config: Config = {
       tagName: "link",
       attributes: {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Martian+Mono:wght@100..800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,100..800&display=swap",
+      },
+    },
+    {
+      tagName: "link",
+      attributes: {
+        rel: "icon",
+        href: "/img/favicon.ico",
+        sizes: "32x32",
+      },
+    },
+    {
+      tagName: "link",
+      attributes: {
+        rel: "icon",
+        href: "/img/icon.svg",
+        type: "image/svg+xml",
+      },
+    },
+    {
+      tagName: "link",
+      attributes: {
+        rel: "apple-touch-icon",
+        href: "/img/apple-touch-icon.png",
       },
     },
   ],
@@ -103,12 +125,12 @@ const config: Config = {
         theme: {
           customCss: [
             require.resolve("./src/css/general.css"),
+            require.resolve("./src/css/intro.css"),
             require.resolve("./src/css/navbar.css"),
             require.resolve("./src/css/docsearch.css"),
             require.resolve("./src/css/menu.css"),
             require.resolve("./src/css/badge.css"),
             require.resolve("./src/css/code-anchor.css"),
-            require.resolve("./src/css/heading-pattern.css"),
             require.resolve("./src/css/iubenda.css"),
           ],
         },
@@ -123,17 +145,17 @@ const config: Config = {
   themeConfig: {
     colorMode: {
       defaultMode: "dark",
-      disableSwitch: true,
-      respectPrefersColorScheme: false,
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
     },
 
-    image: "img/social-card.jpg",
+    image: "img/social-card.png",
 
     navbar: {
-      title: "imgproxy",
       logo: {
         alt: "imgproxy Logo",
-        src: "img/logo.svg",
+        src: "img/logo-light.svg",
+        srcDark: "img/logo-dark.svg",
       },
       items: [
         {
@@ -164,7 +186,7 @@ const config: Config = {
         {
           href: "https://x.com/imgproxy_net",
           position: "right",
-          className: "navbar__link--icon navbar__link--twitter",
+          className: "navbar__link--icon navbar__link--x",
           title: "X (Twitter)",
         },
         {
@@ -183,9 +205,9 @@ const config: Config = {
     },
 
     footer: {
-      style: "dark",
       logo: {
-        src: "/img/logo-full.svg",
+        src: "/img/logo-light.svg",
+        srcDark: "/img/logo-dark.svg",
         href: "https://imgproxy.net",
         target: "_blank",
       },
@@ -267,8 +289,8 @@ const config: Config = {
 
     prism: {
       additionalLanguages: ["bash", "json"],
-      theme: prismTheme,
-      darkTheme: prismTheme,
+      theme: prismThemes.catppuccinLatte,
+      darkTheme: prismThemes.catppuccinMocha,
     },
 
     algolia: {

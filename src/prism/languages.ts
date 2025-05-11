@@ -5,7 +5,7 @@ const Prism = globalThis.Prism;
 Prism.languages.imgproxy_url_option = {
   comment: /\.\.\./,
   keyword: /^[^:]+/m,
-  "function-variable": /[^:]+/,
+  selector: /[^:]+/,
   punctuation: /[:]/,
 } as Grammar;
 
@@ -14,13 +14,14 @@ Prism.languages.imgproxy_url = {
     pattern: /^[a-z]+:\/\/[^/]+(\/info)?\/[a-zA-Z0-9_-]+/,
     inside: {
       cdata: /^[a-z]+:\/\/[^/]+/,
-      attribute: {
+      string: {
         pattern: /\/info\//,
         inside: {
           operator: /\//,
         },
       },
-      hexcode: /[a-zA-Z0-9_-]+/,
+      operator: /\//,
+      entity: /[a-zA-Z0-9_-]+/,
     },
   },
   option: {
@@ -34,30 +35,30 @@ Prism.languages.imgproxy_url = {
       operator: /\//,
     },
   },
-  selector: [
+  number: [
     {
       pattern: /\/plain\/\S+$/,
       inside: {
-        attribute: {
+        string: {
           pattern: /^\/plain\//,
           inside: {
             operator: /\//,
           },
         },
-        "function-variable": /@[a-z0-9]+$/,
+        selector: /@[a-z0-9]+$/,
       },
     },
     {
       pattern: /(\/[a-zA-Z0-9_-]+)+(\.[a-z0-9]+)?$/,
       inside: {
-        attribute: {
+        string: {
           pattern: /^\/enc\//,
           inside: {
             operator: /\//,
           },
         },
         operator: /^\//,
-        "function-variable": /\.[a-z0-9]+$/,
+        selector: /\.[a-z0-9]+$/,
       },
     },
   ],
@@ -74,7 +75,7 @@ Prism.languages.imgproxy_url_only_presets = Prism.languages.extend(
   {
     option: {
       pattern: /[^:/]+(:[^:/]+)+/,
-      alias: "function-variable",
+      alias: "selector",
       inside: {
         punctuation: /[:]/,
       },
@@ -88,7 +89,7 @@ Prism.languages.imgproxy_presets = {
     pattern: /[^,]+/,
     inside: {
       "preset-name": {
-        alias: "selector",
+        alias: "number",
         pattern: /^[^=]+/,
       },
       "preset-value": {
@@ -103,11 +104,11 @@ Prism.languages.imgproxy_presets = {
 Prism.languages.imgproxy_url_template = {
   comment: /^\s*#.*$/gm,
   cdata: /^[a-z]+:\/\/[^/]+/gm,
-  hexcode: /%signature/,
+  entity: /%signature/,
   keyword: /%processing_options|%info_options/,
-  selector: /%source_url|%encoded_source_url|%encrypted_source_url/,
-  "function-variable": /@%extension|\.%extension/,
-  attribute: /info|plain|enc/,
+  number: /%source_url|%encoded_source_url|%encrypted_source_url/,
+  selector: /@%extension|\.%extension/,
+  string: /info|plain|enc/,
   operator: /\//,
 } as Grammar;
 

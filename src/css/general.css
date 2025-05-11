@@ -3,51 +3,149 @@
   font-family: 'Martian Grotesk';
   font-stretch: condensed normal;
   font-style: normal italic;
-  font-weight: 200 300 700 800 900;
+  font-weight: 200 900;
   src: url('https://cdn.evilmartians.com/front/fonts/MartianGrotesk-1.0.woff2') format("woff2");
 }
 
-[data-theme='dark']:root {
-  --ifm-color-primary-h: 208;
-  --ifm-color-primary-s: 100%;
+:root {
+  --text-primary: oklch(0.17 0.013 270.54);
+  --text-secondary: oklch(0.47 0.0099 301.15);
+  --text-tertiary: oklch(0.62 0.0184 301.02);
 
-  --ifm-color-primary: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 63%);
-  --ifm-color-primary-dark: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 58%);
-  --ifm-color-primary-darker: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 53%);
-  --ifm-color-primary-darkest: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 48%);
-  --ifm-color-primary-light: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 68%);
-  --ifm-color-primary-lighter: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 73%);
-  --ifm-color-primary-lightest: hsl(var(--ifm-color-primary-h), var(--ifm-color-primary-s), 78%);
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.2);
+  --neon-a-fg: oklch(0.56 0.221383 259.5601);
+  --neon-a-fg-45: oklch(0.56 0.221383 259.5601 / 45%);
+  --neon-a-bg: oklch(0.87 0.0802 217.08 / 50%);
+  --neon-a-bg-hover: oklch(0.87 0.0802 217.08 / 55%);
+  --neon-a-bg-active: oklch(0.87 0.0802 217.08 / 30%);
+  --neon-a-bg-pattern: oklch(0.87 0.0802 217.08 / 80%);
+  --neon-a-bg-surface: oklch(0.87 0.0802 217.08 / 16%);
 
-  --ifm-code-background: rgba(255, 255, 255, 0.15);
+  --surface-1: oklch(0.95 0.0099 267.36 / 85%);
 
-  --ifm-background-color: hsl(225, 24%, 7%);
+  --gray-universal: oklch(0.7 0.0207 298.9);
+  --gray-universal-12: oklch(0.7 0.0207 298.9 / 12%);
+  --gray-universal-36: oklch(0.7 0.0207 298.9 / 36%);
 
-  --ifm-font-weight-light: 200;
-  --ifm-font-weight-normal: 300;
-  --ifm-font-weight-semibold: 700;
+  --ifm-font-color-base: var(--text-primary);
+
+  --ifm-color-primary: oklch(0.56 0.221383 259.5601);
+  --ifm-color-primary-dark: oklch(0.53 0.221383 259.5601);
+  --ifm-color-primary-darker: oklch(0.5 0.221383 259.5601);
+  --ifm-color-primary-darkest: oklch(0.47 0.221383 259.5601);
+  --ifm-color-primary-light: oklch(0.58 0.221383 259.5601);
+  --ifm-color-primary-lighter: oklch(0.6 0.221383 259.5601);
+  --ifm-color-primary-lightest: oklch(0.62 0.221383 259.5601);
+
+  --ifm-background-color: oklch(0.98 0.008252 271.3302);
+
+  --ifm-link-color: var(--ifm-color-primary);
+
+  --ifm-toc-link-color: var(--text-secondary);
+
+  --ifm-footer-background-color: var(--surface-1);
+  --ifm-footer-link-color: var(--text-secondary);
+  --ifm-footer-logo-max-width: min(95%, 330px);
+
+  --ifm-code-background: var(--gray-universal-12);
+  --ifm-code-padding-vertical: 0.2em;
+  --ifm-code-padding-horizontal: 0.325em;
+
+  --ifm-table-head-background: var(--neon-a-bg);
+  --ifm-table-stripe-background: var(--neon-a-bg-surface);
+  --ifm-table-border-width: 0;
+  --ifm-table-cell-padding: 12px 24px;
+
+  --ifm-font-weight-light: 300;
+  --ifm-font-weight-normal: 400;
+  --ifm-font-weight-semibold: 600;
   --ifm-font-weight-bold: 800;
 
   --ifm-font-family-base: 'Martian Grotesk', 'Roboto', sans-serif;
   --ifm-font-family-monospace: 'Martian Mono', monospace;
-  --ifm-font-size-base: 16px;
+  --ifm-font-size-base: 17.5px;
   --ifm-font-weight-base: var(--ifm-font-weight-normal);
   --ifm-line-height-base: 2;
 
   --ifm-heading-font-family: 'Martian Grotesk', 'Roboto', sans-serif;
   --ifm-heading-font-weight: var(--ifm-font-weight-bold);
+  --ifm-heading-line-height: 1.2;
 
-  --ifm-table-stripe-background: rgba(255, 255, 255, 0.05);
+  --ifm-code-font-size: 15px;
+
+  --display-block-light: block;
+  --display-block-dark: none;
 }
 
-[data-theme='dark']:root, .footer--dark {
-  --ifm-footer-background-color: #ffffff0d;
+[data-theme='dark']:root {
+  --text-primary: oklch(0.98 0.008252 271.3302);
+  --text-secondary: oklch(0.87 0.0082 286.23);
+  --text-tertiary: oklch(0.76 0.0174 301.13);
+
+  --neon-a-fg: oklch(0.81 0.1271 225.99);
+  --neon-a-fg-45: oklch(0.81 0.1271 225.99 / 45%);
+  --neon-a-bg: oklch(0.42 0.0755 219.7 / 50%);
+  --neon-a-bg-hover: oklch(0.42 0.0755 219.7 / 55%);
+  --neon-a-bg-active: oklch(0.42 0.0755 219.7 / 30%);
+  --neon-a-bg-pattern: oklch(0.42 0.0755 219.7 / 80%);
+  --neon-a-bg-surface: oklch(0.42 0.0755 219.7 / 16%);
+  --neon-b-fg: oklch(0.82 0.101 27.67);
+
+  --surface-1: oklch(0.21 0.0141 272.63 / 85%);
+
+  --ifm-color-primary: oklch(0.81 0.1271 225.99);
+  --ifm-color-primary-dark: oklch(0.78 0.1271 225.99);
+  --ifm-color-primary-darker: oklch(0.75 0.1271 225.99);
+  --ifm-color-primary-darkest: oklch(0.72 0.1271 225.99);
+  --ifm-color-primary-light: oklch(0.84 0.1071 225.99);
+  --ifm-color-primary-lighter: oklch(0.87 0.0871 225.99);
+  --ifm-color-primary-lightest: oklch(0.9 0.0671 225.99);
+
+  --ifm-background-color: oklch(0.17 0.0138 270.49);
+
+  --ifm-code-background: var(--gray-universal-12);
+
+  --ifm-table-head-background: var(--neon-a-bg);
+  --ifm-table-stripe-background: var(--neon-a-bg-surface);
+
+  --display-block-light: none;
+  --display-block-dark: block;
+}
+
+@media(max-width: 994px) {
+  :root {
+    --ifm-font-size-base: 15px;
+    --ifm-line-height-base: 28px;
+
+    --ifm-table-cell-padding: 8px 12px;
+  }
+}
+
+.markdown {
+  --ifm-h1-font-size: 60px;
+  --ifm-h2-font-size: 45px;
+  --ifm-h3-font-size: 25px;
+  --ifm-h4-font-size: 25px;
+
+  h1:first-child {
+    --ifm-h1-font-size: 60px;
+  }
+
+  @media(max-width: 994px) {
+    --ifm-h1-font-size: 50px;
+    --ifm-h2-font-size: 40px;
+    --ifm-h3-font-size: 22.5px;
+    --ifm-h4-font-size: 17.5px;
+
+    h1:first-child {
+      --ifm-h1-font-size: 50px;
+    }
+
+  }
 }
 
 body {
   font-weight: var(--ifm-font-weight-base);
-  font-variation-settings: 'wght' var(--ifm-font-weight-base);
+  font-variation-settings: 'wght' var(--ifm-font-weight-base), 'wdth' 100;
   font-synthesis-weight: none;
 }
 
@@ -64,18 +162,47 @@ body {
 }
 
 h1 {
-  --ifm-heading-font-weight: 900;
+  --ifm-heading-font-weight: 860;
+  font-variation-settings: "wght" 860, "wdth" 112.5;
+
+  @media(max-width: 994px) {
+    --ifm-heading-font-weight: 900;
+    font-variation-settings: "wght" 900, "wdth" 75;
+  }
 }
 
-h2, h3 {
-  font-stretch: condensed;
+h2 {
+  font-variation-settings: "wght" 820, "wdth" 112.5;
+
+  @media(max-width: 994px) {
+    --ifm-heading-font-weight: 800;
+    font-variation-settings: "wght" 800, "wdth" 75;
+  }
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-variation-settings: 'wght' var(--ifm-heading-font-weight);
+h3 {
+  font-variation-settings: "wght" 820, "wdth" 106;
+
+  @media(max-width: 994px) {
+    --ifm-heading-font-weight: 700;
+    font-variation-settings: "wght" 700, "wdth" 75;
+  }
+}
+
+h4, h5, h6 {
+  font-variation-settings: "wght" 500, "wdth" 75;
 }
 
 pre {
   font-weight: var(--ifm-font-weight-base);
-  font-variation-settings: 'wght' var(--ifm-font-weight-base);
+  font-variation-settings: "wght" 400, "wdth" 87.5;
+  line-height: 24px;
+}
+
+code {
+  border: 1px solid var(--gray-universal-36);
+}
+
+table {
+  text-align: left;
 }
