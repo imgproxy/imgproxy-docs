@@ -296,6 +296,23 @@ Defines an area of the image to be processed (crop before resize).
   * When `width` or `height` is set to `0`, imgproxy will use the full width/height of the source image.
 * `gravity` _(optional)_ accepts the same values as the [gravity](#gravity) option. When `gravity` is not set, imgproxy will use the value of the [gravity](#gravity) option.
 
+### Crop aspect ratio ((pro))
+
+```imgproxy_url_option
+crop_aspect_ratio:%aspect_ratio:%enlarge
+crop_ar:%aspect_ratio:%enlarge
+car:%aspect_ratio:%enlarge
+```
+
+Corrects the aspect ratio of the crop area defined with the [crop](#crop) processing option.
+
+* `aspect_ratio` - the aspect ratio that the crop area should match. When set to `0`, imgproxy doesn't correct the crop area aspect ratio.
+* `enlarge` - when set to `1`, `t`, or `true`, imgproxy will enlarge the crop area when needed instead of reducing it. If any dimension of the enlarged crop area exceeds the image size, imgproxy will reduce the crop area to fit the image, maintaining the requested aspect ratio.
+
+:::info
+This option only corrects the crop area size but doesn't correct the crop gravity. This means that if you use the following options – `crop:100:200:nowe:300:400/crop_ar:1.1` – imgproxy will crop the 300x400x200x200 area. If you want imgproxy to maintain the crop area center, use the `fp` [gravity](#gravity) instead.
+:::
+
 ### Trim
 
 ```imgproxy_url_option
