@@ -36,8 +36,10 @@ imgproxy will send the following info to Datadog:
 
 When the `IMGPROXY_DATADOG_ENABLE_ADDITIONAL_METRICS` environment variable is set to `true`, imgproxy will send the following additional metrics to Datadog:
 
+* `imgproxy.workers`: the configured number of imgproxy workers
 * `imgproxy.requests_in_progress`: the number of requests currently in progress
 * `imgproxy.images_in_progress`: the number of images currently in progress
+* `imgproxy.workers_utilization`: the percentage of imgproxy's workers utilization. Calculated as `imgproxy.requests_in_progress / imgproxy.workers * 100`
 * `imgproxy.buffer.size`: a histogram of the download buffers sizes (in bytes)
 * `imgproxy.buffer.default_size`: calibrated default buffer size (in bytes)
 * `imgproxy.buffer.max_size`: calibrated maximum buffer size (in bytes)

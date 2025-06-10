@@ -17,8 +17,10 @@ imgproxy will collect the following metrics:
 * `errors_total`: a counter of the occurred errors separated by type (timeout, downloading, processing)
 * `request_duration_seconds`: a histogram of the request latency (in seconds)
 * `request_span_duration_seconds`: a histogram of the request latency (in seconds) separated by span (queue, downloading, processing)
+* `workers`: the configured number of imgproxy workers
 * `requests_in_progress`: the number of requests currently in progress
 * `images_in_progress`: the number of images currently in progress
+* `workers_utilization`: the percentage of imgproxy's workers utilization. Calculated as `requests_in_progress / workers * 100`
 * `buffer_size_bytes`: a histogram of the download buffers sizes (in bytes)
 * `buffer_default_size_bytes`: calibrated default buffer size (in bytes)
 * `buffer_max_size_bytes`: calibrated maximum buffer size (in bytes)
