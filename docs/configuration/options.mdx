@@ -85,6 +85,34 @@ imgproxy can process animated images (GIF, WebP), but since this operation is pr
 * [`IMGPROXY_MAX_ANIMATION_FRAMES`]: the maximum number of animated image frames that may be processed. Default: `1`
 * [`IMGPROXY_MAX_ANIMATION_FRAME_RESOLUTION`]: the maximum resolution of the animated source image frame, in megapixels. Images with larger actual frame size will be rejected. When set to `0`, imgproxy will test the whole animated image resolution against `IMGPROXY_MAX_SRC_RESOLUTION` summarising all the frames' resolutions. Default: `0`
 
+* [`IMGPROXY_MAX_RESULT_DIMENSION`]: the maximum width or height the resultant image can have, in pixels. When any of the dimensions exceeds this value, imgproxy will scale the image down to fit within the specified maximum dimension. When set to `0`, this check is disabled. Default: `0`
+
+* [`IMGPROXY_ALLOWED_PROCESSING_OPTIONS`]: a list of processing options allowed to be used in imgproxy URLs, divided by comma. When blank, all processing options are allowed. Default: blank
+
+  :::info
+  If you want to allow both full and short names of a processing option, you should specify them both. For example, if you specify only `resize`, imgproxy will reject URLs with `rs` as a processing option, and vice versa.
+  :::
+
+  :::tip
+  imgproxy doesn't check the processing options used in presets. This enables you to allow using a limited set of processing options directly in imgproxy URLs, while having a set of presets for the rest of them.
+  :::
+
+* [`IMGPROXY_ALLOWED_INFO_OPTIONS`]: a list of info options allowed to be used in imgproxy URLs, divided by comma. When blank, all info options are allowed. Default: blank
+
+  :::info
+  If you want to allow both full and short names of an info option, you should specify them both. For example, if you specify only `dominant_colors`, imgproxy will reject URLs with `dc` as an info option, and vice versa.
+  :::
+
+  :::tip
+  imgproxy doesn't check the info options used in presets. This enables you to allow using a limited set of info options directly in imgproxy URLs, while having a set of presets for the rest of them.
+  :::
+
+* [`IMGPROXY_MAX_CHAINED_PIPELINES`]: the maximum number of chained pipelines that can be specified in the imgproxy URL. When set to `0`, this check is disabled. Default: `0`
+
+  :::tip
+  imgproxy doesn't check the number of chained pipelines used in presets
+  :::
+
 To check if the source image is SVG, imgproxy reads some amount of bytes; by default it reads a maximum of 32KB. However, you can change this value using the following variable:
 
 * [`IMGPROXY_MAX_SVG_CHECK_BYTES`]: the maximum number of bytes imgproxy will read to recognize SVG files. If imgproxy is unable to recognize your SVG, try increasing this number. Default: `32768` (32KB)
@@ -149,7 +177,7 @@ Also you may want imgproxy to respond with the same error message that it writes
 
 * [`IMGPROXY_DEVELOPMENT_ERRORS_MODE`]: when `true`, imgproxy will respond with detailed error messages. Not recommended for production because some errors may contain stack traces.
 
-* [`IMGPROXY_ALLOW_SECURITY_OPTIONS`]: when `true`, allows usage of security-related processing options such as `max_src_resolution`, `max_src_file_size`, `max_animation_frames`, and `max_animation_frame_resolution`. Default: `false`.
+* [`IMGPROXY_ALLOW_SECURITY_OPTIONS`]: when `true`, allows usage of security-related processing options such as `max_src_resolution`, `max_src_file_size`, `max_animation_frames`, `max_animation_frame_resolution`, and `max_result_dimension`. Default: `false`.
 
   :::warning
   `IMGPROXY_ALLOW_SECURITY_OPTIONS` allows bypassing your security restrictions. Don't set it to `true` unless you are completely sure that an attacker can't change your imgproxy URLs.
