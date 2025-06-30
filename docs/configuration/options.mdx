@@ -234,6 +234,14 @@ Cookies can contain sensitive information. Be careful when using `IMGPROXY_COOKI
 
 * [`IMGPROXY_WEBP_COMPRESSION`]: ((pro)) the compression method to use. Supported values are `lossy`, `near_lossless`, and `lossless`. Default: `lossy`
 * [`IMGPROXY_WEBP_SMART_SUBSAMPLE`]: ((pro)) when `true`, enables smart subsampling. Smart subsampling increases the resulting file size and compression time but improves quality. Default: `false`
+* [`IMGPROXY_WEBP_EFFORT`]: controls the CPU effort spent improving compression. The larger the value, the slower the encoding process but the better the compression. The value should be between 1 and 6. Default: `4`
+* [`IMGPROXY_WEBP_PRESET`]: a hint to the encoder about the type of image being compressed. Supported values are:
+  * `default`: _(default)_ a general-purpose preset
+  * `photo`: a digital picture, like portrait, inner shot
+  * `picture`: an outdoor photograph, with natural lighting
+  * `drawing`: a hand or line drawing, with high-contrast details
+  * `icon`: a small-sized colorful image
+  * `text`: a text image, with large areas of uniform color
 
 ### Advanced AVIF compression
 
