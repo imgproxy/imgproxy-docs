@@ -19,7 +19,7 @@ At the moment, imgproxy supports only the most popular image formats:
 | HEIC                        | `heic`    | :white_check_mark:             | :white_check_mark:        |
 | BMP                         | `bmp`     | :white_check_mark:             | :white_check_mark:        |
 | TIFF                        | `tiff`    | :white_check_mark:             | :white_check_mark:        |
-| PDF ((pro))                 | `pdf`     | :white_check_mark:             | :x:                       |
+| PDF ((pro))                 | `pdf`     | :white_check_mark:             | [See notes](#pdf-support) |
 | PSD ((pro))                 | `psd`     | [See notes](#psd-support)      | :x:                       |
 | MP4 (h264) ((pro))          | `mp4`     | [See notes](#video-thumbnails) | :white_check_mark:        |
 | Other video formats ((pro)) |           | [See notes](#video-thumbnails) | :x:                       |
@@ -49,6 +49,14 @@ Since the processing of animated images is a pretty heavy process, only one fram
 :::info
 imgproxy summarizes all frames resolutions while the checking source image resolution.
 :::
+
+## PDF support ((pro)) {#pdf-support}
+
+imgproxy supports PDF both as a source and result format.
+
+When PDF is used as a source, imgproxy renders the specified pages as raster images.
+
+When PDF is used as a result format, imgproxy renders the image as a JPEG image and embeds it into a single-page PDF document.
 
 ## PSD support ((pro)) {#psd-support}
 
