@@ -708,7 +708,13 @@ The source URL can be provided as is, prepended by `/plain/` part:
 ```
 
 :::info
-If the source URL contains a query string or `@`, you'll need to escape it.
+imgproxy expects the source URL to be escaped (percent-encoded) when using the `/plain/` segment.
+
+If you don't want to percent-encode all the special characters in the source URL, you can replace only the ones that can cause issues with imgproxy:
+
+* Replace `%` with `%25` (you should do this before percent-encoding the rest of the URL)
+* Replace `?` with `%3F`
+* Replace `@` with `%40`
 :::
 
 ### Base64 encoded
