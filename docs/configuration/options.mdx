@@ -51,7 +51,7 @@ echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
 * [`IMGPROXY_SET_CANONICAL_HEADER`]: when `true` and the source image has an `http` or `https` scheme, set a `rel="canonical"` HTTP header to the value of the source image URL. More details [here](https://developers.google.com/search/docs/advanced/crawling/consolidate-duplicate-urls#rel-canonical-header-method). Default: `false`
 * [`IMGPROXY_SO_REUSEPORT`]: when `true`, enables `SO_REUSEPORT` socket option (currently only available on Linux and macOS);
 * [`IMGPROXY_PATH_PREFIX`]: the URL path prefix. Example: when set to `/abc/def`, the imgproxy URL will be `/abc/def/%signature/%processing_options/%source_url`. Default: blank
-* [`IMGPROXY_USER_AGENT`]: the User-Agent header that will be sent with the source image request. Default: `imgproxy/%current_version`
+* [`IMGPROXY_USER_AGENT`]: the User-Agent header that will be sent with the source image request. You can use the `%current_version` variable to insert the current imgproxy version. Default: `imgproxy/%current_version`
 * [`IMGPROXY_USE_ETAG`]: when set to `true`, enables using the [ETag](https://en.wikipedia.org/wiki/HTTP_ETag) HTTP header for HTTP cache control. Default: `false`
 * [`IMGPROXY_ETAG_BUSTER`]: change this to change ETags for all the images. Default: blank
 * [`IMGPROXY_USE_LAST_MODIFIED`]: when set to `true`, enables using the [Last-Modified](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified) HTTP header for HTTP cache control. Default: `false`
