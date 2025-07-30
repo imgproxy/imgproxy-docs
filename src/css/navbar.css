@@ -17,104 +17,63 @@
 }
 
 
-.navbar__link--icon span {
-  display: none;
-}
-
-.navbar__link--icon::before {
-  content: '';
-  display: flex;
-  background-position: center;
-  background-repeat: no-repeat;
-  width: 1.5em;
-  height: 1.5em;
-}
-
-.navbar__link--icon:hover::before {
-  opacity: 0.8;
-}
-
-.navbar__link--github {
+.navbar__link--icon {
   &::before {
-    background-image: url('/img/github-light.svg');
+    content: '';
+    display: block;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    background: var(--text-primary);
+    width: 24px;
+    height: 24px;
   }
 
-  [data-theme='dark'] &::before {
-    background-image: url('/img/github-dark.svg');
-  }
-}
-
-.navbar__link--bluesky {
-  &::before {
-    background-image: url('/img/bluesky-light.svg');
-  }
-
-  [data-theme='dark'] &::before {
-    background-image: url('/img/bluesky-dark.svg');
+  &:hover::before {
+    background: var(--neon-a-fg);
   }
 }
 
-.navbar__link--x {
-  &::before {
-    background-image: url('/img/x-com-light.svg');
-  }
-
-  [data-theme='dark'] &::before {
-    background-image: url('/img/x-com-dark.svg');
-  }
+.navbar__link--github::before {
+  mask-image: url('/img/github.svg');
 }
 
-.navbar__link--discord {
-  &::before {
-    background-image: url('/img/discord-light.svg');
-  }
-
-  [data-theme='dark'] &::before {
-    background-image: url('/img/discord-dark.svg');
-  }
+.navbar__link--bluesky::before {
+  mask-image: url('/img/bluesky.svg');
 }
 
-.navbar__link--sponsor {
-  &::before {
-    background-image: url('/img/heart-light.svg');
-  }
+.navbar__link--x::before {
+  mask-image: url('/img/x-com.svg');
+}
 
-  [data-theme='dark'] &::before {
-    background-image: url('/img/heart-dark.svg');
-  }
+.navbar__link--discord::before {
+  mask-image: url('/img/discord.svg');
+}
+
+.navbar__link--sponsor::before {
+  mask-image: url('/img/heart.svg');
 }
 
 
-.navbar-sidebar .navbar__link--icon span {
-  display: inline;
+.navbar-sidebar .navbar__link--icon::after {
+  margin-left: 0.5em;
 }
 
-.navbar-sidebar .navbar__link--icon::before {
-  background: none;
-  width: auto;
-  height: auto;
-}
-
-.navbar-sidebar .navbar__link--icon:hover::before {
-  opacity: 1;
-}
-
-.navbar-sidebar .navbar__link--github::before {
+.navbar-sidebar .navbar__link--github::after {
   content: 'GitHub';
 }
 
-.navbar-sidebar .navbar__link--bluesky::before {
+.navbar-sidebar .navbar__link--bluesky::after {
   content: 'Bluesky';
 }
 
-.navbar-sidebar .navbar__link--x::before {
+.navbar-sidebar .navbar__link--x::after {
   content: 'X (Twitter)';
 }
 
-.navbar-sidebar .navbar__link--discord::before {
+.navbar-sidebar .navbar__link--discord::after {
   content: 'Discord';
 }
 
-.navbar-sidebar .navbar__link--sponsor::before {
+.navbar-sidebar .navbar__link--sponsor::after {
   content: 'Sponsor imgproxy';
 }
