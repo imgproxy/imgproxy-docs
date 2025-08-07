@@ -23,16 +23,6 @@
 }
 
 
-.DocSearch-Button {
-  min-width: 25vw;
-}
-
-@media (max-width: 996px) {
-  .DocSearch-Button {
-    min-width: unset;
-  }
-}
-
 [data-theme='light'] .DocSearch-Button-Key,
 [data-theme='light'] .DocSearch-Commands-Key,
 [data-theme='dark'] .DocSearch-Button-Key,

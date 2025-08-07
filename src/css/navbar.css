@@ -37,18 +37,6 @@
   mask-image: url('/img/github.svg');
 }
 
-.navbar__link--bluesky::before {
-  mask-image: url('/img/bluesky.svg');
-}
-
-.navbar__link--x::before {
-  mask-image: url('/img/x-com.svg');
-}
-
-.navbar__link--discord::before {
-  mask-image: url('/img/discord.svg');
-}
-
 .navbar__link--sponsor::before {
   mask-image: url('/img/heart.svg');
 }
@@ -60,18 +48,6 @@
 
 .navbar-sidebar .navbar__link--github::after {
   content: 'GitHub';
-}
-
-.navbar-sidebar .navbar__link--bluesky::after {
-  content: 'Bluesky';
-}
-
-.navbar-sidebar .navbar__link--x::after {
-  content: 'X (Twitter)';
-}
-
-.navbar-sidebar .navbar__link--discord::after {
-  content: 'Discord';
 }
 
 .navbar-sidebar .navbar__link--sponsor::after {

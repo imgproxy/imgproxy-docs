@@ -159,16 +159,44 @@ const config: Config = {
       },
       items: [
         {
-          type: "docsVersionDropdown",
-          position: "left",
-        },
-        {
-          type: "search",
-          position: "left",
-        },
-        {
           label: "imgproxy.net",
           href: "https://imgproxy.net",
+          position: "left",
+        },
+        {
+          type: "dropdown",
+          label: "Community",
+          position: "left",
+          items: [
+            {
+              href: "https://discord.gg/5GgpXgtC9u",
+              label: "Discord",
+            },
+            {
+              href: "https://x.com/imgproxy_net",
+              label: "X (Twitter)",
+            },
+            {
+              href: "https://bsky.app/profile/imgproxy.net",
+              label: "Bluesky",
+            },
+            {
+              href: "https://mastodon.social/@imgproxy",
+              label: "Mastodon",
+            },
+            {
+              href: "https://www.threads.com/@imgproxy",
+              label: "Threads",
+            },
+            {
+              href: "https://www.linkedin.com/company/imgproxy/",
+              label: "LinkedIn",
+            },
+          ],
+        },
+
+        {
+          type: "docsVersionDropdown",
           position: "right",
         },
         {
@@ -177,27 +205,6 @@ const config: Config = {
           className: "navbar__link--icon navbar__link--github",
           title: "GitHub",
           "aria-label": "GitHub",
-        },
-        {
-          href: "https://bsky.app/profile/imgproxy.net",
-          position: "right",
-          className: "navbar__link--icon navbar__link--bluesky",
-          title: "Bluesky",
-          "aria-label": "Bluesky",
-        },
-        {
-          href: "https://x.com/imgproxy_net",
-          position: "right",
-          className: "navbar__link--icon navbar__link--x",
-          title: "X (Twitter)",
-          "aria-label": "X (Twitter)",
-        },
-        {
-          href: "https://discord.gg/5GgpXgtC9u",
-          position: "right",
-          className: "navbar__link--icon navbar__link--discord",
-          title: "Discord",
-          "aria-label": "Discord",
         },
         {
           href: "https://github.com/sponsors/imgproxy",
@@ -239,16 +246,24 @@ const config: Config = {
           title: "Community",
           items: [
             {
-              label: "Bluesky",
-              href: "https://bsky.app/profile/imgproxy.net",
-            },
-            {
               label: "X (Twitter)",
               href: "https://x.com/imgproxy_net",
             },
             {
               label: "Discord",
               href: "https://discord.gg/5GgpXgtC9u",
+            },
+            {
+              label: "Bluesky",
+              href: "https://bsky.app/profile/imgproxy.net",
+            },
+            {
+              label: "Mastodon",
+              href: "https://mastodon.social/@imgproxy",
+            },
+            {
+              label: "Threads",
+              href: "https://www.threads.com/@imgproxy",
             },
             {
               label: "LinkedIn",
