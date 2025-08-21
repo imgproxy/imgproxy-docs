@@ -733,6 +733,32 @@ scp:%strip_color_profile
 
 When set to `1`, `t` or `true`, imgproxy will transform the embedded color profile (ICC) to sRGB and remove it from the image. Otherwise, imgproxy will try to keep it as is. This is normally controlled by the [IMGPROXY_STRIP_COLOR_PROFILE](../configuration/options.mdx#IMGPROXY_STRIP_COLOR_PROFILE) configuration but this processing option allows the configuration to be set for each request.
 
+### Color profile ((pro)) {#color-profile}
+
+```imgproxy_url_option
+color_profile:%profile
+cp:%profile
+icc:%profile
+```
+
+When set, imgproxy will convert the image's colorspace according to the provided color profile and embed the profile into the image.
+
+`%profile` can be one of the following values:
+
+* `srgb`: a built-in compact sRGB profile.
+* `cmyk`: a built-in "Chemical proof" CMYK profile.
+* A filename of a custom color profile that is located in the [IMGPROXY_COLOR_PROFILES_DIR](../configuration/options.mdx#IMGPROXY_COLOR_PROFILES_DIR) directory. The filename should be escaped (percent-encoded). The `.icc` or `.icm` extension can be omitted.
+
+:::info
+This processing option is ignored if the resulting image format doesn't support color profiles.
+:::
+
+:::info
+Color profiles embedded with this processing option are not stripped by the [strip_color_profile](#strip-color-profile) option or the [IMGPROXY_STRIP_COLOR_PROFILE](../configuration/options.mdx#IMGPROXY_STRIP_COLOR_PROFILE) configuration.
+:::
+
+Default: blank
+
 ### Enforce thumbnail
 
 ```imgproxy_url_option
