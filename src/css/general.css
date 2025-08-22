@@ -29,12 +29,12 @@
   --ifm-font-color-base: var(--text-primary);
 
   --ifm-color-primary: oklch(0.56 0.221383 259.5601);
-  --ifm-color-primary-dark: oklch(0.53 0.221383 259.5601);
-  --ifm-color-primary-darker: oklch(0.5 0.221383 259.5601);
-  --ifm-color-primary-darkest: oklch(0.47 0.221383 259.5601);
+  --ifm-color-primary-dark: oklch(0.51 0.221383 259.5601);
+  --ifm-color-primary-darker: oklch(0.441 0.221383 259.5601);
+  --ifm-color-primary-darkest: oklch(0.37 0.1921875 259.5601);
   --ifm-color-primary-light: oklch(0.58 0.221383 259.5601);
-  --ifm-color-primary-lighter: oklch(0.6 0.221383 259.5601);
-  --ifm-color-primary-lightest: oklch(0.62 0.221383 259.5601);
+  --ifm-color-primary-lighter: oklch(0.61 0.221383 259.5601);
+  --ifm-color-primary-lightest: oklch(0.63 0.216312 259.5601);
 
   --ifm-background-color: oklch(0.98 0.008252 271.3302);
 
@@ -93,12 +93,12 @@
   --surface-1: oklch(0.21 0.0141 272.63 / 85%);
 
   --ifm-color-primary: oklch(0.81 0.1271 225.99);
-  --ifm-color-primary-dark: oklch(0.78 0.1271 225.99);
-  --ifm-color-primary-darker: oklch(0.75 0.1271 225.99);
-  --ifm-color-primary-darkest: oklch(0.72 0.1271 225.99);
-  --ifm-color-primary-light: oklch(0.84 0.1071 225.99);
-  --ifm-color-primary-lighter: oklch(0.87 0.0871 225.99);
-  --ifm-color-primary-lightest: oklch(0.9 0.0671 225.99);
+  --ifm-color-primary-dark: oklch(0.79 0.1271 225.99);
+  --ifm-color-primary-darker: oklch(0.78 0.1271 225.99);
+  --ifm-color-primary-darkest: oklch(0.76 0.1271 225.99);
+  --ifm-color-primary-light: oklch(0.84 0.1098 225.99);
+  --ifm-color-primary-lighter: oklch(0.88 0.0816 225.99);
+  --ifm-color-primary-lightest: oklch(0.91 0.0582 225.99);
 
   --ifm-background-color: oklch(0.17 0.0138 270.49);
 

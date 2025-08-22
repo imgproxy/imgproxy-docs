@@ -3,11 +3,11 @@
 }
 
 .code-anchor code {
-  color: oklch(0.55 0.1269 87.53);
+  color: oklch(0.495 0.1161 87.53);
   font-variation-settings: 'wght' 500, 'wdth' 100;
 
   [data-theme='dark'] & {
-    color: oklch(0.87 0.1745 87.53);
+    color: oklch(0.8556 0.174 87.53);
   }
 }
 
