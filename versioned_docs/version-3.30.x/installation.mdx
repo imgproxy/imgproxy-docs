@@ -1,0 +1,239 @@
+---
+description: Learn about how to install imgproxy locally or deploy it to a cloud
+---
+
+# Installation
+
+There are multiple ways you can install imgproxy:
+
+## Docker
+
+imgproxy can (and this is highly recommended) be used as a standalone application inside a Docker container. Just pull the official image from GitHub Container Registry:
+
+```bash
+docker pull ghcr.io/imgproxy/imgproxy:latest
+docker run -p 8080:8080 -it ghcr.io/imgproxy/imgproxy:latest
+```
+
+You can also build your own image. imgproxy is ready to be dockerized out of the box:
+
+```bash
+docker build -f docker/Dockerfile -t imgproxy .
+docker run -p 8080:8080 -it imgproxy
+```
+
+## Helm
+
+imgproxy can be easily deployed to your Kubernetes cluster using Helm and our official Helm chart:
+
+```bash
+helm repo add imgproxy https://helm.imgproxy.net/
+
+# With Helm 3
+helm upgrade -i imgproxy imgproxy/imgproxy
+
+# With Helm 2
+helm upgrade -i --name imgproxy imgproxy/imgproxy
+```
+
+Check out the [chart's README](https://github.com/imgproxy/imgproxy-helm) for more info.
+
+## Clouds
+
+### Heroku
+
+imgproxy can be deployed to [Heroku](https://www.heroku.com/) with the click of a button:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/imgproxy/imgproxy)
+
+That being said, you can also do it manually in just a few steps:
+
+```bash
+git clone https://github.com/imgproxy/imgproxy.git && cd imgproxy
+heroku create your-application
+heroku stack:set container
+git push heroku master
+```
+
+If you want to deploy a specific version of imgproxy or imgproxy Pro, you can use [Heroku Container Registry](https://devcenter.heroku.com/articles/container-registry-and-runtime):
+
+```bash
+heroku create your-application
+heroku stack:set container -a your-application
+heroku container:login
+# Replace "v3" with the imgproxy version you want to deploy
+docker pull ghcr.io/imgproxy/imgproxy:v3-amd64
+docker tag ghcr.io/imgproxy/imgproxy:v3-amd64 registry.heroku.com/your-application/web
+docker push registry.heroku.com/your-application/web
+heroku container:release web -a your-application
+```
+
+:::warning
+Take a note that the example is using a tag suffixed with `-amd64` when pulling imgproxy Docker image. This suffix ensures that `docker pull` will download an image built for the `AMD64` CPU architecture which is used by Heroku.
+
+If the machine where you're running these commands uses an `ARM64` CPU (such as Apple Silicone ones) and you don't use the `-amd64` suffix, `docker pull` will download an image built for the `ARM64` CPU architecture, and it won't be able to launch on Heroku.
+:::
+
+### AWS Lambda
+
+You can find a step-by-step guide on how to deploy imgproxy to AWS Lambda in [our blog post](https://imgproxy.net/blog/almost-free-image-processing-with-imgproxy-and-aws-lambda/).
+
+### AWS Elastic Container Service (ECS)
+
+You can deploy imgproxy to AWS ECS using the [official imgproxy CloudFormation template](https://github.com/imgproxy/imgproxy-cloudformation).
+
+## Packages
+
+### Building Linux packages
+
+We don't provide packages for imgproxy yet, but you can use the `imgproxy-build-package` script to export a DEB, RPM, or TAR package from a Docker image:
+
+```bash
+docker run -u0 --rm -it -v $(pwd):/dist ghcr.io/imgproxy/imgproxy:latest-amd64 imgproxy-build-package deb /dist
+```
+
+Where:
+* `ghcr.io/imgproxy/imgproxy:latest-amd64` is the imgproxy Docker image you want to export the package from. Take note that we used the `-amd64` suffix in the image tag. This suffix ensures that the image built for the `AMD64` CPU architecture will be used. If you're using an `ARM64` CPU, you should replace the `-amd64` suffix with `-arm64`.
+* `$(pwd)` is the directory on your host machine where the package will be saved. `$(pwd)` is a shell command that returns the current working directory. You can replace it with the path to the directory where you want to save the package.
+* `deb` is the package format you want to export. You can replace it with `rpm` or `tar` to export an RPM or TAR package.
+
+:::info
+imgproxy binaries are linked against **libc 2.31** and **libstdc++ 10.2.1**, so you need to have these versions or newer on your system to run imgproxy. Here's a list of some Linux distributions that have these versions or newer:
+
+* Ubuntu 20.04+ (Focal Fossa and newer)
+* Debian 11+ (Bullseye and newer)
+* Fedora 33+
+* CentOS/RHEL 9+
+:::
+
+#### Installing a DEB package (Debian/Ubuntu)
+
+You can install a DEB package on your Debian/Ubuntu system using the following command:
+
+```bash
+sudo dpkg -i imgproxy-3.25.0.arm64.deb
+```
+
+Where `imgproxy-3.25.0.arm64.deb` is the name of the DEB package you've exported.
+
+If you don't have some of the required dependencies installed on your system, the installation process may fail. You fix the issue by running the following command:
+
+```bash
+sudo apt-get install -f
+```
+
+This command will install the missing dependencies and finish the installation of the imgproxy package.
+
+:::tip
+The package contains an `/etc/imgproxy.rc` file that you can use to configure imgproxy by exporting required environment variables.
+:::
+
+#### Installing an RPM package (Fedora/CentOS/RHEL)
+
+You can install an RPM package on your RHEL/Fedora/CentOS system using the following command:
+
+```bash
+sudo rpm -i imgproxy-3.25.0.arm64.rpm
+```
+
+Where `imgproxy-3.25.0.arm64.rpm` is the name of the RPM package you've exported.
+
+If you don't have some of the required dependencies installed on your system, the installation process may fail. You need to install the missing dependencies manually.
+
+:::tip
+The package contains an `/etc/imgproxy.rc` file that you can use to configure imgproxy by exporting required environment variables.
+:::
+
+#### Installing a TAR package
+
+You can extract the TAR package on your system using the following command:
+
+```bash
+tar -xzf imgproxy-3.25.0.arm64.tar.gz -C /opt
+```
+
+Where:
+* `imgproxy-3.25.0.arm64.tar.gz` is the name of the TAR package you've exported.
+* `/opt` is the directory where you want to extract the package. We'll refer to it as `%output_dir` from now on.
+
+Use the `%output_dir/imgproxy/bin/imgproxy` script to run imgproxy. You can create a symlink to this script in the `/usr/local/bin` directory or add the `%output_dir/imgproxy/bin` directory to your `PATH` environment variable to make the `imgproxy` command available system-wide.
+
+:::tip
+The package contains an `%output_dir/imgproxy/imgproxy.rc` file that you can use to configure imgproxy by exporting required environment variables.
+:::
+
+:::warning
+Take care to not overwrite the existing `%output_dir/imgproxy/imgproxy.rc` file when updating imgproxy. If you've made any changes to the configuration, you should merge them manually.
+:::
+
+### Arch Linux and derivatives
+
+[imgproxy](https://aur.archlinux.org/packages/imgproxy/) package is available from AUR.
+
+### macOS + Homebrew
+
+[imgproxy](https://formulae.brew.sh/formula/imgproxy) is available from [Homebrew](https://brew.sh/):
+```bash
+brew install imgproxy
+```
+
+## From the source
+
+:::warning
+imgproxy depends on [libvips](https://github.com/libvips/libvips) which has a lot of its own dependencies. We can't guarantee that the imgproxy dependencies installed in your system don't contain any bugs or vulnerabilities. We _highly_ recommend running imgproxy in a [Docker container](#docker) or using a [Linux package](#building-linux-packages) exported from a Docker image.
+:::
+
+You can get the imgproxy source code by cloning the GitHub repo:
+
+```bash
+git clone https://github.com/imgproxy/imgproxy.git
+cd imgproxy
+```
+
+...or by downloading the source tarball:
+
+```bash
+mkdir imgproxy
+cd imgproxy
+curl -Ls https://github.com/imgproxy/imgproxy/archive/master.tar.gz \
+  | tar -xz --strip-components 1 -C .
+```
+
+You can also download a specific version:
+
+```bash
+mkdir imgproxy
+cd imgproxy
+curl -Ls https://github.com/imgproxy/imgproxy/archive/v3.20.0.tar.gz \
+  | tar -xz --strip-components 1 -C .
+```
+
+### Ubuntu
+
+First, install [libvips](https://github.com/libvips/libvips). The easiest way is to use the apt package manager:
+
+```bash
+sudo apt-get update
+sudo apt-get install libvips-dev
+```
+
+However, the version of libvips in the Ubuntu repositories may be outdated, so you may want to build it from the source: [https://github.com/libvips/libvips/wiki/Build-for-Ubuntu](https://github.com/libvips/libvips/wiki/Build-for-Ubuntu)
+
+Next, [install the latest version of Go](https://go.dev/doc/install).
+
+And finally, install imgproxy itself:
+
+```bash
+CGO_LDFLAGS_ALLOW="-s|-w" \
+  go build -o /usr/local/bin/imgproxy
+```
+
+### macOS + Homebrew
+
+```bash
+brew install vips go
+PKG_CONFIG_PATH="$(brew --prefix libffi)/lib/pkgconfig" \
+  CGO_LDFLAGS_ALLOW="-s|-w" \
+  CGO_CFLAGS_ALLOW="-Xpreprocessor" \
+  go build -o /usr/local/bin/imgproxy
+```
