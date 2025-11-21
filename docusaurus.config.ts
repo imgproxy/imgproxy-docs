@@ -28,7 +28,6 @@ const config: Config = {
   baseUrl: "/",
 
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
 
   i18n: {
     defaultLocale: "en",
@@ -321,6 +320,9 @@ const config: Config = {
   } as PresetClassicThemeConfig,
 
   markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+    },
     mdx1Compat: {
       comments: false,
       admonitions: false,
