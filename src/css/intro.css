@@ -3,14 +3,18 @@
   max-width: 100%;
 }
 
-.intro__logo-light {
+.intro__img {
+  max-width: 100%;
+}
+
+.intro__img-light {
   display: block;
 
   [data-theme='dark'] & {
     display: none;
   }
 }
-.intro__logo-dark {
+.intro__img-dark {
   display: none;
 
   [data-theme='dark'] & {
