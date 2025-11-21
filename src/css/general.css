@@ -203,6 +203,11 @@ code {
   border: 1px solid var(--gray-universal-36);
 }
 
+strong {
+  font-weight: var(--ifm-font-weight-bold);
+  font-variation-settings: "wght" var(--ifm-font-weight-bold), "wdth" 100;
+}
+
 table {
   text-align: left;
 }
