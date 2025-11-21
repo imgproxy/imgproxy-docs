@@ -91,7 +91,7 @@ dimensions:%dimensions
 d:%dimensions
 ```
 
-When set to `1`, `t`, or `true`, imgproxy will return the image dimensions.
+When set to `1`, `t`, or `true`, imgproxy will return the image dimensions and orientation.
 
 Default: `true`.
 
@@ -100,9 +100,16 @@ Default: `true`.
 ```json
 {
   "width": 7360,
-  "height": 4912
+  "height": 4912,
+  "orientation": 1
 }
 ```
+
+:::info
+The `width` and `height` fields already account for orientation. For example, if the image has a width of `4000`, a height of `3000`, and an orientation of `6` (which means the image should be rotated 90 degrees clockwise), imgproxy will return `"width": 3000` and `"height": 4000`.
+
+The `orientation` field contains the EXIF orientation value (from `1` to `8`). If the image doesn't have EXIF orientation data, imgproxy will return `1`.
+:::
 
 ### EXIF
 
