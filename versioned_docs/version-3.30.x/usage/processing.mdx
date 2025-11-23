@@ -310,7 +310,7 @@ Corrects the aspect ratio of the crop area defined with the [crop](#crop) proces
 * `enlarge` - when set to `1`, `t`, or `true`, imgproxy will enlarge the crop area when needed instead of reducing it. If any dimension of the enlarged crop area exceeds the image size, imgproxy will reduce the crop area to fit the image, maintaining the requested aspect ratio.
 
 :::info
-This option only corrects the crop area size but doesn't correct the crop gravity. This means that if you use the following options – `crop:100:200:nowe:300:400/crop_ar:1.1` – imgproxy will crop the 300x400x200x200 area. If you want imgproxy to maintain the crop area center, use the `fp` [gravity](#gravity) instead.
+This option only corrects the crop area size but doesn't correct the crop gravity. This means that if you use the following options – `crop:100:200:nowe:300:400/crop_ar:1:1` – imgproxy will crop the 300x400x200x200 area. If you want imgproxy to maintain the crop area center, use the `fp` [gravity](#gravity) instead.
 :::
 
 ### Trim
