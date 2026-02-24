@@ -21,6 +21,10 @@ DarkNet model format has priority over ONNX model format. If you define both, im
 
 ### DarkNet model format
 
+:::warning
+DarkNet models support is deprecated and will be removed in imgproxy v4. Please use ONNX models instead.
+:::
+
 You need to define the following config variables to enable object detection with a [DarkNet](https://github.com/AlexeyAB/darknet) model:
 
 * [`IMGPROXY_OBJECT_DETECTION_CONFIG`]: a path to the neural network config in DarkNet format
