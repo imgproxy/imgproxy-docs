@@ -453,8 +453,35 @@ There are two ways to define presets:
 * [`IMGPROXY_PRESETS`]: a set of processing preset definitions, comma divided. Example: `default=resizing_type:fill/enlarge:1,sharp=sharpen:0.7,blurry=blur:2`. Default: blank
 * [`IMGPROXY_INFO_PRESETS`]: ((pro)) a set of info preset definitions, comma divided. Example: `default=xmp:0/blurhash:4:3`. Default: blank
 * [`IMGPROXY_PRESETS_SEPARATOR`]: a string that will be used as a presets' separator. Default: `,`
+* [`IMGPROXY_PRESETS_PATH`]: the path to the file with processing preset definitions. Default: blank
+
+  The file should contain processing preset definitions, one per line. Lines starting with `#` are treated as comments. Example:
+
+  ```imgproxy_presets
+  default=resizing_type:fill/enlarge:1
+
+  # Sharpen the image to make it look better
+  sharp=sharpen:0.7
+
+  # Blur the image to hide details
+  blurry=blur:2
+  ```
+* [`IMGPROXY_INFO_PRESETS_PATH`]: ((pro)) the path to the file with info preset definitions. Default: blank
+
+  The file should contain info preset definitions, one per line. Lines starting with `#` are treated as comments. Example:
+
+  ```imgproxy_presets
+  default=xmp:0/blurhash:4:3
+
+  # Detect objects on the image
+  with_objects=detect_objects:1
+  ```
 
 #### Using a command line argument
+
+:::warning
+`-presets` and `-info-presets` command line arguments are deprecated and will be removed in imgproxy v4. Please use `IMGPROXY_PRESETS_PATH` and `IMGPROXY_INFO_PRESETS_PATH` environment variables instead.
+:::
 
 ```bash
 imgproxy -presets /path/to/file/with/presets -info-presets /path/to/file/with/info-presets
