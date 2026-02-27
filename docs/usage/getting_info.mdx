@@ -114,12 +114,14 @@ The `orientation` field contains the EXIF orientation value (from `1` to `8`). I
 ### EXIF
 
 ```imgproxy_url_option
-exif:%exif
+exif:%enabled:%canonical_names
 ```
 
-When set to `1`, `t`, or `true`, imgproxy will return the image's EXIF metadata.
+When `enabled` is set to `1`, `t`, or `true`, imgproxy will return the image's EXIF metadata.
 
-Default: `true`.
+When `canonical_names` is set to `1`, `t`, or `true`, imgproxy will return the EXIF metadata field names in a canonical form (ex: `DateTimeOriginal`) instead of a human-readable form (ex: `Date and Time (Original)`).
+
+Default: `true:false`.
 
 **Response example:**
 
