@@ -544,6 +544,24 @@ ush:%mode:%weight:%divider
 
 Allows redefining unsharp masking options. All arguments have the same meaning as [Unsharp masking](../configuration/options.mdx#unsharp-masking) configs. All arguments are optional and can be omitted.
 
+### Blur areas ((pro)) {#blur-areas}
+
+```imgproxy_url_option
+blur_areas:%sigma:%left1:%top1:%width1:%height1:...:%leftN:%topN:%widthN:%heightN
+ba:%sigma:%left1:%top1:%width1:%height1:...:%leftN:%topN:%widthN:%heightN
+```
+
+When `sigma` is greater than `0`, imgproxy will apply a Gaussian blur filter to the defined areas of the resulting image.
+
+* `sigma` - defines the size of the mask imgproxy will use.
+* `left`, `top`, `width`, `height` - define the area to be blurred. The values are floating-point numbers between `0` and `1` that define the area position and size relative to the source image dimensions. For example, `left` of `0.5` means the left edge of the area is at the image's center, and `width` of `0.25` means the area's width is a quarter of the image width.
+
+:::info
+The areas' coordinates should be defined with respect to the source image EXIF orientation, as imgproxy doesn't rotate/flip them according to EXIF orientation. However, imgproxy rotates/flips the areas according to the [rotate](#rotate) and [flip](#flip) options.
+:::
+
+Default: disabled
+
 ### Blur detections ((pro)) {#blur-detections}
 
 ```imgproxy_url_option
