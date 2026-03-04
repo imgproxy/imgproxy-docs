@@ -126,6 +126,7 @@ const config: Config = {
             require.resolve("./src/css/general.css"),
             require.resolve("./src/css/intro.css"),
             require.resolve("./src/css/navbar.css"),
+            require.resolve("./src/css/announcement.css"),
             require.resolve("./src/css/docsearch.css"),
             require.resolve("./src/css/menu.css"),
             require.resolve("./src/css/badge.css"),
@@ -142,6 +143,13 @@ const config: Config = {
   ],
 
   themeConfig: {
+    announcementBar: {
+      id: "v4_early_access",
+      content:
+        '🚀 imgproxy v4 is almost here! <a href="https://imgproxy.net/v4-early-access" target="_blank" rel="noopener noreferrer">Join Early Access Program</a> to test imgproxy Pro v4 for free and get a discount on your first year of subscription!',
+      isCloseable: true,
+    },
+
     colorMode: {
       defaultMode: "dark",
       disableSwitch: false,

@@ -1,0 +1,17 @@
+.theme-announcement-bar {
+  --docusaurus-announcement-bar-height: auto;
+
+  background-color: var(--neon-a-bg) !important;
+  color: var(--text-primary) !important;
+  font-variation-settings: "wght" 400, "wdth" 75;
+  padding: 2px 0;
+
+  & a {
+    color: var(--neon-a-fg) !important;
+  }
+
+  & .close {
+    color: var(--text-primary);
+    flex-basis: 50px;
+  }
+}
