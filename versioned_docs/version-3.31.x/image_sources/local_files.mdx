@@ -1,0 +1,34 @@
+---
+description: Learn about how to give imgproxy access to your local files
+---
+
+# Serving local files
+
+imgproxy can be configured to process files from your local filesystem. To use this feature, do the following:
+
+1. Set `IMGPROXY_LOCAL_FILESYSTEM_ROOT` environment variable to your local images directory path.
+2. Use `local:///path/to/image.jpg` as the source image URL.
+
+:::tip
+If filenames in your local filesystem may contain `?`, you may want to set [IMGPROXY_SOURCE_URL_QUERY_SEPARATOR](../configuration/options.mdx#IMGPROXY_SOURCE_URL_QUERY_SEPARATOR) to another string that is not used in filenames or set it to blank to disable query string extraction.
+:::
+
+### Example
+
+Assume you want to process an image that is stored locally at `/path/to/project/images/logos/imgproxy.png`. Run imgproxy with `IMGPROXY_LOCAL_FILESYSTEM_ROOT` set to your images directory:
+
+```bash
+IMGPROXY_LOCAL_FILESYSTEM_ROOT=/path/to/project/images imgproxy
+```
+
+Then, use the path inside this directory as the source URL:
+
+```
+local:///logos/imgproxy.png
+```
+
+The URL for resizing this image to fit 300x200 will look like this:
+
+```imgproxy_url
+http://imgproxy.example.com/insecure/rs:fit:300:200/plain/local:///logos/imgproxy.png@jpg
+```
