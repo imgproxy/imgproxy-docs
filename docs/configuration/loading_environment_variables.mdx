@@ -135,6 +135,10 @@ If you run imgproxy inside Google Cloud infrastructure (Compute Engine, Kubernet
 
 Otherwise, set `IMGPROXY_ENV_GCP_KEY` environment variable to the content of Google Cloud JSON key. Get more info about JSON keys: [https://cloud.google.com/iam/docs/creating-managing-service-account-keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
 
+:::warning
+For security reasons, imgproxy accepts only service account keys for Google Cloud Secret Manager integration.
+:::
+
 ## Environment file syntax
 
 The following syntax rules apply to environment files:

@@ -32,3 +32,7 @@ gs://%bucket_name/%file_key?generation=%generation
 If you run imgproxy inside Google Cloud infrastructure (Compute Engine, Kubernetes Engine, App Engine, and Cloud Functions, etc), and you have granted access to your bucket to the service account, you probably don't need to do anything here. imgproxy will try to use the credentials provided by Google.
 
 Otherwise, set `IMGPROXY_GCS_KEY` environment variable to the content of Google Cloud JSON key. Get more info about JSON keys: [https://cloud.google.com/iam/docs/creating-managing-service-account-keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
+
+:::warning
+For security reasons, imgproxy accepts only service account keys for Google Cloud Storage integration.
+:::
