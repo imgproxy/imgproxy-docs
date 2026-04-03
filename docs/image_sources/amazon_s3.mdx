@@ -78,6 +78,17 @@ This allows imgproxy to access buckets in any region. However, the initial reque
 * If your most frequently used buckets are in the same region, set the region to that one.
 * If your buckets are spread across multiple regions, set the region to the closest one to your imgproxy instance.
 
+## Restricting bucket access
+
+For security purposes, you can restrict which S3 buckets imgproxy is allowed to access:
+
+* `IMGPROXY_S3_ALLOWED_BUCKETS`: a comma-separated list of bucket names that imgproxy is allowed to access. When set, imgproxy will only process images from these buckets. Default: blank (all buckets allowed)
+* `IMGPROXY_S3_DENIED_BUCKETS`: a comma-separated list of bucket names that imgproxy is not allowed to access. When set, imgproxy will reject requests for images from these buckets. Default: blank
+
+:::tip
+Use `IMGPROXY_S3_ALLOWED_BUCKETS` to create an allowlist of trusted buckets, or use `IMGPROXY_S3_DENIED_BUCKETS` to block specific buckets. If both are set, allowed buckets take precedence.
+:::
+
 ## MinIO
 
 [MinIO](https://github.com/minio/minio) is an object storage server released under Apache License v2.0. It is compatible with Amazon S3, so it can be used with imgproxy.

@@ -62,6 +62,11 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "doc",
+          id: "features/object_classification",
+          className: "menu__list-item--badge badge--pro",
+        },
+        {
+          type: "doc",
           id: "features/autoquality",
           className: "menu__list-item--badge badge--pro",
         },
@@ -73,6 +78,11 @@ const sidebars: SidebarsConfig = {
         {
           type: "doc",
           id: "features/chained_pipelines",
+          className: "menu__list-item--badge badge--pro",
+        },
+        {
+          type: "doc",
+          id: "features/cache",
           className: "menu__list-item--badge badge--pro",
         },
       ],

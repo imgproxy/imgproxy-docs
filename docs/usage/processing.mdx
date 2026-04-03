@@ -582,6 +582,24 @@ dd:%draw:%class_name1:%class_name2:...:%class_nameN
 
 When `draw` is set to `1`, `t` or `true`, imgproxy [detects objects](../features/object_detection.mdx) of the provided classes and draws their bounding boxes, classes, and confidences. If class names are omitted, imgproxy draws the bounding boxes of all the detected objects.
 
+### Crop objects ((pro)) {#crop-objects}
+
+```imgproxy_url_option
+crop_objects:%scale_factor:%class_name1:%class_name2:...:%class_nameN
+co:%scale_factor:%class_name1:%class_name2:...:%class_nameN
+```
+
+imgproxy [detects objects](../features/object_detection.mdx) of the provided classes and crops the image to fit all detected objects.
+
+* `scale_factor`: a float value that defines how much the crop area should be scaled relative to the detected objects. For example, `1.0` crops exactly to the detected objects, while `1.2` adds 20% padding around them.
+* `class_name1`, `class_name2`, ..., `class_nameN`: _(optional)_ names of the object classes to detect. If class names are omitted, imgproxy crops to all detected objects.
+
+This option is useful when you want to automatically extract the area containing specific objects from an image, such as extracting all faces from a group photo or isolating products from a catalog image.
+
+:::info
+When no objects are detected, imgproxy will not crop the image and will process it as usual.
+:::
+
 ### Colorize ((pro)) {#colorize}
 
 ```imgproxy_url_option

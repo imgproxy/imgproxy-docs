@@ -28,11 +28,3 @@ imgproxy will collect the following metrics:
 * `vips_max_memory_bytes`: libvips maximum memory usage
 * `vips_allocs`: the number of active vips allocations
 * Some useful Go metrics like memstats and goroutines count
-
-### Deprecated metrics
-
-The following metrics are deprecated and can be removed in future versions. Use `request_span_duration_seconds` instead.
-
-* `download_duration_seconds`: a histogram of the source image downloading latency (in seconds)
-* `processing_duration_seconds`: a histogram of the image processing latency (in seconds)
-

@@ -21,6 +21,7 @@ At the moment, imgproxy supports only the most popular image formats:
 | TIFF                        | `tiff`    | :white_check_mark:             | :white_check_mark:        |
 | PDF ((pro))                 | `pdf`     | :white_check_mark:             | [See notes](#pdf-support) |
 | PSD ((pro))                 | `psd`     | [See notes](#psd-support)      | :x:                       |
+| RAW ((pro))                 |           | [See notes](#raw-support)      | :x:                       |
 | MP4 (h264) ((pro))          | `mp4`     | [See notes](#video-thumbnails) | :white_check_mark:        |
 | Other video formats ((pro)) |           | [See notes](#video-thumbnails) | :x:                       |
 
@@ -35,10 +36,6 @@ When JPEG XL is used as a result format, animations are not supported because an
 imgproxy supports SVG sources without limitations, but SVG results are not supported when the source image is not SVG.
 
 When the source image is SVG and an SVG result is requested, imgproxy returns the source image without modifications.
-
-imgproxy reads some amount of bytes to check if the source image is SVG. By default it reads a maximum of 32KB, but you can change this:
-
-* `IMGPROXY_MAX_SVG_CHECK_BYTES`: the maximum number of bytes imgproxy will read to recognize SVG. If imgproxy can't recognize your SVG, try to increase this number. Default: `32768` (32KB)
 
 ## Animated images support
 
@@ -70,6 +67,12 @@ We tested imgproxy with all variants of PSD/PSB files that we could find or prod
 We couldn't find any PSD/PSB files with their image data compressed with ZIP, so imgproxy renders them as solid white images. If you had such files, we would very much appreciate it if you could share them with us.
 :::
 
+## RAW support ((pro)) {#raw-support}
+
+RAW image formats from digital cameras are supported as source images only (read-only). RAW files are decoded and converted to standard image formats during processing.
+
+imgproxy uses [libraw](https://www.libraw.org/) to process RAW files. For a complete list of supported camera models and RAW formats, see the [libraw supported cameras list](https://www.libraw.org/supported-cameras).
+
 ## Converting animated images to MP4 ((pro)) {#converting-animated-images-to-mp4}
 
 Animated image results can be converted to MP4 by specifying the `mp4` extension.
@@ -84,3 +87,22 @@ Since this still requires more data to be downloaded, video thumbnail generation
 
 * `IMGPROXY_ENABLE_VIDEO_THUMBNAILS`: when true, enables video thumbnail generation. Default: `false`
 * `IMGPROXY_VIDEO_THUMBNAIL_SECOND`: the timestamp of the frame (in seconds) that will be used for the thumbnail. Default: `1`.
+
+## Colorspace and HDR preservation
+
+imgproxy always preserves the source image's colorspace:
+
+* Color images remain color images
+* Grayscale images remain grayscale images
+* Colorspace types are maintained
+
+The bit depth handling depends on the [IMGPROXY_PRESERVE_HDR](configuration/options.mdx#IMGPROXY_PRESERVE_HDR) configuration setting:
+
+**When `IMGPROXY_PRESERVE_HDR` is enabled:**
+
+* 16-bit images remain 16-bit in the output (eg. GRAYSCALE16 remains GRAYSCALE16, scRGB remains scRGB)
+
+**When `IMGPROXY_PRESERVE_HDR` is disabled (default):**
+
+* 16-bit images are converted to 8-bit (eg. GRAYSCALE16 becomes GRAYSCALE8, RGB and scRGB become sRGB)
+* 8-bit images remain 8-bit

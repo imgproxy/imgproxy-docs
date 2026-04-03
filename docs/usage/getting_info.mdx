@@ -303,6 +303,38 @@ Default: `false`.
 }
 ```
 
+### Classify objects {#classify-objects}
+
+:::slow[Slow]
+This option requires the image to be fully downloaded and processed.
+:::
+
+```imgproxy_url_option
+classify_objects:%top_k
+co:%top_k
+```
+
+When `top_k` is greater than zero, imgproxy will classify the image and return the top K classes with the highest confidence scores. Read the [object classification](../features/object_classification.mdx) manual to learn how to configure object classification.
+
+Default: `0`.
+
+**Response example:**
+
+```json
+[
+  {
+    "class_id": 68,
+    "name": "Bus",
+    "confidence": 0.8745117
+  },
+  {
+    "class_id": 351,
+    "name": "Person",
+    "confidence": 0.7734375
+  }
+]
+```
+
 ### Colorspace
 
 :::slow[Slow]
@@ -574,6 +606,49 @@ Default: `0:0`
 ```json
 {
   "blurhash": "LLH-}fox0fRQ%Do}9as9_3%2M{S2"
+}
+```
+
+### ThumbHash {#thumb-hash}
+
+:::slow[Slow]
+This option requires the image to be fully downloaded and processed.
+:::
+
+```imgproxy_url_option
+thumb_hash:1
+th:1
+```
+
+When set, imgproxy will calculate and return the image's [ThumbHash](https://evanw.github.io/thumbhash/). ThumbHash is a compact representation of an image that can be used to generate a placeholder while the actual image is loading.
+
+**Response example:**
+
+```json
+{
+  "thumb_hash": "0BE7810C80365AF29266578A660CB7A6707A80867738A87804"
+}
+```
+
+### Perceptual hash {#perceptual-hash}
+
+:::slow[Slow]
+This option requires the image to be fully downloaded and processed.
+:::
+
+```imgproxy_url_option
+perceptual_hash:1
+phash:1
+ph:1
+```
+
+When set, imgproxy will calculate and return the perceptual hash of the image. Perceptual hashes can be used to find similar or duplicate images.
+
+**Response example:**
+
+```json
+{
+  "perceptual_hash": "9797306d694b4e94"
 }
 ```
 
