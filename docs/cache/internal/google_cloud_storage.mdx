@@ -1,0 +1,33 @@
+---
+description: Learn about how to configure Google Cloud Storage cache in imgproxy
+---
+
+# Cache storage: Google Cloud Storage
+
+imgproxy can store cached images in Google Cloud Storage buckets. To use the GCS cache, do the following:
+
+1. Set the `IMGPROXY_CACHE_USE` environment variable to `gcs`.
+2. [Set up credentials](#setup-credentials) to grant access to your cache bucket.
+3. _(optional)_ Specify the cache bucket name with `IMGPROXY_CACHE_BUCKET`.
+4. _(optional)_ Specify the Google Cloud Storage endpoint with `IMGPROXY_CACHE_GCS_ENDPOINT`.
+
+### Configuration
+
+* `IMGPROXY_CACHE_USE`: set to `gcs` to enable Google Cloud Storage cache.
+* `IMGPROXY_CACHE_BUCKET`: the GCS bucket name for cache storage. Default: blank
+* `IMGPROXY_CACHE_GCS_KEY`: the Google Cloud JSON key for cache access. When running on Google Cloud infrastructure, imgproxy will use the default service account credentials if none are set. Default: blank
+* `IMGPROXY_CACHE_GCS_ENDPOINT`: a custom Google Cloud Storage endpoint for cache. Default: blank
+* `IMGPROXY_CACHE_PATH_PREFIX`: a path prefix for the cache files. Default: blank
+* `IMGPROXY_CACHE_KEY_HEADERS`: a comma-separated list of HTTP request headers to include in the cache key. Default: blank
+* `IMGPROXY_CACHE_KEY_COOKIES`: a comma-separated list of HTTP request cookies to include in the cache key. Default: blank
+* `IMGPROXY_CACHE_REPORT_ERRORS`: when `true`, imgproxy will report cache errors instead of silently falling back to processing without cache. Default: `false`
+
+### Setup credentials
+
+If you run imgproxy inside Google Cloud infrastructure (Compute Engine, Kubernetes Engine, App Engine, Cloud Functions, etc), and you have granted access to your cache bucket to the service account, you probably don’t need to do anything here. imgproxy will try to use the credentials provided by Google.
+
+Otherwise, set the `IMGPROXY_CACHE_GCS_KEY` environment variable to the content of the Google Cloud JSON key. Get more info about JSON keys: [https://cloud.google.com/iam/docs/creating-managing-service-account-keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
+
+:::warning
+For security reasons, imgproxy accepts only service account keys for Google Cloud Storage cache integration.
+:::

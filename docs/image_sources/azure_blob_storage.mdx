@@ -53,11 +53,11 @@ Alternatively, you can set `IMGPROXY_ABS_KEY` to your Azure Blob Storage account
 
 ## Restricting container access
 
-For security purposes, you can restrict which Azure Blob Storage containers imgproxy is allowed to access:
+Restrict which Azure Blob Storage containers imgproxy can access for security:
 
 * `IMGPROXY_ABS_ALLOWED_BUCKETS`: a comma-separated list of container names that imgproxy is allowed to access. When set, imgproxy will only process images from these containers. Default: blank (all containers allowed)
 * `IMGPROXY_ABS_DENIED_BUCKETS`: a comma-separated list of container names that imgproxy is not allowed to access. When set, imgproxy will reject requests for images from these containers. Default: blank
 
 :::tip
-Use `IMGPROXY_ABS_ALLOWED_BUCKETS` to create an allowlist of trusted containers, or use `IMGPROXY_ABS_DENIED_BUCKETS` to block specific containers. If both are set, allowed containers take precedence.
+Use `IMGPROXY_ABS_ALLOWED_BUCKETS` to allow trusted containers. Use `IMGPROXY_ABS_DENIED_BUCKETS` to block specific ones. If both are set, allowed containers override denied ones.
 :::

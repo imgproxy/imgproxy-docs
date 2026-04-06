@@ -1,0 +1,35 @@
+---
+description: Learn about how to configure OpenStack Object Storage cache in imgproxy
+---
+
+# Cache storage: OpenStack Object Storage ("Swift")
+
+imgproxy can store cached images in OpenStack Object Storage, also known as Swift. To use Swift cache, do the following:
+
+1. Set the `IMGPROXY_CACHE_USE` environment variable to `swift`.
+2. Configure Swift authentication with the following environment variables:
+   * `IMGPROXY_CACHE_SWIFT_USERNAME`: the username for Swift API access for cache. Default: blank
+   * `IMGPROXY_CACHE_SWIFT_API_KEY`: the API key for Swift API access for cache. Default: blank
+   * `IMGPROXY_CACHE_SWIFT_AUTH_URL`: the Swift Auth URL for cache. Default: blank
+   * `IMGPROXY_CACHE_SWIFT_AUTH_VERSION`: the Swift auth version for cache, set to 1, 2 or 3 or leave at 0 for autodetect. Default: 0
+   * `IMGPROXY_CACHE_SWIFT_TENANT`: the tenant name for cache (optional, v2 auth only). Default: blank
+   * `IMGPROXY_CACHE_SWIFT_DOMAIN`: the Swift domain name for cache (optional, v3 auth only). Default: blank
+
+3. _(optional)_ Specify the cache container name with `IMGPROXY_CACHE_BUCKET`.
+
+### Configuration
+
+* `IMGPROXY_CACHE_USE`: set to `swift` to enable Swift cache.
+* `IMGPROXY_CACHE_BUCKET`: the Swift container name for cache storage. Default: blank
+* `IMGPROXY_CACHE_SWIFT_USERNAME`: the username for Swift API access for cache. Default: blank
+* `IMGPROXY_CACHE_SWIFT_API_KEY`: the API key for Swift API access for cache. Default: blank
+* `IMGPROXY_CACHE_SWIFT_AUTH_URL`: the Swift Auth URL for cache. Default: blank
+* `IMGPROXY_CACHE_SWIFT_AUTH_VERSION`: the Swift auth version for cache. Set to 1, 2 or 3 or leave at 0 for autodetect. Default: 0
+* `IMGPROXY_CACHE_SWIFT_TENANT`: the tenant name for cache (optional, v2 auth only). Default: blank
+* `IMGPROXY_CACHE_SWIFT_DOMAIN`: the Swift domain name for cache (optional, v3 auth only). Default: blank
+* `IMGPROXY_CACHE_SWIFT_TIMEOUT_SECONDS`: the data channel timeout in seconds for cache operations. Default: 60
+* `IMGPROXY_CACHE_SWIFT_CONNECT_TIMEOUT_SECONDS`: the connect channel timeout in seconds for cache operations. Default: 10
+* `IMGPROXY_CACHE_PATH_PREFIX`: a path prefix for the cache files. Default: blank
+* `IMGPROXY_CACHE_KEY_HEADERS`: a comma-separated list of HTTP request headers to include in the cache key. Default: blank
+* `IMGPROXY_CACHE_KEY_COOKIES`: a comma-separated list of HTTP request cookies to include in the cache key. Default: blank
+* `IMGPROXY_CACHE_REPORT_ERRORS`: when `true`, imgproxy will report cache errors instead of silently falling back to processing without cache. Default: `false`

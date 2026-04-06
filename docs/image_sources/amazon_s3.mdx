@@ -80,13 +80,13 @@ This allows imgproxy to access buckets in any region. However, the initial reque
 
 ## Restricting bucket access
 
-For security purposes, you can restrict which S3 buckets imgproxy is allowed to access:
+Restrict which S3 buckets imgproxy can access for security:
 
 * `IMGPROXY_S3_ALLOWED_BUCKETS`: a comma-separated list of bucket names that imgproxy is allowed to access. When set, imgproxy will only process images from these buckets. Default: blank (all buckets allowed)
 * `IMGPROXY_S3_DENIED_BUCKETS`: a comma-separated list of bucket names that imgproxy is not allowed to access. When set, imgproxy will reject requests for images from these buckets. Default: blank
 
 :::tip
-Use `IMGPROXY_S3_ALLOWED_BUCKETS` to create an allowlist of trusted buckets, or use `IMGPROXY_S3_DENIED_BUCKETS` to block specific buckets. If both are set, allowed buckets take precedence.
+Use `IMGPROXY_S3_ALLOWED_BUCKETS` to allow trusted buckets. Use `IMGPROXY_S3_DENIED_BUCKETS` to block specific ones. If both are set, allowed buckets override denied ones.
 :::
 
 ## MinIO

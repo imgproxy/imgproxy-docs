@@ -594,7 +594,7 @@ imgproxy [detects objects](../features/object_detection.mdx) of the provided cla
 * `scale_factor`: a float value that defines how much the crop area should be scaled relative to the detected objects. For example, `1.0` crops exactly to the detected objects, while `1.2` adds 20% padding around them.
 * `class_name1`, `class_name2`, ..., `class_nameN`: _(optional)_ names of the object classes to detect. If class names are omitted, imgproxy crops to all detected objects.
 
-This option is useful when you want to automatically extract the area containing specific objects from an image, such as extracting all faces from a group photo or isolating products from a catalog image.
+This option is useful when you want to automatically extract the area containing specific objects from an image, such as all faces in a group photo or products in a catalog image.
 
 :::info
 When no objects are detected, imgproxy will not crop the image and will process it as usual.

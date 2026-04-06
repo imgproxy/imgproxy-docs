@@ -48,8 +48,9 @@ echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
 * [`IMGPROXY_PATH_PREFIX`]: the URL path prefix. Example: when set to `/abc/def`, the imgproxy URL will be `/abc/def/%signature/%processing_options/%source_url`. Default: blank
 * [`IMGPROXY_USER_AGENT`]: the User-Agent header that will be sent with the source image request. You can use the `%current_version` variable to insert the current imgproxy version. Default: `imgproxy/%current_version`
 * [`IMGPROXY_USE_ETAG`]: when set to `true`, enables using the [ETag](https://en.wikipedia.org/wiki/HTTP_ETag) HTTP header for HTTP cache control. Default: `false`
-* [`IMGPROXY_ETAG_BUSTER`]: change this to change ETags for all the images. Default: blank
+* [`IMGPROXY_ETAG_BUSTER`]: a global ETag buster value. Change it to invalidate old ETags and prevent `304 Not Modified` responses for stale client/CDN validators. Default: blank
 * [`IMGPROXY_USE_LAST_MODIFIED`]: when set to `true`, enables using the [Last-Modified](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified) HTTP header for HTTP cache control. Default: `false`
+* [`IMGPROXY_LAST_MODIFIED_BUSTER`]: a global `Last-Modified` buster timestamp. If incoming `If-Modified-Since` is older than this value, imgproxy ignores it and forces revalidation; if origin `Last-Modified` is older, imgproxy replaces it with this timestamp. Use it to invalidate stale client/CDN `Last-Modified` validators after global processing changes. Default: `0`
 * [`IMGPROXY_CUSTOM_REQUEST_HEADERS`]: ((pro)) list of custom headers that imgproxy will send while requesting the source image, divided by `\;` (can be redefined by `IMGPROXY_CUSTOM_HEADERS_SEPARATOR`). Example: `X-MyHeader1=Lorem\;X-MyHeader2=Ipsum`
 * [`IMGPROXY_CUSTOM_RESPONSE_HEADERS`]: ((pro)) a list of custom response headers, separated by `\;` (can be redefined by `IMGPROXY_CUSTOM_HEADERS_SEPARATOR`). Example: `X-MyHeader1=Lorem\;X-MyHeader2=Ipsum`
 * [`IMGPROXY_CUSTOM_HEADERS_SEPARATOR`]: ((pro)) a string that will be used as a custom header separator. Default: `\;`
@@ -346,7 +347,7 @@ Check out the [Best format](../features/best_format.mdx) guide to learn more.
 
 ## Colorspace and HDR
 
-* [`IMGPROXY_PRESERVE_HDR`]: when `true`, imgproxy will preserve 16-bit images as 16-bit. When `false`, imgproxy will convert 16-bit images to 8-bit. Colorspace (color/grayscale) is always preserved regardless of this setting. See the [Colorspace and HDR preservation](../image_formats_support.mdx#colorspace-and-hdr-preservation) guide for more details. Default: `false`
+* [`IMGPROXY_PRESERVE_HDR`]: when `true`, imgproxy will preserve high bit images. When `false`, imgproxy will convert high bit images to 8-bit. Colorspace (color/grayscale) is always preserved regardless of this setting. See the [Colorspace and HDR preservation](../image_formats_support.mdx#colorspace-and-hdr-preservation) guide for more details. Default: `false`
 
 ## Client Hints support
 
@@ -445,22 +446,24 @@ Read the [Object Classification guide](../features/object_classification.mdx) fo
 
 imgproxy can cache processed images in various storage backends to improve performance and reduce processing overhead.
 
-* [`IMGPROXY_CACHE_USE`]: ((pro)) the cache storage adapter to use. Can be `filesystem`, `s3`, `gcs`, `abs` (Azure Blob Storage), or `swift`. When blank, the cache is disabled. Default: blank
+* [`IMGPROXY_CACHE_USE`]: ((pro)) the cache storage adapter to use. Can be `fs`, `s3`, `gcs`, `abs` (Azure Blob Storage), or `swift` (OpenStack Swift). When blank, the cache is disabled. Default: blank
 * [`IMGPROXY_CACHE_PATH_PREFIX`]: ((pro)) a path prefix for the cache files. This can be useful to organize cache files in a specific directory structure. Default: blank
-* [`IMGPROXY_CACHE_BUCKET`]: ((pro)) the bucket name for cloud storage adapters (S3, GCS, ABS, Swift). When using filesystem adapter, this can be used as an additional path component. Default: blank
+* [`IMGPROXY_CACHE_BUCKET`]: ((pro)) the bucket name for cloud storage adapters (S3, GCS, ABS, OpenStack Swift). When using filesystem adapter, this can be used as an additional path component. Default: blank
 * [`IMGPROXY_CACHE_KEY_HEADERS`]: ((pro)) a comma-separated list of HTTP request headers to include in the cache key. This allows caching different versions of the same image based on request headers. Default: blank
 * [`IMGPROXY_CACHE_KEY_COOKIES`]: ((pro)) a comma-separated list of HTTP request cookies to include in the cache key. This allows caching different versions of the same image based on cookies. Default: blank
 * [`IMGPROXY_CACHE_REPORT_ERRORS`]: ((pro)) when `true`, imgproxy will report cache errors instead of silently falling back to processing without cache. Default: `false`
 
-### Cache storage: Local filesystem {#cache-storage-local-filesystem}
+### Local filesystem {#cache-storage-local-filesystem}
 
-imgproxy can store cached images on the local filesystem. To use filesystem cache, set `IMGPROXY_CACHE_USE` to `filesystem`:
+imgproxy can store cached images on the local filesystem. To use [filesystem cache](../cache/internal/local_filesystem.mdx), set `IMGPROXY_CACHE_USE` to `filesystem`:
 
 * [`IMGPROXY_CACHE_LOCAL_FILESYSTEM_ROOT`]: ((pro)) the root directory for filesystem cache. Default: blank
 
-### Cache storage: Amazon S3 {#cache-storage-amazon-s3}
+See full documentation in [Cache storage: Local filesystem](../cache/internal/local_filesystem.mdx).
 
-imgproxy can store cached images in Amazon S3 buckets or S3-compatible storage. To use S3 cache, set `IMGPROXY_CACHE_USE` to `s3`:
+### Amazon S3 {#cache-storage-amazon-s3}
+
+imgproxy can store cached images in Amazon S3 buckets or S3-compatible storage. To use [S3 cache](../cache/internal/amazon_s3.mdx), set `IMGPROXY_CACHE_USE` to `s3`:
 
 * [`IMGPROXY_CACHE_S3_REGION`]: ((pro)) the S3 region for the cache bucket
 * [`IMGPROXY_CACHE_S3_ENDPOINT`]: ((pro)) a custom S3 endpoint for the cache. Useful for S3-compatible services like MinIO, Cloudflare R2, DigitalOcean Spaces, etc. Default: blank
@@ -473,16 +476,16 @@ imgproxy can store cached images in Amazon S3 buckets or S3-compatible storage. 
 Credentials for S3 cache can be provided using the same methods as for S3 image sources: IAM roles, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables, or a shared credentials file.
 :::
 
-### Cache storage: Google Cloud Storage {#cache-storage-google-cloud-storage}
+### Google Cloud Storage {#cache-storage-google-cloud-storage}
 
-imgproxy can store cached images in Google Cloud Storage buckets. To use GCS cache, set `IMGPROXY_CACHE_USE` to `gcs`:
+imgproxy can store cached images in Google Cloud Storage buckets. To use [GCS cache](../cache/internal/google_cloud_storage.mdx), set `IMGPROXY_CACHE_USE` to `gcs`:
 
 * [`IMGPROXY_CACHE_GCS_KEY`]: ((pro)) the Google Cloud JSON key for cache access. When running inside Google Cloud infrastructure, imgproxy will try to use the default service account credentials if this is not set. Default: blank
 * [`IMGPROXY_CACHE_GCS_ENDPOINT`]: ((pro)) a custom Google Cloud Storage endpoint for cache. Default: blank
 
-### Cache storage: Azure Blob Storage {#cache-storage-azure-blob-storage}
+### Azure Blob Storage {#cache-storage-azure-blob-storage}
 
-imgproxy can store cached images in Azure Blob Storage containers. To use Azure cache, set `IMGPROXY_CACHE_USE` to `abs`:
+imgproxy can store cached images in Azure Blob Storage containers. To use [Azure cache](../cache/internal/azure_blob_storage.mdx), set `IMGPROXY_CACHE_USE` to `abs`:
 
 * [`IMGPROXY_CACHE_ABS_NAME`]: ((pro)) the Azure account name for cache storage. Default: blank
 * [`IMGPROXY_CACHE_ABS_KEY`]: ((pro)) the Azure account key for cache storage. Default: blank
@@ -492,9 +495,9 @@ imgproxy can store cached images in Azure Blob Storage containers. To use Azure 
 Azure cache also supports authentication via Managed Identity or Service Principal using the same `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and related environment variables as Azure Blob Storage image sources.
 :::
 
-### Cache storage: OpenStack Swift {#cache-storage-openstack-swift}
+### OpenStack Swift {#cache-storage-openstack-swift}
 
-imgproxy can store cached images in OpenStack Object Storage (Swift). To use Swift cache, set `IMGPROXY_CACHE_USE` to `swift`:
+imgproxy can store cached images in OpenStack Object Storage (Swift). To use [Swift cache](../cache/internal/openstack_swift.mdx), set `IMGPROXY_CACHE_USE` to `swift`:
 
 * [`IMGPROXY_CACHE_SWIFT_USERNAME`]: ((pro)) the username for Swift API access for cache. Default: blank
 * [`IMGPROXY_CACHE_SWIFT_API_KEY`]: ((pro)) the API key for Swift API access for cache. Default: blank
@@ -505,7 +508,7 @@ imgproxy can store cached images in OpenStack Object Storage (Swift). To use Swi
 * [`IMGPROXY_CACHE_SWIFT_TIMEOUT_SECONDS`]: ((pro)) the data channel timeout in seconds for cache operations. Default: 60
 * [`IMGPROXY_CACHE_SWIFT_CONNECT_TIMEOUT_SECONDS`]: ((pro)) the connect channel timeout in seconds for cache operations. Default: 10
 
-Read the [Cache guide](../features/cache.mdx) for more info.
+Read the [Internal cache guide](../cache/internal.mdx) for more info.
 
 ## Fallback image
 

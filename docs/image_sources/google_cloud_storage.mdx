@@ -39,11 +39,11 @@ For security reasons, imgproxy accepts only service account keys for Google Clou
 
 ## Restricting bucket access
 
-For security purposes, you can restrict which GCS buckets imgproxy is allowed to access:
+Restrict which GCS buckets imgproxy can access for security:
 
 * `IMGPROXY_GCS_ALLOWED_BUCKETS`: a comma-separated list of bucket names that imgproxy is allowed to access. When set, imgproxy will only process images from these buckets. Default: blank (all buckets allowed)
 * `IMGPROXY_GCS_DENIED_BUCKETS`: a comma-separated list of bucket names that imgproxy is not allowed to access. When set, imgproxy will reject requests for images from these buckets. Default: blank
 
 :::tip
-Use `IMGPROXY_GCS_ALLOWED_BUCKETS` to create an allowlist of trusted buckets, or use `IMGPROXY_GCS_DENIED_BUCKETS` to block specific buckets. If both are set, allowed buckets take precedence.
+Use `IMGPROXY_GCS_ALLOWED_BUCKETS` to allow trusted buckets. Use `IMGPROXY_GCS_DENIED_BUCKETS` to block specific ones. If both are set, allowed buckets override denied ones.
 :::

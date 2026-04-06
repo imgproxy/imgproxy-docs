@@ -1,0 +1,79 @@
+---
+title: Internal cache
+description: Learn about how to configure and use imgproxy's internal cache
+---
+
+# Internal cache ((pro))
+
+imgproxy Pro provides an internal cache that stores processed images on disk or in cloud storage. This cache can act as both a primary and a secondary cache, serving as a fallback when your CDN cache misses.
+
+:::tip
+While putting a CDN in front of imgproxy is and will always be a best practice, the internal cache provides long-term storage for cases that require an additional caching layer.
+:::
+
+## Why use internal cache?
+
+The internal cache provides long-term persistent storage for processed images, unlike CDNs which typically delete rarely accessed content. It stores images in a single location rather than across multiple edge stores, eliminating cache misses when requests hit different edges. The cache is designed specifically for imgproxy, working seamlessly with features like modern image format detection and client hints support that generic external caches don't understand.
+
+The cache is protected by the same security measures as imgproxy itself, including URL signatures and processing restrictions. Importantly, URL signatures are not part of the cache key, so you can rotate keys or use multiple key/salt pairs without invalidating cached images. You maintain full control over where the cache is stored and how it integrates with your infrastructure.
+
+## Configuration
+
+You need to define the following config variables to enable the internal cache:
+
+* [`IMGPROXY_CACHE_USE`]: the cache storage adapter to use. Can be `fs`, `s3`, `gcs`, `abs` (Azure Blob Storage), or `swift` (OpenStack Swift). When blank, the cache is disabled. Default: blank
+* [`IMGPROXY_CACHE_PATH_PREFIX`]: _(optional)_ a path prefix for the cache files. This can be useful to organize cache files in a specific directory structure. Default: blank
+* [`IMGPROXY_CACHE_BUCKET`]: _(optional)_ the bucket name for cloud storage adapters (S3, GCS, ABS, Swift). When using the filesystem adapter, this can be used as an additional path component. Default: blank
+* [`IMGPROXY_CACHE_KEY_HEADERS`]: _(optional)_ a list of HTTP request headers (comma-separated) to include in the cache key. This allows caching different versions of the same image based on request headers. Default: blank
+* [`IMGPROXY_CACHE_KEY_COOKIES`]: _(optional)_ a list of HTTP request cookies (comma-separated) to include in the cache key. This allows caching different versions of the same image based on cookies. Default: blank
+* [`IMGPROXY_CACHE_REPORT_ERRORS`]: When `true`, imgproxy will report cache errors instead of silently falling back to processing without cache. Default: `false`
+
+### Storage configuration
+
+The internal cache supports all the storage backends that imgproxy can read source images from: local filesystem, Amazon S3 and compatible services (Cloudflare R2, DigitalOcean Spaces, MinIO, etc.), Google Cloud Storage, Microsoft Azure Blob Storage, and OpenStack Swift.
+
+Configure the storage backend using `IMGPROXY_CACHE_*` variables:
+
+* For filesystem cache, see [Cache storage: Local filesystem](./internal/local_filesystem.mdx).
+* For S3 cache, see [Cache storage: Amazon S3](./internal/amazon_s3.mdx).
+* For GCS cache, see [Cache storage: Google Cloud Storage](./internal/google_cloud_storage.mdx).
+* For Azure Blob Storage cache, see [Cache storage: Azure Blob Storage](./internal/azure_blob_storage.mdx).
+* For Swift cache, see [Cache storage: OpenStack Object Storage ("Swift")](./internal/openstack_swift.mdx).
+
+## Cache key
+
+The cache key is generated based on:
+
+* Source image URL
+* Processing options
+* Output format
+* Optional: Request headers specified in `IMGPROXY_CACHE_KEY_HEADERS`
+* Optional: Request cookies specified in `IMGPROXY_CACHE_KEY_COOKIES`
+
+URL signature is **not** part of the cache key, allowing key rotation without invalidating the cache.
+
+## Limitations
+
+* **No manual cache invalidation**: Currently, imgproxy doesn't provide a built-in means to invalidate the cache. However, imgproxy includes the [cachebuster](../usage/processing.mdx#cache-buster) in the cache key, so you can use it to force cache invalidation when needed. Most storage offerings also support object expiration, so you can set a reasonable expiration time for cached images.
+* **No cache for info requests**: The internal cache is currently used only for image processing requests. Requests to the `/info` endpoint are not cached.
+
+## How it works
+
+When a request comes in:
+
+1. imgproxy checks the URL signature (if enabled).
+2. imgproxy generates the cache key from the request parameters.
+3. imgproxy checks if a cached image exists in the configured storage.
+4. If the cached image exists and is valid, imgproxy serves it directly.
+5. If not, imgproxy processes the image and stores the result in the cache before serving it.
+
+## Monitoring
+
+Monitor cache performance with metrics:
+
+* Cache hit rate
+* Cache size
+* Cache evictions
+* Cache latency
+
+These metrics are available through [monitoring endpoints](../monitoring/prometheus.mdx).

@@ -1,5 +1,5 @@
 .badge,
-.menu__list-item--badge a::after {
+.menu__list-item--badge .menu__link::after {
   --ifm-badge-background-color: transparent;
   --ifm-badge-border-width: 1px;
   --ifm-badge-border-radius: 0.4em;

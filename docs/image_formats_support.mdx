@@ -92,17 +92,17 @@ Since this still requires more data to be downloaded, video thumbnail generation
 
 imgproxy always preserves the source image's colorspace:
 
-* Color images remain color images
-* Grayscale images remain grayscale images
-* Colorspace types are maintained
+* Color images remain color images.
+* Grayscale images remain grayscale images.
+* Colorspace types are maintained.
 
 The bit depth handling depends on the [IMGPROXY_PRESERVE_HDR](configuration/options.mdx#IMGPROXY_PRESERVE_HDR) configuration setting:
 
 **When `IMGPROXY_PRESERVE_HDR` is enabled:**
 
-* 16-bit images remain 16-bit in the output (eg. GRAYSCALE16 remains GRAYSCALE16, scRGB remains scRGB)
+* High bit images remain high bit in the output (eg, GRAYSCALE16 remains GRAYSCALE16, scRGB remains scRGB)
 
 **When `IMGPROXY_PRESERVE_HDR` is disabled (default):**
 
-* 16-bit images are converted to 8-bit (eg. GRAYSCALE16 becomes GRAYSCALE8, RGB and scRGB become sRGB)
+* High bit images are converted to 8-bit (eg, GRAYSCALE16 becomes GRAYSCALE8, RGB and scRGB become sRGB)
 * 8-bit images remain 8-bit

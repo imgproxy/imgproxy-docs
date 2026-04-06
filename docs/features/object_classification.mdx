@@ -5,13 +5,13 @@ description: Learn about how to classify objects in your images with imgproxy
 
 # Object classification ((pro))
 
-imgproxy Pro can classify objects detected in images, providing detailed information about what the objects are. This feature extends [object detection](object_detection.mdx) by not only detecting objects but also identifying their specific classes or categories.
+imgproxy Pro can classify objects in images, providing detailed information about each object. This feature extends [object detection](object_detection.mdx) by not only detecting objects but also identifying their specific classes or categories.
 
 :::info
 Object classification requires [object detection](object_detection.mdx) to be configured and enabled. Classification is performed on the objects detected by the object detection model.
 :::
 
-You can use object classification for content moderation, image organization, and automatic tagging. You can [fetch the classified objects info](../usage/getting_info.mdx#classify-objects) via the info handler.
+You can use object classification for content moderation, image organization, and automatic tagging. You can fetch information about the classified objects via the info handler.
 
 ## Configuration
 
@@ -40,9 +40,9 @@ You need to define the following config variables to enable object classificatio
 
 ### Class names file
 
-The class names file is used to map the class indexes from the neural network output to human-readable class names. The path to the class names file should be defined in the `IMGPROXY_OBJECT_CLASSIFY_CLASSES` config variable.
+The class names file maps the neural network's class indexes to human-readable class names. The path to the class names file should be defined in the `IMGPROXY_OBJECT_CLASSIFY_CLASSES` config variable.
 
-The class names file should contain one class name per line. The class names should be in the same order as the classes in the neural network output. Example:
+The class names file should contain one class name per line. The class names should match the order of the classes in the neural network output. Example:
 
 ```text
 person
@@ -66,4 +66,4 @@ The response is an array of objects, each containing:
 * `name`: The class name from the class names file
 * `confidence`: The confidence score for this classification
 
-See [getting info documentation](../usage/getting_info.mdx#classify-objects) for more details.
+See the [getting info documentation](../usage/getting_info.mdx#classify-objects) for more details.
