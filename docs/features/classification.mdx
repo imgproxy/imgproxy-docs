@@ -5,7 +5,7 @@ description: Learn about how to classify objects in your images with imgproxy
 
 # Classification ((pro))
 
-imgproxy can classify images by assigning them to predefined categories based on the overall content of the image. Unlike object detection, which answers “Where is a cat in this image?”, image classification answers “Is there a cat in this image?” by labeling the entire image as a whole.
+imgproxy can classify images by assigning them to predefined categories based on the overall content of the image. Unlike [object detection](object_detection.mdx), which answers “Where is a cat in this image?”, image classification answers “Is there a cat in this image?” by labeling the entire image as a whole.
 
 Specialized image classification models are typically faster and simpler than object detection because they do not need to locate objects within the image. They can also classify images based on broader concepts such as scenes, activities, or safety categories (e.g., NSFW vs. SFW), and require only labeled images for training instead of annotated bounding boxes.
 
@@ -596,8 +596,8 @@ You need to define the following config variables to enable object classificatio
   Default: `none`
 
 * [`IMGPROXY_CLASSIFICATION_LAYOUT`]: the data layout of the neural network input. Possible values:
-  * `nchw`: channels first (PyTorch default)
   * `nhwc`: channels last (TensorFlow default)
+  * `nchw`: channels first (PyTorch default)
 
   Default: `nhwc`
 
@@ -615,7 +615,7 @@ car
 
 ## Getting classification info
 
-Object classification is available via the info handler using the `co` (classify objects) endpoint. Fetch classification results by specifying the number of top classes to return:
+Object classification is available via the info handler using the `cl` (classify) endpoint. Fetch classification results by specifying the number of top classes to return:
 
 ```imgproxy_url
 .../info/cl:5/...

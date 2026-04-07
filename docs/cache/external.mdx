@@ -14,7 +14,7 @@ Most major CDNs (Cloudflare, Fastly, AWS CloudFront, Akamai, etc.) can cache img
 
 * **Image optimization** - Disable CDN image optimization to avoid double-processing
 * **Compression** - In case your CDN supports conditional compression of SVG images, enable gzip/Brotli compression for bandwidth savings
-* **Include essential headers*** - It's strongly recommended to include `Accept` header in the cache key. If you have client hints enabled, include also `DPR`, `Sec-CH-Dpr`, and `Sec-CH-Width` headers.
+* **Include essential headers*** - Include `Accept` header in the cache key if you're using [format negotiation](../configuration/options.mdx#avifwebpjpeg-xl-support-detection). If you have client hints enabled, include also `DPR`, `Sec-CH-Dpr`, and `Sec-CH-Width` headers.
 * **Origin shield** - Add a secondary cache layer between your CDN and imgproxy origin if your CDN supports it.
 
 ## nginx caching
@@ -79,7 +79,7 @@ proxy_cache_key "$scheme$proxy_host$request_uri";
 proxy_cache_key "$scheme$proxy_host$request_uri$http_accept";
 ```
 
-3. Include Client Hints dimensions when width/DPR affects output:
+3. Include [Client Hints](../configuration/options.mdx#client-hints-support) dimensions when width/DPR affects output:
 
 ```nginx
 proxy_cache_key "$scheme$request_method$host$request_uri:accept=$http_accept:dpr=$http_dpr:width=$http_width:chdpr=$http_sec_ch_dpr:chwidth=$http_sec_ch_width";
@@ -89,7 +89,7 @@ Use the smallest key that still prevents collisions for your traffic profile.
 
 ### Key recommendations
 
-* Include `Accept` in the cache key if format negotiation is used.
+* Include `Accept` in the cache key if [format negotiation](../configuration/options.mdx#avifwebpjpeg-xl-support-detection) is used.
 * Include DPR/width-related hints in the cache key if [Client Hints](../configuration/options.mdx#client-hints-support) are used to vary output.
 * Set long `inactive` timeout (30d) to keep popular images in cache.
 * Configure `proxy_cache_use_stale` for graceful degradation during origin issues.
@@ -200,8 +200,8 @@ sub vcl_deliver {
 ### Key recommendations
 
 * Use `sub vcl_hash` to customize cache key behavior.
-* Include `Accept` for format negotiation.
-* Include DPR/width-related headers when they can affect output (`DPR`, `Width`, `Sec-CH-DPR`, `Sec-CH-Width`).
+* Include `Accept` for [format negotiation](../configuration/options.mdx#avifwebpjpeg-xl-support-detection).
+* Include DPR/width-related headers when [Client Hints](../configuration/options.mdx#client-hints-support) support is enabled (`DPR`, `Width`, `Sec-CH-DPR`, `Sec-CH-Width`).
 * Set grace period (`beresp.grace`) for graceful error handling.
 * Monitor Varnish statistics with `varnishstat`.
 * Use tags for efficient cache purging: add `set beresp.http.Surrogate-Key = "images:product:123"` in `vcl_backend_response`.

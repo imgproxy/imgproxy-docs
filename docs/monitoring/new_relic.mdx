@@ -21,17 +21,15 @@ imgproxy will send the following info to New Relic:
 * Image processing time
 * Errors that occurred while downloading and processing an image
 
-Additionally, imgproxy sends the following metrics over [Metrics API](https://docs.newrelic.com/docs/data-apis/ingest-apis/metric-api/introduction-metric-api/) as timescales:
+Additionally, imgproxy sends the following metrics over [Metrics API](https://docs.newrelic.com/docs/data-apis/ingest-apis/metric-api/introduction-metric-api/) as timescales (all metric names are prefixed with Custom/imgproxy/):
 
 * `workers`: the configured number of imgproxy workers
 * `requests_in_progress`: the number of requests currently in progress
 * `images_in_progress`: the number of images currently in progress
-* `workers_utilization`: the percentage of imgproxy's workers utilization. Calculated as `Custom/imgproxy/requests_in_progress / Custom/imgproxy/workers * 100`
+* `workers_utilization`: the percentage of imgproxy's workers utilization. Calculated as `requests_in_progress / workers * 100`
 * `buffer/size`: a summary of the download buffers sizes (in bytes)
 * `buffer/default_size`: calibrated default buffer size (in bytes)
 * `buffer/max_size`: calibrated maximum buffer size (in bytes)
 * `vips/memory`: libvips memory usage (in bytes)
 * `vips/max_memory`: libvips maximum memory usage (in bytes)
 * `vips/allocs`: the number of active vips allocations
-
-All metrics names are prefixed with `Custom/imgproxy/`.

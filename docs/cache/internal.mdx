@@ -13,7 +13,7 @@ While putting a CDN in front of imgproxy is and will always be a best practice, 
 
 ## Why use internal cache?
 
-The internal cache provides long-term persistent storage for processed images, unlike CDNs which typically delete rarely accessed content. It stores images in a single location rather than across multiple edge stores, eliminating cache misses when requests hit different edges. The cache is designed specifically for imgproxy, working seamlessly with features like modern image format detection and client hints support that generic external caches don't understand.
+The internal cache provides long-term persistent storage for processed images, unlike CDNs, which typically delete rarely accessed content. It stores images in a single location rather than across multiple edge stores, eliminating cache misses when requests hit different edges. The cache is designed specifically for imgproxy, working seamlessly with features like modern image format detection and client hints support that generic external caches don't understand by default.
 
 The cache is protected by the same security measures as imgproxy itself, including URL signatures and processing restrictions. Importantly, URL signatures are not part of the cache key, so you can rotate keys or use multiple key/salt pairs without invalidating cached images. You maintain full control over where the cache is stored and how it integrates with your infrastructure.
 

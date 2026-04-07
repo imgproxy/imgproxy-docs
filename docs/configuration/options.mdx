@@ -48,7 +48,7 @@ echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
 * [`IMGPROXY_PATH_PREFIX`]: the URL path prefix. Example: when set to `/abc/def`, the imgproxy URL will be `/abc/def/%signature/%processing_options/%source_url`. Default: blank
 * [`IMGPROXY_USER_AGENT`]: the User-Agent header that will be sent with the source image request. You can use the `%current_version` variable to insert the current imgproxy version. Default: `imgproxy/%current_version`
 * [`IMGPROXY_USE_ETAG`]: when set to `true`, enables using the [ETag](https://en.wikipedia.org/wiki/HTTP_ETag) HTTP header for HTTP cache control. Default: `false`
-* [`IMGPROXY_ETAG_BUSTER`]: a global ETag buster value. Change this value if you update configuration that affects image processing, to invalidate old ETags and avoid `304 Not Modified` responses from stale client/CDN validators. Default: blank
+* [`IMGPROXY_ETAG_BUSTER`]: a global ETag buster value. Change this value if you update the configuration that affects image processing, to invalidate old ETags and avoid `304 Not Modified` responses from stale client/CDN validators. Default: blank
 * [`IMGPROXY_USE_LAST_MODIFIED`]: when set to `true`, enables using the [Last-Modified](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified) HTTP header for HTTP cache control. Default: `false`
 * [`IMGPROXY_LAST_MODIFIED_BUSTER`]: a global `Last-Modified` buster timestamp in [RFC3339](https://www.rfc-editor.org/rfc/rfc3339.html) format. By setting it to a specific datetime, you can make imgproxy treat all the images as if they were modified at least at that datetime. Default: blank
 * [`IMGPROXY_CUSTOM_REQUEST_HEADERS`]: ((pro)) list of custom headers that imgproxy will send while requesting the source image, divided by `\;` (can be redefined by `IMGPROXY_CUSTOM_HEADERS_SEPARATOR`). Example: `X-MyHeader1=Lorem\;X-MyHeader2=Ipsum`
@@ -435,8 +435,8 @@ imgproxy can classify images by assigning them to predefined categories based on
   * `full`: normalize to [-1, 1] range
   * `imagenet`: normalize using ImageNet mean and standard deviation
 * [`IMGPROXY_CLASSIFICATION_LAYOUT`]: ((pro)) the data layout of the neural network input. Possible values are:
-  * `nchw`: channels first (PyTorch default)
   * `nhwc`: _(default)_ channels last (TensorFlow default)
+  * `nchw`: channels first (PyTorch default)
 
 Read the [Classification guide](../features/classification.mdx) for more info.
 
@@ -726,7 +726,7 @@ Check out the [CloudWatch](../monitoring/cloud_watch.mdx) guide to learn more.
 imgproxy can report occurred errors to Bugsnag, Honeybadger and Sentry:
 
 * [`IMGPROXY_REPORT_DOWNLOADING_ERRORS`]: when `true`, imgproxy will report downloading errors. Default: `true`
-* [`IMGPROXY_DEVELOPMENT_ERRORS_MODE`]: when `true`, imgproxy will respond with detailed error messages and stack traces in a pretty HTML format. Useful for development and debugging. Default: `false`
+* [`IMGPROXY_DEVELOPMENT_ERRORS_MODE`]: when `true`, imgproxy will respond with detailed error messages and stack traces in a pretty HTML format. Useful for development and debugging. If the client does not `Accept: text/html`, imgproxy reponds with plain text error. Default: `false`
 
 ### Bugsnag
 
