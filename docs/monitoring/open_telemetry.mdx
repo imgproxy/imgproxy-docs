@@ -72,7 +72,6 @@ imgproxy supports the standard [general](https://opentelemetry.io/docs/languages
 
 Also, imgproxy supports the following environment variables:
 
-* `IMGPROXY_OPEN_TELEMETRY_ENABLE_LOGS`: when `true`, imgproxy will send logs to OpenTelemetry collector. Default: `false`
 * `IMGPROXY_OPEN_TELEMETRY_PROPAGATE_EXTERNAL`: when `true`, imgproxy will propagate OpenTelemetry tracing headers to external requests such as image downloads. Default: `false`
 * `IMGPROXY_OPEN_TELEMETRY_TRACE_ID_GENERATOR`: the desired trace ID generator. Supported values are:
     * `xray`: _(default)_ Amazon X-Ray compatible trace ID generator

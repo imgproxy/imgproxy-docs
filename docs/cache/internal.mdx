@@ -66,14 +66,3 @@ When a request comes in:
 3. imgproxy checks if a cached image exists in the configured storage.
 4. If the cached image exists and is valid, imgproxy serves it directly.
 5. If not, imgproxy processes the image and stores the result in the cache before serving it.
-
-## Monitoring
-
-Monitor cache performance with metrics:
-
-* Cache hit rate
-* Cache size
-* Cache evictions
-* Cache latency
-
-These metrics are available through [monitoring endpoints](../monitoring/prometheus.mdx).

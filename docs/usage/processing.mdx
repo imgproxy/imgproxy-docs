@@ -596,8 +596,12 @@ imgproxy [detects objects](../features/object_detection.mdx) of the provided cla
 
 This option is useful when you want to automatically extract the area containing specific objects from an image, such as all faces in a group photo or products in a catalog image.
 
+It respects the [`resizing_type`](#resizing-type) option, so if you set it to `fill` or `fill-down`, imgproxy will expand the cropping area to match the output dimensions’ aspect ratio.
+
+It also respects [`IMGPROXY_OBJECT_DETECTION_GRAVITY_MODE`](../configuration/options.mdx#IMGPROXY_OBJECT_DETECTION_GRAVITY_MODE) config option when selecting objects to crop around, and the [`objects_position`](#objects-position) option when deciding where to place the objects in the output image.
+
 :::info
-When no objects are detected, imgproxy will not crop the image and will process it as usual.
+When no objects are detected, imgproxy will not crop the image and will process it as usual. `crop_objects` option takes precedence over `crop`.
 :::
 
 ### Colorize ((pro)) {#colorize}

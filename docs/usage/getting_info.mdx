@@ -303,18 +303,20 @@ Default: `false`.
 }
 ```
 
-### Classify objects {#classify-objects}
+### Classification {#classification}
 
 :::slow[Slow]
 This option requires the image to be fully downloaded and processed.
 :::
 
 ```imgproxy_url_option
-classify_objects:%top_k
-co:%top_k
+classify:%top_k:%class_name1:%class_name2..%class_nameN
+cl:%top_k:%class_name1:%class_name2..%class_nameN
 ```
 
-When `top_k` is greater than zero, imgproxy will classify the image and return the top K classes with the highest confidence scores. Read the [object classification](../features/object_classification.mdx) manual to learn how to configure object classification.
+When `top_k` is greater than zero, imgproxy will classify the image and return the top K classes with the highest confidence scores. Read the [classification](../features/classification.mdx) manual to learn how to configure classification.
+
+Providing class names is optional. If specified, imgproxy will classify only those classes.
 
 Default: `0`.
 
@@ -651,6 +653,8 @@ When set, imgproxy will calculate and return the perceptual hash of the image. P
   "perceptual_hash": "9797306d694b4e94"
 }
 ```
+
+Use [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) to calculate the distance between two perceptual hashes. In a nutshell, the Hamming distance is the number of positions at which the corresponding bits of the two hashes differ.
 
 ### Calc hashsums
 

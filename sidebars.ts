@@ -62,7 +62,7 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "doc",
-          id: "features/object_classification",
+          id: "features/classification",
           className: "menu__list-item--badge badge--pro",
         },
         {
@@ -102,8 +102,8 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Cache",
       link: {
-        type: "doc",
-        id: "features/cache",
+        type: "generated-index",
+        description: "Learn about how to configure cache in imgproxy",
       },
       items: [
         {

@@ -69,12 +69,12 @@ a.badge--pro:hover {
   text-decoration: none;
 }
 
-.menu__list-item--badge a::after {
+.menu__list-item--badge .menu__link::after {
   top: 0;
   margin-left: auto;
 }
 
-.menu__list-item.badge--pro a::after {
+.menu__list-item.badge--pro .menu__link::after {
   content: "pro";
 }
 

@@ -48,9 +48,9 @@ echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
 * [`IMGPROXY_PATH_PREFIX`]: the URL path prefix. Example: when set to `/abc/def`, the imgproxy URL will be `/abc/def/%signature/%processing_options/%source_url`. Default: blank
 * [`IMGPROXY_USER_AGENT`]: the User-Agent header that will be sent with the source image request. You can use the `%current_version` variable to insert the current imgproxy version. Default: `imgproxy/%current_version`
 * [`IMGPROXY_USE_ETAG`]: when set to `true`, enables using the [ETag](https://en.wikipedia.org/wiki/HTTP_ETag) HTTP header for HTTP cache control. Default: `false`
-* [`IMGPROXY_ETAG_BUSTER`]: a global ETag buster value. Change it to invalidate old ETags and prevent `304 Not Modified` responses for stale client/CDN validators. Default: blank
+* [`IMGPROXY_ETAG_BUSTER`]: a global ETag buster value. Change this value if you update configuration that affects image processing, to invalidate old ETags and avoid `304 Not Modified` responses from stale client/CDN validators. Default: blank
 * [`IMGPROXY_USE_LAST_MODIFIED`]: when set to `true`, enables using the [Last-Modified](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified) HTTP header for HTTP cache control. Default: `false`
-* [`IMGPROXY_LAST_MODIFIED_BUSTER`]: a global `Last-Modified` buster timestamp. If incoming `If-Modified-Since` is older than this value, imgproxy ignores it and forces revalidation; if origin `Last-Modified` is older, imgproxy replaces it with this timestamp. Use it to invalidate stale client/CDN `Last-Modified` validators after global processing changes. Default: `0`
+* [`IMGPROXY_LAST_MODIFIED_BUSTER`]: a global `Last-Modified` buster timestamp in [RFC3339](https://www.rfc-editor.org/rfc/rfc3339.html) format. By setting it to a specific datetime, you can make imgproxy treat all the images as if they were modified at least at that datetime. Default: blank
 * [`IMGPROXY_CUSTOM_REQUEST_HEADERS`]: ((pro)) list of custom headers that imgproxy will send while requesting the source image, divided by `\;` (can be redefined by `IMGPROXY_CUSTOM_HEADERS_SEPARATOR`). Example: `X-MyHeader1=Lorem\;X-MyHeader2=Ipsum`
 * [`IMGPROXY_CUSTOM_RESPONSE_HEADERS`]: ((pro)) a list of custom response headers, separated by `\;` (can be redefined by `IMGPROXY_CUSTOM_HEADERS_SEPARATOR`). Example: `X-MyHeader1=Lorem\;X-MyHeader2=Ipsum`
 * [`IMGPROXY_CUSTOM_HEADERS_SEPARATOR`]: ((pro)) a string that will be used as a custom header separator. Default: `\;`
@@ -166,8 +166,6 @@ When using imgproxy in a development environment, it can be useful to ignore SSL
 * [`IMGPROXY_IGNORE_SSL_VERIFICATION`]: when `true`, disables SSL verification, so imgproxy can be used in a development environment with self-signed SSL certificates.
 
 Also you may want imgproxy to respond with the same error message that it writes to the log:
-
-* [`IMGPROXY_DEVELOPMENT_ERRORS_MODE`]: when `true`, imgproxy will respond with detailed error messages. Not recommended for production because some errors may contain stack traces.
 
 * [`IMGPROXY_ALLOW_SECURITY_OPTIONS`]: when `true`, allows usage of security-related processing options such as `max_src_resolution`, `max_src_file_size`, `max_animation_frames`, `max_animation_frame_resolution`, and `max_result_dimension`. Default: `false`.
 
@@ -423,24 +421,24 @@ imgproxy can detect objects on the image and use them to perform smart cropping,
 
 Read the [Object Detection guide](../features/object_detection.mdx) for more info.
 
-## Object classification
+## Classification
 
-imgproxy can classify detected objects on the image and provide detailed information about what the objects are.
+imgproxy can classify images by assigning them to predefined categories based on their overall content, similar to object detection but without identifying or locating individual objects.
 
-* [`IMGPROXY_OBJECT_CLASSIFY_NET`]: ((pro)) a path to the classification neural network model in ONNX format. Default: blank
-* [`IMGPROXY_OBJECT_CLASSIFY_CLASSES`]: ((pro)) the path to the text file with the class names, one per line. Default: blank
-* [`IMGPROXY_OBJECT_CLASSIFY_NET_SIZE`]: ((pro)) the size of the neural network input. The width and the heights of the inputs should be the same, so this config value should be a single number. Default: 224
-* [`IMGPROXY_OBJECT_CLASSIFY_THRESHOLD`]: ((pro)) classifications with confidence below this value will be discarded. Default: 0.5
-* [`IMGPROXY_OBJECT_CLASSIFY_NORMALIZATION`]: ((pro)) the normalization type to apply to the input image. Possible values are:
+* [`IMGPROXY_CLASSIFICATION_NET`]: ((pro)) a path to the classification neural network model in ONNX format. Default: blank
+* [`IMGPROXY_CLASSIFICATION_CLASSES`]: ((pro)) the path to the text file with the class names, one per line. Default: blank
+* [`IMGPROXY_CLASSIFICATION_NET_SIZE`]: ((pro)) the size of the neural network input. The width and the heights of the inputs should be the same, so this config value should be a single number. Default: 224
+* [`IMGPROXY_CLASSIFICATION_THRESHOLD`]: ((pro)) classifications with confidence below this value will be discarded. Default: 0.5
+* [`IMGPROXY_CLASSIFICATION_NORMALIZATION`]: ((pro)) the normalization type to apply to the input image. Possible values are:
   * `none`: _(default)_ no normalization
-  * `half`: normalize to [-0.5, 0.5] range
+  * `half`: normalize to [0, 1] range
   * `full`: normalize to [-1, 1] range
   * `imagenet`: normalize using ImageNet mean and standard deviation
-* [`IMGPROXY_OBJECT_CLASSIFY_LAYOUT`]: ((pro)) the data layout of the neural network input. Possible values are:
-  * `nchw`: _(default)_ channels first
-  * `nhwc`: channels last
+* [`IMGPROXY_CLASSIFICATION_LAYOUT`]: ((pro)) the data layout of the neural network input. Possible values are:
+  * `nchw`: channels first (PyTorch default)
+  * `nhwc`: _(default)_ channels last (TensorFlow default)
 
-Read the [Object Classification guide](../features/object_classification.mdx) for more info.
+Read the [Classification guide](../features/classification.mdx) for more info.
 
 ## Cache
 
@@ -453,9 +451,11 @@ imgproxy can cache processed images in various storage backends to improve perfo
 * [`IMGPROXY_CACHE_KEY_COOKIES`]: ((pro)) a comma-separated list of HTTP request cookies to include in the cache key. This allows caching different versions of the same image based on cookies. Default: blank
 * [`IMGPROXY_CACHE_REPORT_ERRORS`]: ((pro)) when `true`, imgproxy will report cache errors instead of silently falling back to processing without cache. Default: `false`
 
+Read the [Internal cache guide](../cache/internal.mdx) for more info.
+
 ### Local filesystem {#cache-storage-local-filesystem}
 
-imgproxy can store cached images on the local filesystem. To use [filesystem cache](../cache/internal/local_filesystem.mdx), set `IMGPROXY_CACHE_USE` to `filesystem`:
+imgproxy can store cached images on the local filesystem. To use [filesystem cache](../cache/internal/local_filesystem.mdx), set `IMGPROXY_CACHE_USE` to `fs`:
 
 * [`IMGPROXY_CACHE_LOCAL_FILESYSTEM_ROOT`]: ((pro)) the root directory for filesystem cache. Default: blank
 
@@ -507,8 +507,6 @@ imgproxy can store cached images in OpenStack Object Storage (Swift). To use [Sw
 * [`IMGPROXY_CACHE_SWIFT_DOMAIN`]: ((pro)) the Swift domain name for cache (optional, v3 auth only). Default: blank
 * [`IMGPROXY_CACHE_SWIFT_TIMEOUT_SECONDS`]: ((pro)) the data channel timeout in seconds for cache operations. Default: 60
 * [`IMGPROXY_CACHE_SWIFT_CONNECT_TIMEOUT_SECONDS`]: ((pro)) the connect channel timeout in seconds for cache operations. Default: 10
-
-Read the [Internal cache guide](../cache/internal.mdx) for more info.
 
 ## Fallback image
 

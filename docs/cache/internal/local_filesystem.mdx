@@ -6,7 +6,7 @@ description: Learn about how to configure the local filesystem cache in imgproxy
 
 imgproxy can store cached images on the local filesystem. To use filesystem cache, do the following:
 
-1. Set the `IMGPROXY_CACHE_USE` environment variable to the filesystem.
+1. Set the `IMGPROXY_CACHE_USE` environment variable to `fs`.
 2. Set `IMGPROXY_CACHE_LOCAL_FILESYSTEM_ROOT` to your cache directory path.
 3. _(optional)_ Specify a path prefix for cache files with `IMGPROXY_CACHE_PATH_PREFIX`.
 
@@ -25,5 +25,5 @@ imgproxy can store cached images on the local filesystem. To use filesystem cach
 Assume you want to cache processed images in `/var/cache/imgproxy`. Run imgproxy with `IMGPROXY_CACHE_LOCAL_FILESYSTEM_ROOT` set to your cache directory:
 
 ```bash
-IMGPROXY_CACHE_USE=filesystem IMGPROXY_CACHE_LOCAL_FILESYSTEM_ROOT=/var/cache/imgproxy imgproxy
+IMGPROXY_CACHE_USE=fs IMGPROXY_CACHE_LOCAL_FILESYSTEM_ROOT=/var/cache/imgproxy imgproxy
 ```
