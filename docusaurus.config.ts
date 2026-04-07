@@ -104,8 +104,8 @@ const config: Config = {
           versions: {
             current: {
               label: "latest",
-              path: "3.31.x",
-              banner: "none",
+              path: "latest",
+              banner: "unreleased",
             },
             "4-preview": {
               banner: "unreleased",
