@@ -11,8 +11,6 @@ imgproxy can store cached images in Amazon S3 buckets or S3-compatible storage. 
 3. Specify the cache bucket name with `IMGPROXY_CACHE_BUCKET`.
 4. _(optional)_ Specify the AWS region with `IMGPROXY_CACHE_S3_REGION` or `AWS_REGION`. Default: `us-west-1`
 5. _(optional)_ Specify the S3 endpoint with `IMGPROXY_CACHE_S3_ENDPOINT`. You can also set `IMGPROXY_CACHE_S3_ENDPOINT_USE_PATH_STYLE=false` to use the virtual host style for the endpoint.
-6. _(optional)_ Specify the AWS IAM Role to Assume with `IMGPROXY_CACHE_S3_ASSUME_ROLE_ARN`.
-7. _(optional)_ Specify the External ID to pass to the AWS IAM Role when assuming it using `IMGPROXY_CACHE_S3_ASSUME_ROLE_EXTERNAL_ID`. This will have no effect if the assume role ARN is not specified.
 
 ### Configuration
 
