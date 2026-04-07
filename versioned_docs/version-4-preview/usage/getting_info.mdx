@@ -303,6 +303,40 @@ Default: `false`.
 }
 ```
 
+### Classification {#classification}
+
+:::slow[Slow]
+This option requires the image to be fully downloaded and processed.
+:::
+
+```imgproxy_url_option
+classify:%top_k:%class_name1:%class_name2..%class_nameN
+cl:%top_k:%class_name1:%class_name2..%class_nameN
+```
+
+When `top_k` is greater than zero, imgproxy will classify the image and return the top K classes with the highest confidence scores. Read the [classification](../features/classification.mdx) manual to learn how to configure classification.
+
+Providing class names is optional. If specified, imgproxy will classify only those classes.
+
+Default: `0`.
+
+**Response example:**
+
+```json
+[
+  {
+    "class_id": 68,
+    "name": "Bus",
+    "confidence": 0.8745117
+  },
+  {
+    "class_id": 351,
+    "name": "Person",
+    "confidence": 0.7734375
+  }
+]
+```
+
 ### Colorspace
 
 :::slow[Slow]
@@ -576,6 +610,51 @@ Default: `0:0`
   "blurhash": "LLH-}fox0fRQ%Do}9as9_3%2M{S2"
 }
 ```
+
+### ThumbHash {#thumb-hash}
+
+:::slow[Slow]
+This option requires the image to be fully downloaded and processed.
+:::
+
+```imgproxy_url_option
+thumb_hash:1
+th:1
+```
+
+When set, imgproxy will calculate and return the image's [ThumbHash](https://evanw.github.io/thumbhash/). ThumbHash is a compact representation of an image that can be used to generate a placeholder while the actual image is loading.
+
+**Response example:**
+
+```json
+{
+  "thumb_hash": "0BE7810C80365AF29266578A660CB7A6707A80867738A87804"
+}
+```
+
+### Perceptual hash {#perceptual-hash}
+
+:::slow[Slow]
+This option requires the image to be fully downloaded and processed.
+:::
+
+```imgproxy_url_option
+perceptual_hash:1
+phash:1
+ph:1
+```
+
+When set, imgproxy will calculate and return the perceptual hash of the image. Perceptual hashes can be used to find similar or duplicate images.
+
+**Response example:**
+
+```json
+{
+  "perceptual_hash": "9797306d694b4e94"
+}
+```
+
+Use [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) to calculate the distance between two perceptual hashes. In a nutshell, the Hamming distance is the number of positions at which the corresponding bits of the two hashes differ.
 
 ### Calc hashsums
 

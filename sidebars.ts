@@ -62,11 +62,6 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "doc",
-          id: "features/classification",
-          className: "menu__list-item--badge badge--pro",
-        },
-        {
-          type: "doc",
           id: "features/autoquality",
           className: "menu__list-item--badge badge--pro",
         },
@@ -96,37 +91,6 @@ const sidebars: SidebarsConfig = {
         "image_sources/google_cloud_storage",
         "image_sources/azure_blob_storage",
         "image_sources/openstack_swift",
-      ],
-    },
-    {
-      type: "category",
-      label: "Cache",
-      link: {
-        type: "generated-index",
-        description: "Learn about how to configure cache in imgproxy",
-      },
-      items: [
-        {
-          type: "doc",
-          id: "cache/external",
-          label: "External cache",
-        },
-        {
-          type: "category",
-          label: "Internal cache",
-          link: {
-            type: "doc",
-            id: "cache/internal",
-          },
-          className: "menu__list-item--badge badge--pro",
-          items: [
-            "cache/internal/local_filesystem",
-            "cache/internal/amazon_s3",
-            "cache/internal/google_cloud_storage",
-            "cache/internal/azure_blob_storage",
-            "cache/internal/openstack_swift",
-          ],
-        },
       ],
     },
     {
