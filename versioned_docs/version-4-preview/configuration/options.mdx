@@ -259,12 +259,12 @@ Autoquality requires the image to be saved several times. Use it only when you p
 * [`IMGPROXY_AUTOQUALITY_FORMAT_MIN`]: ((pro)) the minimal quality imgproxy can use per format, comma divided. Example: `jpeg=70,avif=40,webp=60`. When value for the resulting format is not set, `IMGPROXY_AUTOQUALITY_MIN` value is used. Default: `avif=60`
 * [`IMGPROXY_AUTOQUALITY_MAX`]: ((pro)) the maximum quality imgproxy can use. Default: 80
 * [`IMGPROXY_AUTOQUALITY_FORMAT_MAX`]: ((pro)) the maximum quality imgproxy can use per format, comma divided. Example: `jpeg=70,avif=40,webp=60`. When a value for the resulting format is not set, the `IMGPROXY_AUTOQUALITY_MAX` value is used. Default: `avif=65`
-* [`IMGPROXY_AUTOQUALITY_ALLOWED_ERROR`]: ((pro)) the allowed `IMGPROXY_AUTOQUALITY_TARGET` error. Applicable only to `dssim` and `ml` methods. Default: 0.001
+* [`IMGPROXY_AUTOQUALITY_ALLOWED_ERROR`]: ((pro)) the allowed `IMGPROXY_AUTOQUALITY_TARGET` error. Applicable only to `dssim` and `ml` methods. Default: 0.002
 * [`IMGPROXY_AUTOQUALITY_MAX_RESOLUTION`]: ((pro)) when this value is greater then zero and the resultant resolution exceeds the value, autoquality won't be used. Default: 0
-* [`IMGPROXY_AUTOQUALITY_JPEG_NET`]: ((pro)) the path to the neural network for JPEG.
-* [`IMGPROXY_AUTOQUALITY_WEBP_NET`]: ((pro)) the path to the neural network for WebP.
-* [`IMGPROXY_AUTOQUALITY_AVIF_NET`]: ((pro)) the path to the neural network for AVIF.
-* [`IMGPROXY_AUTOQUALITY_JXL_NET`]: ((pro)) the path to the neural network for JPEG XL.
+* [`IMGPROXY_AUTOQUALITY_JPEG_NET`]: ((pro)) the path to the neural network model for JPEG.
+* [`IMGPROXY_AUTOQUALITY_WEBP_NET`]: ((pro)) the path to the neural network model for WebP.
+* [`IMGPROXY_AUTOQUALITY_AVIF_NET`]: ((pro)) the path to the neural network model for AVIF.
+* [`IMGPROXY_AUTOQUALITY_JXL_NET`]: ((pro)) the path to the neural network model for JPEG XL.
 
 ## SVG processing
 * [`IMGPROXY_ALWAYS_RASTERIZE_SVG`]: when `true`, imgproxy will always rasterize SVG images unless SVG processing is not [skipped](#skip-processing). Default: `false`
