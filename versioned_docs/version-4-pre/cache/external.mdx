@@ -1,0 +1,217 @@
+---
+description: External cache options for imgproxy, including CDNs, nginx, and Varnish
+---
+
+# External cache
+
+External cache refers to caching layers in front of imgproxy, such as CDNs, reverse proxies, or caching appliances. These solutions provide edge caching, geo-distribution, and high-performance image delivery.
+
+## CDN options
+
+Most major CDNs (Cloudflare, Fastly, AWS CloudFront, Akamai, etc.) can cache imgproxy responses:
+
+### Recommended CDN settings
+
+* **Image optimization** - Disable CDN image optimization to avoid double-processing
+* **Compression** - In case your CDN supports conditional compression of SVG images, enable gzip/Brotli compression for bandwidth savings
+* **Include essential headers*** - Include `Accept` header in the cache key if you're using [format negotiation](../configuration/options.mdx#avifwebpjpeg-xl-support-detection). If you have [client hints](../configuration/options.mdx#client-hints-support) enabled, include also `DPR`, `Sec-CH-Dpr`, and `Sec-CH-Width` headers.
+* **Origin shield** - Add a secondary cache layer between your CDN and imgproxy origin if your CDN supports it.
+
+## nginx caching
+
+nginx can act as a reverse proxy cache in front of imgproxy:
+
+```nginx
+proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=imgproxy_cache:10m max_size=50g inactive=30d;
+
+upstream imgproxy {
+  server localhost:8080;
+}
+
+server {
+  listen 80;
+  server_name images.example.com;
+
+  # Uncomment if you do not use format negotiation and client hints
+  # proxy_cache_key "$scheme$proxy_host$request_uri";
+
+  # Uncomment if you use format negotiation
+  # proxy_cache_key "$scheme$proxy_host$request_uri$http_accept";
+
+  # Uncomment if you use client hints
+  # proxy_cache_key "$scheme$request_method$host$request_uri:dpr=$http_dpr:width=$http_width:chdpr=$http_sec_ch_dpr:chwidth=$http_sec_ch_width";
+
+  # Uncomment if you use format negotiation and client hints
+  # proxy_cache_key "$scheme$request_method$host$request_uri:accept=$http_accept:dpr=$http_dpr:width=$http_width:chdpr=$http_sec_ch_dpr:chwidth=$http_sec_ch_width";
+
+  location / {
+    proxy_pass http://imgproxy;
+
+    # Cache configuration
+    proxy_cache imgproxy_cache;
+    proxy_cache_valid 200 30d;
+    proxy_cache_valid 404 1m;
+    proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
+    proxy_cache_background_update on;
+    proxy_cache_lock on;
+    proxy_cache_bypass $http_pragma $http_authorization;
+    proxy_no_cache $http_pragma $http_authorization;
+
+    # Add cache status header for debugging
+    add_header X-Cache-Status $upstream_cache_status;
+  }
+}
+```
+
+### Possible cache key setup
+
+The exact key depends on which imgproxy features can change output for the same URL.
+
+1. Basic key when output depends only on URL/path options:
+
+```nginx
+proxy_cache_key "$scheme$proxy_host$request_uri";
+```
+
+2. Include [format negotiation](../configuration/options.mdx#avifwebpjpeg-xl-support-detection) signal when WebP/AVIF/JXL preference can vary by client:
+
+```nginx
+proxy_cache_key "$scheme$proxy_host$request_uri$http_accept";
+```
+
+3. Include [Client Hints](../configuration/options.mdx#client-hints-support) dimensions when width/DPR affects output:
+
+```nginx
+proxy_cache_key "$scheme$request_method$host$request_uri:accept=$http_accept:dpr=$http_dpr:width=$http_width:chdpr=$http_sec_ch_dpr:chwidth=$http_sec_ch_width";
+```
+
+Use the smallest key that still prevents collisions for your traffic profile.
+
+### Key recommendations
+
+* Include `Accept` in the cache key if [format negotiation](../configuration/options.mdx#avifwebpjpeg-xl-support-detection) is used.
+* Include DPR/width-related hints in the cache key if [Client Hints](../configuration/options.mdx#client-hints-support) are used to vary output.
+* Set long `inactive` timeout (30d) to keep popular images in cache.
+* Configure `proxy_cache_use_stale` for graceful degradation during origin issues.
+* Monitor `/proc/sys/fs/file-max` and increase if needed for large caches.
+* Use separate cache zones for different image types if needed.
+
+## Varnish caching
+
+Varnish is a powerful reverse proxy cache optimized for HTTP performance:
+
+```vcl
+vcl 4.1;
+
+backend imgproxy {
+  .host = "localhost";
+  .port = "8080";
+  .connect_timeout = 600ms;
+  .first_byte_timeout = 600s;
+  .between_bytes_timeout = 60s;
+}
+
+sub vcl_recv {
+  set req.backend_hint = imgproxy;
+
+  # Cache only GET and HEAD requests
+  if (req.method != "GET" && req.method != "HEAD") {
+    return (pass);
+  }
+
+  # Include important headers in cache key
+  if (req.http.Accept) {
+    set req.http.X-Accept = req.http.Accept;
+  }
+
+  # Keep DPR if Client Hints are not enabled
+  if (req.http.DPR) {
+    set req.http.X-DPR = req.http.DPR;
+  }
+
+  if (req.http.Width) {
+    set req.http.X-Width = req.http.Width;
+  }
+
+  if (req.http.Sec-CH-DPR) {
+    set req.http.X-CH-DPR = req.http.Sec-CH-DPR;
+  }
+
+  if (req.http.Sec-CH-Width) {
+    set req.http.X-CH-Width = req.http.Sec-CH-Width;
+  }
+}
+
+sub vcl_hash {
+  # Base hash
+  hash_data(req.url);
+  hash_data(req.http.Host);
+
+  # Include Accept header for format negotiation
+  if (req.http.X-Accept) {
+    hash_data(req.http.X-Accept);
+  }
+
+  # Include DPR if present
+  if (req.http.X-DPR) {
+    hash_data(req.http.X-DPR);
+  }
+
+  if (req.http.X-Width) {
+    hash_data(req.http.X-Width);
+  }
+
+  if (req.http.X-CH-DPR) {
+    hash_data(req.http.X-CH-DPR);
+  }
+
+  if (req.http.X-CH-Width) {
+    hash_data(req.http.X-CH-Width);
+  }
+}
+
+sub vcl_backend_response {
+  # Cache successful responses for 30 days
+  if (beresp.status == 200) {
+    set beresp.ttl = 30d;
+    set beresp.keep = 30d;
+  }
+
+  # Cache 404s for a short period
+  if (beresp.status == 404) {
+    set beresp.ttl = 1m;
+  }
+
+  # Enable cache using stale object if backend is down
+  set beresp.grace = 24h;
+}
+
+sub vcl_deliver {
+  # Add cache hit/miss header
+  if (obj.hits > 0) {
+    set resp.http.X-Cache = "HIT";
+    set resp.http.X-Cache-Hits = obj.hits;
+  } else {
+    set resp.http.X-Cache = "MISS";
+  }
+}
+```
+
+### Key recommendations
+
+* Use `sub vcl_hash` to customize cache key behavior.
+* Include `Accept` for [format negotiation](../configuration/options.mdx#avifwebpjpeg-xl-support-detection).
+* Include DPR/width-related headers when [Client Hints](../configuration/options.mdx#client-hints-support) support is enabled (`DPR`, `Width`, `Sec-CH-DPR`, `Sec-CH-Width`).
+* Set grace period (`beresp.grace`) for graceful error handling.
+* Monitor Varnish statistics with `varnishstat`.
+* Use tags for efficient cache purging: add `set beresp.http.Surrogate-Key = "images:product:123"` in `vcl_backend_response`.
+* Configure workspace limits if caching many large images.
+
+## Cache headers from imgproxy
+
+imgproxy sends the following headers useful for external caching:
+
+* `Cache-Control: public, max-age=31536000` - Long-term caching (1 year default, configurable with `IMGPROXY_TTL`)
+* `ETag` - If `IMGPROXY_USE_ETAG=true` (by default), enables conditional requests
+* `Last-Modified` - If `IMGPROXY_USE_LAST_MODIFIED=true` (by default), enables conditional requests
+* `Content-Type` - Important for cache key if not in `Accept` header
