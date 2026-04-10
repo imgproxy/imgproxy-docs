@@ -107,7 +107,8 @@ const config: Config = {
               path: "latest",
               banner: "unreleased",
             },
-            "4-preview": {
+            "4-pre": {
+              label: "4-beta.0",
               banner: "unreleased",
             },
           },
