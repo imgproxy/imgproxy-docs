@@ -787,6 +787,17 @@ scp:%strip_color_profile
 
 When set to `1`, `t` or `true`, imgproxy will transform the embedded color profile (ICC) to sRGB and remove it from the image. Otherwise, imgproxy will try to keep it as is. This is normally controlled by the [IMGPROXY_STRIP_COLOR_PROFILE](../configuration/options.mdx#IMGPROXY_STRIP_COLOR_PROFILE) configuration but this processing option allows the configuration to be set for each request.
 
+### Preserve HDR
+
+```imgproxy_url_option
+preserve_hdr:%enable
+ph:%enable
+```
+
+If set to `1`, `t` or `true`, high bit image will [remain high bit](../image_formats_support.mdx#colorspace-and-hdr-preservation). If set to `0`, `f` or `false`, high bit image will be downscaled to 8 bit. Overrides [`IMGPROXY_PRESERVE_HDR`](../configuration/options.mdx#IMGPROXY_PRESERVE_HDR) value.
+
+Default: [`IMGPROXY_PRESERVE_HDR`](../configuration/options.mdx#IMGPROXY_PRESERVE_HDR) value.
+
 ### Color profile ((pro)) {#color-profile}
 
 ```imgproxy_url_option
