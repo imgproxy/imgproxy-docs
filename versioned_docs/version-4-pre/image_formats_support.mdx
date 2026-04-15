@@ -73,6 +73,98 @@ RAW image formats from digital cameras are supported as source images only (read
 
 imgproxy uses [libraw](https://www.libraw.org/) to process RAW files. For a complete list of supported camera models and RAW formats, see the [libraw supported cameras list](https://www.libraw.org/supported-cameras).
 
+### RAW format detection ((pro)) {#raw-detect}
+
+imgproxy detects RAW formats using the following process:
+
+1. **Standard format detection**: First, imgproxy attempts to detect if the file is in a known non-RAW format (such as JPEG, PNG, WebP, etc.) by using magic bytes signatures.
+2. **MIME type checking**: If no standard format is detected through magic bytes, imgproxy checks whether the MIME type matches any of the known RAW MIME types.
+3. **Extension checking**: If the MIME type does not match, imgproxy checks if the file extension matches any of the known RAW extensions.
+
+<details>
+<summary>Supported RAW MIME types</summary>
+
+```
+image/x-hasselblad-3fr
+image/x-adobe-dng
+image/x-sony-arw
+image/x-phaseone-cap
+image/x-canon-cr2
+image/x-canon-cr3
+image/x-canon-crw
+image/x-kodak-dcr
+image/x-epson-erf
+image/x-hasselblad-fff
+image/x-gopro-gpr
+image/x-phaseone-iiq
+image/x-kodak-k25
+image/x-kodak-kdc
+image/x-mamiya-mef
+image/x-leaf-mos
+image/x-minolta-mrw
+image/x-nikon-nef
+image/x-nikon-nrw
+image/x-olympus-orf
+image/x-sony-ori
+image/x-pentax-pef
+image/x-apple-proraw
+image/x-fuji-raf
+image/x-raw
+image/x-panasonic-rw2
+image/x-leica-rwl
+image/x-sony-sr2
+image/x-sony-srf
+image/x-samsung-srw
+image/x-sigma-x3f
+```
+
+</details>
+
+<details>
+<summary>Supported RAW file extensions</summary>
+
+```
+.3fr
+.adng
+.arw
+.cap
+.cr2
+.cr3
+.crw
+.data
+.dcr
+.dng
+.eip
+.erf
+.fff
+.gpr
+.iiq
+.k25
+.kdc
+.mef
+.moc
+.mos
+.mdc
+.mrw
+.nef
+.nrw
+.orf
+.ori
+.pef
+.ppm
+.proraw
+.raf
+.raw
+.rw2
+.rwl
+.sr2
+.srf
+.srw
+.x3f
+```
+
+</details>
+
 ## Converting animated images to MP4 ((pro)) {#converting-animated-images-to-mp4}
 
 Animated image results can be converted to MP4 by specifying the `mp4` extension.
