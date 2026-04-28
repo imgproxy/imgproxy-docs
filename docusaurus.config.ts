@@ -108,7 +108,7 @@ const config: Config = {
               banner: "unreleased",
             },
             "4-pre": {
-              label: "4-beta.0",
+              label: "4-beta.1",
               banner: "unreleased",
             },
           },
