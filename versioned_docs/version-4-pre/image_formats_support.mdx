@@ -73,6 +73,10 @@ RAW image formats from digital cameras are supported as source images only (read
 
 imgproxy uses [libraw](https://www.libraw.org/) to process RAW files. For a complete list of supported camera models and RAW formats, see the [libraw supported cameras list](https://www.libraw.org/supported-cameras).
 
+:::warning
+Since loading RAW images is pretty resource intensive, their processing is disabled by default. You can enable it with the [`IMGPROXY_ENABLE_RAW_FORMATS`](configuration/options.mdx#raw-formats) configuration variable.
+:::
+
 ## Converting animated images to MP4 ((pro)) {#converting-animated-images-to-mp4}
 
 Animated image results can be converted to MP4 by specifying the `mp4` extension.

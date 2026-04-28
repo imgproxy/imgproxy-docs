@@ -372,6 +372,12 @@ imgproxy Pro can extract specific video frames to create thumbnails. This featur
 Though using `IMGPROXY_VIDEO_THUMBNAIL_PROBE_SIZE` and `IMGPROXY_VIDEO_THUMBNAIL_MAX_ANALYZE_DURATION` can lower the memory footprint of video thumbnail generation, they should be used in production only when you know what you're doing.
 :::
 
+## RAW formats
+
+imgproxy Pro can process digital camera RAW images. Since loading RAW images is pretty resource intensive, their processing is disabled by default. You can enable it with the following variable:
+
+* [`IMGPROXY_ENABLE_RAW_FORMATS`]: ((pro)) when `true`, enables RAW image formats support. Default: `false`
+
 ## Watermark
 
 * [`IMGPROXY_WATERMARK_DATA`]: Base64-encoded image data. You can easily calculate it with `base64 tmp/watermark.png | tr -d '\n'`.
