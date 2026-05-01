@@ -1,2 +1,4 @@
 User-agent: *
+Disallow:
+Content-Signal: search=yes, ai-train=yes, ai-input=yes
 Sitemap: https://docs.imgproxy.net/sitemap.xml
