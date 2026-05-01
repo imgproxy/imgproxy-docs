@@ -3,6 +3,7 @@ import {
   Options as PresetClassicOptions,
   ThemeConfig as PresetClassicThemeConfig,
 } from "@docusaurus/preset-classic";
+import { join } from "node:path";
 
 import badgeRemarkPlugin from "./src/remark/badge";
 import codeAnchorRemarkPlugin from "./src/remark/code-anchor";
@@ -28,6 +29,12 @@ const config: Config = {
   baseUrl: "/",
 
   onBrokenLinks: "throw",
+  // Anchors for configuration options are generated dynamically,
+  // so Docusaurus can't know them in advance.
+  // It'd be nice to be able to verify anchors, but for now,
+  // let's just ignore broken anchors instead flooding the build
+  // output with warnings.
+  onBrokenAnchors: "ignore",
 
   i18n: {
     defaultLocale: "en",
@@ -91,6 +98,8 @@ const config: Config = {
       },
     },
   ],
+
+  plugins: [join(__dirname, "src/plugins/llms.ts")],
 
   presets: [
     [

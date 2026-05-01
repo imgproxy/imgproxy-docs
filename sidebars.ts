@@ -1,7 +1,7 @@
 import { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 const sidebars: SidebarsConfig = {
-  tutorialSidebar: [
+  main: [
     "getting_started",
     {
       type: "link",

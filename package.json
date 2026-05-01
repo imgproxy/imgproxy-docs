@@ -33,6 +33,7 @@
     "@docusaurus/types": "^3.9.2",
     "@eslint/js": "^9.39.1",
     "@evilmartians/lefthook": "^2.0.4",
+    "@netlify/edge-functions": "^3.0.6",
     "@types/mdast": "4.0.4",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
