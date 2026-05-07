@@ -156,13 +156,6 @@ const config: Config = {
   ],
 
   themeConfig: {
-    announcementBar: {
-      id: "v4_early_access",
-      content:
-        '🚀 imgproxy v4 is almost here! <a href="https://imgproxy.net/v4-early-access" target="_blank" rel="noopener noreferrer">Join Early Access Program</a> to test imgproxy Pro v4 for free and get a discount on your first year of subscription!',
-      isCloseable: true,
-    },
-
     colorMode: {
       defaultMode: "dark",
       disableSwitch: false,
