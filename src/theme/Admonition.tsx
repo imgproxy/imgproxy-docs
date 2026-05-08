@@ -2,7 +2,11 @@ import * as React from "react";
 import Admonition from "@theme-original/Admonition";
 import SlowIcon from "@site/static/img/hourglass.svg";
 
-export default function AdmonitionWrapper(props) {
+interface Props {
+  type: string;
+}
+
+export default function AdmonitionWrapper(props: Props) {
   if (props.type === "slow") {
     return <Admonition {...props} icon={<SlowIcon />} type="note" />;
   }

@@ -16,6 +16,8 @@ export default function prismIncludeLanguages(
   // avoid polluting global namespace.
   // You can mutate PrismObject: registering plugins, deleting languages... As
   // long as you don't re-assign it
+
+  const PrismBefore = globalThis.Prism;
   globalThis.Prism = PrismObject;
 
   additionalLanguages.forEach((lang) => {
@@ -29,5 +31,9 @@ export default function prismIncludeLanguages(
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   require(`../prism/languages`);
 
+  // Clean up and eventually restore former globalThis.Prism object (if any)
   delete (globalThis as Optional<typeof globalThis, "Prism">).Prism;
+  if (typeof PrismBefore !== "undefined") {
+    globalThis.Prism = PrismBefore;
+  }
 }

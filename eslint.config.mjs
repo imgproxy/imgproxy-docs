@@ -1,16 +1,19 @@
 // @ts-check
 
-import * as globals from "globals";
+import globals from "globals";
 
+import { defineConfig } from "eslint/config";
 import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
-import { flatConfigs as importPlugin } from "eslint-plugin-import";
+import { configs as tseslint } from "typescript-eslint";
+import { flatConfigs as importPlugin } from "eslint-plugin-import-x";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import jsxA11yPugin from "eslint-plugin-jsx-a11y";
 import prettierPlugin from "eslint-plugin-prettier/recommended";
 
-export default tseslint.config(
+import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
+
+export default defineConfig(
   {
     ignores: [
       "**/.idea/",
@@ -18,22 +21,22 @@ export default tseslint.config(
       "**/.docusaurus/",
       "**/node_modules/",
       "build/",
+      ".netlify/",
     ],
   },
+
+  eslint.configs.recommended,
+  tseslint.recommendedTypeChecked,
+  importPlugin.recommended,
+  importPlugin.typescript,
+  reactPlugin.configs.flat?.recommended,
+  reactPlugin.configs.flat?.["jsx-runtime"],
+  reactHooksPlugin.configs.flat.recommended,
+  jsxA11yPugin.flatConfigs.recommended,
+  prettierPlugin,
+
   {
-    extends: [
-      eslint.configs.recommended,
-      ...tseslint.configs.recommendedTypeChecked,
-      importPlugin.recommended,
-      reactPlugin.configs.flat?.recommended,
-      reactPlugin.configs.flat?.["jsx-runtime"],
-      {
-        plugins: { "react-hooks": reactHooksPlugin },
-        rules: { ...reactHooksPlugin.configs.recommended.rules },
-      },
-      jsxA11yPugin.flatConfigs.recommended,
-      prettierPlugin,
-    ],
+    files: ["**/*.{js,jsx,ts,tsx,mjs}"],
 
     languageOptions: {
       ...reactPlugin.configs.flat?.recommended.languageOptions,
@@ -41,19 +44,16 @@ export default tseslint.config(
       globals: {
         ...globals.browser,
         ...globals.node,
+        ...globals.commonjs,
+        ...globals.es2024,
         window: true,
       },
 
-      ecmaVersion: 5,
-      sourceType: "commonjs",
+      ecmaVersion: "latest",
+      sourceType: "module",
 
       parserOptions: {
-        // projectService: true,
-        projectService: {
-          // allowDefaultProject: ["eslint.config.mjs"],
-          defaultProject: "tsconfig.json",
-        },
-        tsconfigRootDir: import.meta.dirname,
+        projectService: true,
       },
     },
 
@@ -61,50 +61,30 @@ export default tseslint.config(
       react: {
         version: "detect",
       },
-
-      "import/extensions": [".ts", ".tsx"],
-
-      "import/resolver": {
-        node: {
-          paths: ["front"],
-        },
-      },
+      "import-x/resolver-next": [
+        createTypeScriptImportResolver({
+          alwaysTryTypes: true,
+          project: "./tsconfig.json",
+          // `@docusaurus/tsconfig` sets `baseUrl` to its own package dir under
+          // `node_modules/`, which mis-anchors the `@site/*` -> `./*` mapping
+          // there. Re-anchor at the project root.
+          alias: {
+            "@site": [import.meta.dirname],
+          },
+        }),
+      ],
     },
 
     rules: {
-      "react/jsx-uses-react": 2,
-      "@typescript-eslint/no-unused-vars": 2,
-
-      // TODO Need to fix the errors in project and delete all the rows below
-      // basic
-      "no-async-promise-executor": 0,
-      "import/no-unresolved": 0,
-
-      // react
-      "react/prop-types": 0,
-      "react/no-find-dom-node": 0,
-      "react/no-unescaped-entities": 0,
-      "react-hooks/exhaustive-deps": 0,
-
-      // ts
-      "@typescript-eslint/no-unsafe-member-access": 0,
-      "@typescript-eslint/no-unsafe-assignment": 0,
-      "@typescript-eslint/no-unsafe-call": 0,
-      "@typescript-eslint/no-unsafe-argument": 0,
-      "@typescript-eslint/no-unsafe-return": 0,
-      "@typescript-eslint/no-explicit-any": 0,
-      "@typescript-eslint/restrict-template-expressions": 0,
-      "@typescript-eslint/restrict-plus-operands": 0,
-      "@typescript-eslint/no-floating-promises": 0,
-      "@typescript-eslint/no-misused-promises": 0,
-      "@typescript-eslint/no-empty-interface": 0,
-
-      // a11y
-      "jsx-a11y/click-events-have-key-events": 0,
-      "jsx-a11y/no-static-element-interactions": 0,
-      "jsx-a11y/img-redundant-alt": 0,
-      "jsx-a11y/alt-text": 0,
-      "jsx-a11y/interactive-supports-focus": 0,
+      "react/jsx-uses-react": "error",
+      "@typescript-eslint/no-unused-vars": "error",
+      // Docusaurus virtual modules — declared as ambient types in
+      // `@docusaurus/module-type-aliases` and resolved by webpack at build
+      // time. They have no on-disk path for the resolver to find.
+      "import-x/no-unresolved": [
+        "error",
+        { ignore: ["^@theme-(original|init)/", "^@generated/"] },
+      ],
     },
   },
 );

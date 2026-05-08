@@ -1,8 +1,4 @@
 import { Config } from "@docusaurus/types";
-import {
-  Options as PresetClassicOptions,
-  ThemeConfig as PresetClassicThemeConfig,
-} from "@docusaurus/preset-classic";
 import { join } from "node:path";
 
 import badgeRemarkPlugin from "./src/remark/badge";
@@ -151,7 +147,7 @@ const config: Config = {
         googleTagManager: {
           containerId: "GTM-K5CRKPFN",
         },
-      } as PresetClassicOptions,
+      },
     ],
   ],
 
@@ -331,7 +327,7 @@ const config: Config = {
       apiKey: "4233fb28085f0a6ad2922954762bf39b",
       indexName: "imgproxy",
     },
-  } as PresetClassicThemeConfig,
+  },
 
   markdown: {
     hooks: {

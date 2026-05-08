@@ -209,10 +209,13 @@ function stripFrontmatter(content: string): string {
 // The root page uses a logo image as the H1, which doesn't provide useful information for LLMs,
 // so we replace it with the "imgproxy" heading
 function replaceImageOnlyH1(content: string): string {
-  return content.replace(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g, (match, inner) => {
-    const remainder = inner.replace(/<img\b[^>]*\/?>/g, "").trim();
-    return remainder === "" ? "# imgproxy" : match;
-  });
+  return content.replace(
+    /<h1\b[^>]*>([\s\S]*?)<\/h1>/g,
+    (match, inner: string) => {
+      const remainder = inner.replace(/<img\b[^>]*\/?>/g, "").trim();
+      return remainder === "" ? "# imgproxy" : match;
+    },
+  );
 }
 
 // Recursively render the sidebar items as a markdown list,

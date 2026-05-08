@@ -1,9 +1,12 @@
 import * as React from "react";
 import TOCItems from "@theme-original/TOCItems";
-import type { Props } from "@theme/TOCItems";
 
 interface TOCTreeNode {
   value: string;
+}
+
+interface Props {
+  toc: TOCTreeNode[];
 }
 
 function processToc(toc: TOCTreeNode): TOCTreeNode {

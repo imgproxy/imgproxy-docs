@@ -1,16 +1,16 @@
 import { visit } from "unist-util-visit";
-import { Transformer } from "unified";
-import { Text, Parent } from "mdast";
+import type { Transformer } from "unified";
+import type { Text, Parent, RootContent } from "mdast";
 
 const plugin = (): Transformer => {
-  const textNode = (value) => ({
+  const textNode = (value: string): Text => ({
     type: "text",
     value,
   });
 
-  const badgeNode = (label) => {
-    const node = {
-      type: "mdxJsxFlowElement",
+  const badgeNode = (label: string): RootContent => {
+    const node: RootContent = {
+      type: "mdxJsxTextElement",
       name: "i",
       attributes: [
         {
@@ -49,10 +49,10 @@ const plugin = (): Transformer => {
       if (!node.value) return;
 
       let rest = node.value;
-      const replacement = [];
+      const replacement: RootContent[] = [];
 
       const re = /\(\((\S+)\)\)/;
-      let match;
+      let match: RegExpExecArray | null;
 
       while ((match = re.exec(rest)) !== null) {
         if (match.index > 0)

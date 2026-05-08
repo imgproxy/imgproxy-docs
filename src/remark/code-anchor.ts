@@ -1,11 +1,10 @@
 import { visit } from "unist-util-visit";
-import { Transformer } from "unified";
+import type { Transformer } from "unified";
 import { Text, Link, Parent, RootContent } from "mdast";
-import { MdxJsxFlowElement } from "mdast-util-mdx-jsx";
 
 const plugin = (): Transformer => {
   return (ast) => {
-    const knownIds = [];
+    const knownIds: string[] = [];
 
     visit(ast, "text", (node: Text, index: number, parent: Parent) => {
       const code = parent.children[index + 1];
@@ -34,7 +33,7 @@ const plugin = (): Transformer => {
           value: node.value.slice(0, node.value.length - 1),
         },
         {
-          type: "mdxJsxFlowElement",
+          type: "mdxJsxTextElement",
           name: "span",
           attributes: [
             { type: "mdxJsxAttribute", name: "id", value: id },
@@ -45,13 +44,13 @@ const plugin = (): Transformer => {
             },
           ],
           children: [
-            code as any,
+            code,
             {
               type: "link",
               url: `#${id}`,
             } as Link,
           ],
-        } as MdxJsxFlowElement,
+        },
         {
           type: "text",
           value: nextText.value.slice(1),

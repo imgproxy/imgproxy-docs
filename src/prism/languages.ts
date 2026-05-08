@@ -1,4 +1,4 @@
-import { Grammar, TokenObject } from "prismjs";
+import { TokenObject } from "prismjs";
 
 const Prism = globalThis.Prism;
 
@@ -7,7 +7,7 @@ Prism.languages.imgproxy_url_option = {
   keyword: /^[^:]+/m,
   selector: /[^:]+/,
   punctuation: /[:]/,
-} as Grammar;
+};
 
 Prism.languages.imgproxy_url = {
   "host-info-sig": {
@@ -68,7 +68,7 @@ Prism.languages.imgproxy_url = {
     pattern: /^\s*\^.*$/g,
     alias: "comment",
   },
-} as Grammar;
+};
 
 Prism.languages.imgproxy_url_only_presets = Prism.languages.extend(
   "imgproxy_url",
@@ -99,7 +99,7 @@ Prism.languages.imgproxy_presets = {
       punctuation: /=/,
     },
   },
-} as Grammar;
+};
 
 Prism.languages.imgproxy_url_template = {
   comment: /^\s*#.*$/gm,
@@ -110,7 +110,7 @@ Prism.languages.imgproxy_url_template = {
   selector: /@%extension|\.%extension/,
   string: /info|plain|enc/,
   operator: /\//,
-} as Grammar;
+};
 
 // A dirty hack to add more "functions" to bash highlighting
 const bash_function = Prism.languages.bash?.function as TokenObject;
