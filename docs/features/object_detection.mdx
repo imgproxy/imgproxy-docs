@@ -5,33 +5,15 @@ description: Learn about how to detect objects in your images and use them with 
 
 # Object detection ((pro))
 
-imgproxy can detect objects in the image and use them for smart cropping, blurring the detections, or drawing the detections. You can also [fetch the detected objects info](../usage/getting_info.mdx#detect-objects).
+imgproxy can detect objects in the image and use them for smart cropping, blurring the detections, drawing the detections, or cropping to detected objects. You can also [fetch the detected objects info](../usage/getting_info.mdx#detect-objects).
 
-For object purposes, imgproxy uses the YOLO (You Only Look Once) model family. imgproxy supports models in DarkNet or ONNX format. We provide Docker images with a model trained for face detection, but you can use any YOLO model found on the internet or train your own model.
+For object purposes, imgproxy uses the YOLO (You Only Look Once) model family. imgproxy supports models in ONNX format. We provide Docker images with a model trained for face detection, but you can use any YOLO model found on the internet or train your own model.
 
 ## Configuration
 
 :::tip
 You don't need to configure object detection if you're using an imgproxy Pro Docker image with a tag suffixed with `-ml` and you want to use the face detection model. The model is already included in the image and the configuration is already set up.
 :::
-
-:::info
-DarkNet model format has priority over ONNX model format. If you define both, imgproxy will use the DarkNet model.
-:::
-
-### DarkNet model format
-
-:::warning
-DarkNet models support is deprecated and will be removed in imgproxy v4. Please use ONNX models instead.
-:::
-
-You need to define the following config variables to enable object detection with a [DarkNet](https://github.com/AlexeyAB/darknet) model:
-
-* [`IMGPROXY_OBJECT_DETECTION_CONFIG`]: a path to the neural network config in DarkNet format
-* [`IMGPROXY_OBJECT_DETECTION_WEIGHTS`]: a path to the neural network weights in DarkNet format
-* [`IMGPROXY_OBJECT_DETECTION_CLASSES`]: a path to the [class names file](#class-names-file)
-
-### ONNX model format
 
 You need to define the following config variables to enable object detection with an ONNX model:
 
@@ -334,6 +316,20 @@ You can make imgproxy [draw bounding boxes](../usage/processing.mdx#draw-detecti
 
 ```imgproxy_url
 .../draw_detections:1:face/...
+```
+
+### Crop to detected objects
+
+You can make imgproxy [crop the image](../usage/processing.mdx#crop-objects) to fit all detected objects of the desired classes:
+
+```imgproxy_url
+.../crop_objects:1.2:face:person/...
+```
+
+This will automatically crop the image to include all detected faces and persons with 20% padding around them. You can omit class names to crop to all detected objects:
+
+```imgproxy_url
+.../co:1.0/...
 ```
 
 ### Fetch the detected objects' info

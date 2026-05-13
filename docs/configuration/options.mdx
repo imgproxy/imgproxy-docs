@@ -16,16 +16,6 @@ imgproxy allows URLs to be signed with a key and a salt. This feature is disable
 
 You can specify multiple key/salt pairs by dividing the keys and salts with a comma (`,`). imgproxy will check URL signatures with each pair. This is useful when you need to change key/salt pairs in your application while incurring zero downtime.
 
-You can also specify file paths using the command line by referencing a separate file containing hex-coded keys and salts line by line:
-
-```bash
-imgproxy -keypath /path/to/file/with/key -saltpath /path/to/file/with/salt
-```
-
-:::warning
-`-keypath` and `-saltpath` command line arguments are deprecated and will be removed in imgproxy v4. Please use `IMGPROXY_KEY` and `IMGPROXY_SALT` environment variables instead.
-:::
-
 If you need a random key/salt pair really fast, as an example, you can quickly generate one using the following snippet:
 
 ```bash
@@ -38,14 +28,14 @@ echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
 
 * [`IMGPROXY_BIND`]: the address and port or Unix socket to listen to. Default: `:8080`
 * [`IMGPROXY_NETWORK`]: the network to use. Known networks are `tcp`, `tcp4`, `tcp6`, `unix`, and `unixpacket`. Default: `tcp`
-* [`IMGPROXY_TIMEOUT`]: _(deprecated alias: [`IMGPROXY_WRITE_TIMEOUT`])_ the maximum duration (in seconds) for processing the response. Default: `10`
+* [`IMGPROXY_TIMEOUT`]: the maximum duration (in seconds) for processing the response. Default: `10`
 * [`IMGPROXY_GRACEFUL_STOP_TIMEOUT`]: the maximum duration (in seconds) to wait for ongoing requests to finish before shutting down the server. Default: twice the `IMGPROXY_TIMEOUT` value
-* [`IMGPROXY_READ_REQUEST_TIMEOUT`]: _(deprecated alias: [`IMGPROXY_READ_TIMEOUT`])_ the maximum duration (in seconds) for reading the entire incoming HTTP request, including the body. Default: `10`
+* [`IMGPROXY_READ_REQUEST_TIMEOUT`]: the maximum duration (in seconds) for reading the entire incoming HTTP request, including the body. Default: `10`
 * [`IMGPROXY_WRITE_RESPONSE_TIMEOUT`]: the maximum duration (in seconds) for writing the HTTP response body. Default: `10`
 * [`IMGPROXY_KEEP_ALIVE_TIMEOUT`]: the maximum duration (in seconds) to wait for the next request before closing the connection. When set to `0`, keep-alive is disabled. Default: `10`
 * [`IMGPROXY_CLIENT_KEEP_ALIVE_TIMEOUT`]: the maximum duration (in seconds) to wait for the next request before closing the HTTP client connection. The HTTP client is used to download source images. When set to `0`, keep-alive is disabled. Default: `90`
 * [`IMGPROXY_DOWNLOAD_TIMEOUT`]: the maximum duration (in seconds) for downloading the source image. Default: `5`
-* [`IMGPROXY_WORKERS`]: _(alias: `IMGPROXY_CONCURRENCY`)_ the maximum number of images an imgproxy instance can process simultaneously without creating a queue. Default: the number of CPU cores multiplied by two
+* [`IMGPROXY_WORKERS`]: the maximum number of images an imgproxy instance can process simultaneously without creating a queue. Default: the number of CPU cores multiplied by two
   :::info
   When running in AWS Lambda, imgproxy automatically sets `IMGPROXY_WORKERS` to `1` since each Lambda instance processes only one request at a time.
   :::
@@ -58,8 +48,9 @@ echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
 * [`IMGPROXY_PATH_PREFIX`]: the URL path prefix. Example: when set to `/abc/def`, the imgproxy URL will be `/abc/def/%signature/%processing_options/%source_url`. Default: blank
 * [`IMGPROXY_USER_AGENT`]: the User-Agent header that will be sent with the source image request. You can use the `%current_version` variable to insert the current imgproxy version. Default: `imgproxy/%current_version`
 * [`IMGPROXY_USE_ETAG`]: when set to `true`, enables using the [ETag](https://en.wikipedia.org/wiki/HTTP_ETag) HTTP header for HTTP cache control. Default: `false`
-* [`IMGPROXY_ETAG_BUSTER`]: change this to change ETags for all the images. Default: blank
+* [`IMGPROXY_ETAG_BUSTER`]: a global ETag buster value. Change this value if you update the configuration that affects image processing, to invalidate old ETags and avoid `304 Not Modified` responses from stale client/CDN validators. Default: blank
 * [`IMGPROXY_USE_LAST_MODIFIED`]: when set to `true`, enables using the [Last-Modified](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified) HTTP header for HTTP cache control. Default: `false`
+* [`IMGPROXY_LAST_MODIFIED_BUSTER`]: a global `Last-Modified` buster timestamp in [RFC3339](https://www.rfc-editor.org/rfc/rfc3339.html) format. Change this value if you update the configuration that affects image processing. It will make imgproxy treat all images as if they were modified at least at the specified datetime. Default: blank
 * [`IMGPROXY_CUSTOM_REQUEST_HEADERS`]: ((pro)) list of custom headers that imgproxy will send while requesting the source image, divided by `\;` (can be redefined by `IMGPROXY_CUSTOM_HEADERS_SEPARATOR`). Example: `X-MyHeader1=Lorem\;X-MyHeader2=Ipsum`
 * [`IMGPROXY_CUSTOM_RESPONSE_HEADERS`]: ((pro)) a list of custom response headers, separated by `\;` (can be redefined by `IMGPROXY_CUSTOM_HEADERS_SEPARATOR`). Example: `X-MyHeader1=Lorem\;X-MyHeader2=Ipsum`
 * [`IMGPROXY_CUSTOM_HEADERS_SEPARATOR`]: ((pro)) a string that will be used as a custom header separator. Default: `\;`
@@ -118,10 +109,6 @@ imgproxy can process animated images (GIF, WebP), but since this operation is pr
   imgproxy doesn't check the number of chained pipelines used in presets
   :::
 
-To check if the source image is SVG, imgproxy reads some amount of bytes; by default it reads a maximum of 32KB. However, you can change this value using the following variable:
-
-* [`IMGPROXY_MAX_SVG_CHECK_BYTES`]: the maximum number of bytes imgproxy will read to recognize SVG files. If imgproxy is unable to recognize your SVG, try increasing this number. Default: `32768` (32KB)
-
 Requests to some image sources may go through too many redirects or enter an infinite loop. You can limit the number of allowed redirects:
 
 * [`IMGPROXY_MAX_REDIRECTS`]: the max number of redirects imgproxy can follow while requesting the source image. When set to `0`, no redirects are allowed. Default: `10`
@@ -179,8 +166,6 @@ When using imgproxy in a development environment, it can be useful to ignore SSL
 * [`IMGPROXY_IGNORE_SSL_VERIFICATION`]: when `true`, disables SSL verification, so imgproxy can be used in a development environment with self-signed SSL certificates.
 
 Also you may want imgproxy to respond with the same error message that it writes to the log:
-
-* [`IMGPROXY_DEVELOPMENT_ERRORS_MODE`]: when `true`, imgproxy will respond with detailed error messages. Not recommended for production because some errors may contain stack traces.
 
 * [`IMGPROXY_ALLOW_SECURITY_OPTIONS`]: when `true`, allows usage of security-related processing options such as `max_src_resolution`, `max_src_file_size`, `max_animation_frames`, `max_animation_frame_resolution`, and `max_result_dimension`. Default: `false`.
 
@@ -274,12 +259,12 @@ Autoquality requires the image to be saved several times. Use it only when you p
 * [`IMGPROXY_AUTOQUALITY_FORMAT_MIN`]: ((pro)) the minimal quality imgproxy can use per format, comma divided. Example: `jpeg=70,avif=40,webp=60`. When value for the resulting format is not set, `IMGPROXY_AUTOQUALITY_MIN` value is used. Default: `avif=60`
 * [`IMGPROXY_AUTOQUALITY_MAX`]: ((pro)) the maximum quality imgproxy can use. Default: 80
 * [`IMGPROXY_AUTOQUALITY_FORMAT_MAX`]: ((pro)) the maximum quality imgproxy can use per format, comma divided. Example: `jpeg=70,avif=40,webp=60`. When a value for the resulting format is not set, the `IMGPROXY_AUTOQUALITY_MAX` value is used. Default: `avif=65`
-* [`IMGPROXY_AUTOQUALITY_ALLOWED_ERROR`]: ((pro)) the allowed `IMGPROXY_AUTOQUALITY_TARGET` error. Applicable only to `dssim` and `ml` methods. Default: 0.001
+* [`IMGPROXY_AUTOQUALITY_ALLOWED_ERROR`]: ((pro)) the allowed `IMGPROXY_AUTOQUALITY_TARGET` error. Applicable only to `dssim` and `ml` methods. Default: 0.002
 * [`IMGPROXY_AUTOQUALITY_MAX_RESOLUTION`]: ((pro)) when this value is greater then zero and the resultant resolution exceeds the value, autoquality won't be used. Default: 0
-* [`IMGPROXY_AUTOQUALITY_JPEG_NET`]: ((pro)) the path to the neural network for JPEG.
-* [`IMGPROXY_AUTOQUALITY_WEBP_NET`]: ((pro)) the path to the neural network for WebP.
-* [`IMGPROXY_AUTOQUALITY_AVIF_NET`]: ((pro)) the path to the neural network for AVIF.
-* [`IMGPROXY_AUTOQUALITY_JXL_NET`]: ((pro)) the path to the neural network for JPEG XL.
+* [`IMGPROXY_AUTOQUALITY_JPEG_NET`]: ((pro)) the path to the neural network model for JPEG.
+* [`IMGPROXY_AUTOQUALITY_WEBP_NET`]: ((pro)) the path to the neural network model for WebP.
+* [`IMGPROXY_AUTOQUALITY_AVIF_NET`]: ((pro)) the path to the neural network model for AVIF.
+* [`IMGPROXY_AUTOQUALITY_JXL_NET`]: ((pro)) the path to the neural network model for JPEG XL.
 
 ## SVG processing
 * [`IMGPROXY_ALWAYS_RASTERIZE_SVG`]: when `true`, imgproxy will always rasterize SVG images unless SVG processing is not [skipped](#skip-processing). Default: `false`
@@ -358,6 +343,10 @@ You can use the `best` value for the [format](../usage/processing.mdx#format) op
 
 Check out the [Best format](../features/best_format.mdx) guide to learn more.
 
+## Colorspace and HDR
+
+* [`IMGPROXY_PRESERVE_HDR`]: when `true`, imgproxy will preserve high bit images. When `false`, imgproxy will convert high bit images to 8-bit. Colorspace (color/grayscale) is always preserved regardless of this setting. See the [Colorspace and HDR preservation](../image_formats_support.mdx#colorspace-and-hdr-preservation) guide for more details. Default: `false`
+
 ## Client Hints support
 
 imgproxy can use the `Width` and `DPR` HTTP headers to determine default width and DPR options using Client Hints. This feature is disabled by default and can be enabled by the following option:
@@ -382,6 +371,12 @@ imgproxy Pro can extract specific video frames to create thumbnails. This featur
 :::warning
 Though using `IMGPROXY_VIDEO_THUMBNAIL_PROBE_SIZE` and `IMGPROXY_VIDEO_THUMBNAIL_MAX_ANALYZE_DURATION` can lower the memory footprint of video thumbnail generation, they should be used in production only when you know what you're doing.
 :::
+
+## RAW formats
+
+imgproxy Pro can process digital camera RAW images. Since loading RAW images is pretty resource intensive, their processing is disabled by default. You can enable it with the following variable:
+
+* [`IMGPROXY_ENABLE_RAW_FORMATS`]: ((pro)) when `true`, enables RAW image formats support. Default: `false`
 
 ## Watermark
 
@@ -417,8 +412,6 @@ imgproxy Pro can apply unsharp masking to your images.
 
 imgproxy can detect objects on the image and use them to perform smart cropping, to blur the detections, or to draw the detections.
 
-* [`IMGPROXY_OBJECT_DETECTION_CONFIG`]: ((pro)) the path to the neural network config in DarkNet format. Default: blank
-* [`IMGPROXY_OBJECT_DETECTION_WEIGHTS`]: ((pro)) the path to the neural network weights in DarkNet format. Default: blank
 * [`IMGPROXY_OBJECT_DETECTION_NET`]: ((pro)) a path to the neural network model in ONNX format. Default: blank
 * [`IMGPROXY_OBJECT_DETECTION_NET_TYPE`]: ((pro)) the type of the neural network model. Default: `yolox`
 * [`IMGPROXY_OBJECT_DETECTION_CLASSES`]: ((pro)) the path to the text file with the classes names, one per line. Default: blank
@@ -433,6 +426,93 @@ imgproxy can detect objects on the image and use them to perform smart cropping,
   * `one_best_centermost`: the same as `one_best,` but imgproxy will add the object's proximity to the image center to its score.
 
 Read the [Object Detection guide](../features/object_detection.mdx) for more info.
+
+## Classification
+
+imgproxy can classify images by assigning them to predefined categories based on their overall content, similar to object detection but without identifying or locating individual objects.
+
+* [`IMGPROXY_CLASSIFICATION_NET`]: ((pro)) a path to the classification neural network model in ONNX format. Default: blank
+* [`IMGPROXY_CLASSIFICATION_CLASSES`]: ((pro)) the path to the text file with the class names, one per line. Default: blank
+* [`IMGPROXY_CLASSIFICATION_NET_SIZE`]: ((pro)) the size of the neural network input. The width and the heights of the inputs should be the same, so this config value should be a single number. Default: 224
+* [`IMGPROXY_CLASSIFICATION_THRESHOLD`]: ((pro)) classifications with confidence below this value will be discarded. Default: 0.5
+* [`IMGPROXY_CLASSIFICATION_NORMALIZATION`]: ((pro)) the normalization type to apply to the input image. Possible values are:
+  * `none`: _(default)_ no normalization
+  * `half`: normalize to [0, 1] range
+  * `full`: normalize to [-1, 1] range
+  * `imagenet`: normalize using ImageNet mean and standard deviation
+* [`IMGPROXY_CLASSIFICATION_LAYOUT`]: ((pro)) the data layout of the neural network input. Possible values are:
+  * `nhwc`: _(default)_ channels last (TensorFlow default)
+  * `nchw`: channels first (PyTorch default)
+
+Read the [Classification guide](../features/classification.mdx) for more info.
+
+## Cache
+
+imgproxy can cache processed images in various storage backends to improve performance and reduce processing overhead.
+
+* [`IMGPROXY_CACHE_USE`]: ((pro)) the cache storage adapter to use. Can be `fs`, `s3`, `gcs`, `abs` (Azure Blob Storage), or `swift` (OpenStack Swift). When blank, the cache is disabled. Default: blank
+* [`IMGPROXY_CACHE_PATH_PREFIX`]: ((pro)) a path prefix for the cache files. This can be useful to organize cache files in a specific directory structure. Default: blank
+* [`IMGPROXY_CACHE_BUCKET`]: ((pro)) the bucket name for cloud storage adapters (S3, GCS, ABS, OpenStack Swift). When using filesystem adapter, this can be used as an additional path component. Default: blank
+* [`IMGPROXY_CACHE_KEY_HEADERS`]: ((pro)) a comma-separated list of HTTP request headers to include in the cache key. This allows caching different versions of the same image based on request headers. Default: blank
+* [`IMGPROXY_CACHE_KEY_COOKIES`]: ((pro)) a comma-separated list of HTTP request cookies to include in the cache key. This allows caching different versions of the same image based on cookies. Default: blank
+* [`IMGPROXY_CACHE_REPORT_ERRORS`]: ((pro)) when `true`, imgproxy will report cache errors instead of silently falling back to processing without cache. Default: `false`
+
+Read the [Internal cache guide](../cache/internal.mdx) for more info.
+
+### Local filesystem {#cache-storage-local-filesystem}
+
+imgproxy can store cached images on the local filesystem. To use [filesystem cache](../cache/internal/local_filesystem.mdx), set `IMGPROXY_CACHE_USE` to `fs`:
+
+* [`IMGPROXY_CACHE_FS_ROOT`]: ((pro)) the root directory for filesystem cache. Default: blank
+
+See full documentation in [Cache storage: Local filesystem](../cache/internal/local_filesystem.mdx).
+
+### Amazon S3 {#cache-storage-amazon-s3}
+
+imgproxy can store cached images in Amazon S3 buckets or S3-compatible storage. To use [S3 cache](../cache/internal/amazon_s3.mdx), set `IMGPROXY_CACHE_USE` to `s3`:
+
+* [`IMGPROXY_CACHE_S3_REGION`]: ((pro)) the S3 region for the cache bucket
+* [`IMGPROXY_CACHE_S3_ENDPOINT`]: ((pro)) a custom S3 endpoint for the cache. Useful for S3-compatible services like MinIO, Cloudflare R2, DigitalOcean Spaces, etc. Default: blank
+* [`IMGPROXY_CACHE_S3_ENDPOINT_USE_PATH_STYLE`]: ((pro)) controls how the S3 bucket endpoint is constructed. When `true`, the endpoint will be constructed using the path style (`https://your-endpoint.com/%bucket`). When `false`, the endpoint will be constructed using the virtual host style (`https://%bucket.your-endpoint.com`). Default: `true`
+* [`IMGPROXY_CACHE_S3_USE_DECRYPTION_CLIENT`]: ((pro)) when `true`, enables client-side decryption for cached objects. Default: `false`
+* [`IMGPROXY_CACHE_S3_ASSUME_ROLE_ARN`]: ((pro)) the ARN of an IAM role to assume for cache access
+* [`IMGPROXY_CACHE_S3_ASSUME_ROLE_EXTERNAL_ID`]: ((pro)) the external ID required to assume the IAM role for cache access
+
+:::info
+Credentials for S3 cache can be provided using the same methods as for S3 image sources: IAM roles, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables, or a shared credentials file.
+:::
+
+### Google Cloud Storage {#cache-storage-google-cloud-storage}
+
+imgproxy can store cached images in Google Cloud Storage buckets. To use [GCS cache](../cache/internal/google_cloud_storage.mdx), set `IMGPROXY_CACHE_USE` to `gcs`:
+
+* [`IMGPROXY_CACHE_GCS_KEY`]: ((pro)) the Google Cloud JSON key for cache access. When running inside Google Cloud infrastructure, imgproxy will try to use the default service account credentials if this is not set. Default: blank
+* [`IMGPROXY_CACHE_GCS_ENDPOINT`]: ((pro)) a custom Google Cloud Storage endpoint for cache. Default: blank
+
+### Azure Blob Storage {#cache-storage-azure-blob-storage}
+
+imgproxy can store cached images in Azure Blob Storage containers. To use [Azure cache](../cache/internal/azure_blob_storage.mdx), set `IMGPROXY_CACHE_USE` to `abs`:
+
+* [`IMGPROXY_CACHE_ABS_NAME`]: ((pro)) the Azure account name for cache storage. Default: blank
+* [`IMGPROXY_CACHE_ABS_KEY`]: ((pro)) the Azure account key for cache storage. Default: blank
+* [`IMGPROXY_CACHE_ABS_ENDPOINT`]: ((pro)) a custom Azure Blob Storage endpoint for cache. Default: blank
+
+:::info
+Azure cache also supports authentication via Managed Identity or Service Principal using the same `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and related environment variables as Azure Blob Storage image sources.
+:::
+
+### OpenStack Swift {#cache-storage-openstack-swift}
+
+imgproxy can store cached images in OpenStack Object Storage (Swift). To use [Swift cache](../cache/internal/openstack_swift.mdx), set `IMGPROXY_CACHE_USE` to `swift`:
+
+* [`IMGPROXY_CACHE_SWIFT_USERNAME`]: ((pro)) the username for Swift API access for cache. Default: blank
+* [`IMGPROXY_CACHE_SWIFT_API_KEY`]: ((pro)) the API key for Swift API access for cache. Default: blank
+* [`IMGPROXY_CACHE_SWIFT_AUTH_URL`]: ((pro)) the Swift Auth URL for cache. Default: blank
+* [`IMGPROXY_CACHE_SWIFT_AUTH_VERSION`]: ((pro)) the Swift auth version for cache. Set to 1, 2 or 3 or leave at 0 for autodetect. Default: 0
+* [`IMGPROXY_CACHE_SWIFT_TENANT`]: ((pro)) the tenant name for cache (optional, v2 auth only). Default: blank
+* [`IMGPROXY_CACHE_SWIFT_DOMAIN`]: ((pro)) the Swift domain name for cache (optional, v3 auth only). Default: blank
+* [`IMGPROXY_CACHE_SWIFT_TIMEOUT_SECONDS`]: ((pro)) the data channel timeout in seconds for cache operations. Default: 60
+* [`IMGPROXY_CACHE_SWIFT_CONNECT_TIMEOUT_SECONDS`]: ((pro)) the connect channel timeout in seconds for cache operations. Default: 10
 
 ## Fallback image
 
@@ -481,28 +561,6 @@ There are two ways to define presets:
   with_objects=detect_objects:1
   ```
 
-#### Using a command line argument
-
-:::warning
-`-presets` and `-info-presets` command line arguments are deprecated and will be removed in imgproxy v4. Please use `IMGPROXY_PRESETS_PATH` and `IMGPROXY_INFO_PRESETS_PATH` environment variables instead.
-:::
-
-```bash
-imgproxy -presets /path/to/file/with/presets -info-presets /path/to/file/with/info-presets
-```
-
-This file should contain preset definitions, one per line. Lines starting with `#` are treated as comments. Example:
-
-```imgproxy_presets
-default=resizing_type:fill/enlarge:1
-
-# Sharpen the image to make it look better
-sharp=sharpen:0.7
-
-# Blur the image to hide details
-blurry=blur:2
-```
-
 ### Using only presets
 
 imgproxy can be switched into "presets-only mode". In this mode, imgproxy accepts only `preset` option arguments as processing options. Example: `http://imgproxy.example.com/unsafe/thumbnail:blurry:watermarked/plain/http://example.com/images/curiosity.jpg@png`
@@ -537,6 +595,8 @@ imgproxy can process files from Amazon S3 buckets, but this feature is disabled 
 * [`IMGPROXY_S3_USE_DECRYPTION_CLIENT`]: when `true`, enables client-side decryption. Default: `false`
 * [`IMGPROXY_S3_ASSUME_ROLE_ARN`]: a custom role to assume
 * [`IMGPROXY_S3_ASSUME_ROLE_EXTERNAL_ID`]: the external ID required to assume a custom role
+* [`IMGPROXY_S3_ALLOWED_BUCKETS`]: a comma-separated list of S3 bucket names that imgproxy is allowed to access. When set, imgproxy will only process images from these buckets. Default: blank (all buckets allowed)
+* [`IMGPROXY_S3_DENIED_BUCKETS`]: a comma-separated list of S3 bucket names that imgproxy is not allowed to access. When set, imgproxy will reject requests for images from these buckets. Default: blank
 
 Check out the [Serving files from S3](../image_sources/amazon_s3.mdx) guide to learn more.
 
@@ -545,8 +605,10 @@ Check out the [Serving files from S3](../image_sources/amazon_s3.mdx) guide to l
 imgproxy can process files from Google Cloud Storage buckets, but this feature is disabled by default. To enable it, set the value of `IMGPROXY_USE_GCS` to `true`:
 
 * [`IMGPROXY_USE_GCS`]: when `true`, enables image fetching from Google Cloud Storage buckets. Default: `false`
-* [`IMGPROXY_GCS_KEY`]: the Google Cloud JSON key. When set, enables image fetching from Google Cloud Storage buckets. Default: blank
+* [`IMGPROXY_GCS_KEY`]: the Google Cloud JSON key. Default: blank
 * [`IMGPROXY_GCS_ENDPOINT`]: a custom Google Cloud Storage endpoint to being used by imgproxy
+* [`IMGPROXY_GCS_ALLOWED_BUCKETS`]: a comma-separated list of GCS bucket names that imgproxy is allowed to access. When set, imgproxy will only process images from these buckets. Default: blank (all buckets allowed)
+* [`IMGPROXY_GCS_DENIED_BUCKETS`]: a comma-separated list of GCS bucket names that imgproxy is not allowed to access. When set, imgproxy will reject requests for images from these buckets. Default: blank
 
 Check out the [Serving files from Google Cloud Storage](../image_sources/google_cloud_storage.mdx) guide to learn more.
 
@@ -558,6 +620,8 @@ imgproxy can process files from Azure Blob Storage containers, but this feature 
 * [`IMGPROXY_ABS_NAME`]: the Azure account name. Default: blank
 * [`IMGPROXY_ABS_KEY`]: the Azure account key. Default: blank
 * [`IMGPROXY_ABS_ENDPOINT`]: the custom Azure Blob Storage endpoint to be used by imgproxy. Default: blank
+* [`IMGPROXY_ABS_ALLOWED_BUCKETS`]: a comma-separated list of Azure Blob Storage container names that imgproxy is allowed to access. When set, imgproxy will only process images from these containers. Default: blank (all containers allowed)
+* [`IMGPROXY_ABS_DENIED_BUCKETS`]: a comma-separated list of Azure Blob Storage container names that imgproxy is not allowed to access. When set, imgproxy will reject requests for images from these containers. Default: blank
 
 Check out the [Serving files from Azure Blob Storage](../image_sources/azure_blob_storage.mdx) guide to learn more.
 
@@ -573,6 +637,8 @@ imgproxy can process files from OpenStack Object Storage, but this feature is di
 * [`IMGPROXY_SWIFT_DOMAIN`]: the Swift domain name (optional, v3 auth only): Default: blank
 * [`IMGRPOXY_SWIFT_TIMEOUT_SECONDS`]: the data channel timeout in seconds. Default: 60
 * [`IMGRPOXY_SWIFT_CONNECT_TIMEOUT_SECONDS`]: the connect channel timeout in seconds. Default: 10
+* [`IMGPROXY_SWIFT_ALLOWED_BUCKETS`]: a comma-separated list of Swift container names that imgproxy is allowed to access. When set, imgproxy will only process images from these containers. Default: blank (all containers allowed)
+* [`IMGPROXY_SWIFT_DENIED_BUCKETS`]: a comma-separated list of Swift container names that imgproxy is not allowed to access. When set, imgproxy will reject requests for images from these containers. Default: blank
 
 Check out the [Serving files from OpenStack Object Storage](../image_sources/openstack_swift.mdx) guide to learn more.
 
@@ -600,7 +666,7 @@ https://my-imgproxy.dev/.../aHR0cDovL2V4YW1wbGUuY29tL3B1cHB5LmpwZw/puppy.jpg
 imgproxy will treat `puppy.jpg` as an SEO-friendly filename and will use `aHR0cDovL2V4YW1wbGUuY29tL3B1cHB5LmpwZw` as a Base64-encoded source URL.
 :::
 
-## Metrics
+## Monitoring
 
 ### New Relic {#new-relic-metrics}
 
@@ -609,6 +675,7 @@ imgproxy can send its metrics to New Relic. Specify your New Relic license key t
 * [`IMGPROXY_NEW_RELIC_KEY`]: the New Relic license key
 * [`IMGPROXY_NEW_RELIC_APP_NAME`]: a New Relic application name. Default: `imgproxy`
 * [`IMGPROXY_NEW_RELIC_LABELS`]: the list of New Relic labels, semicolon divided. Example: `label1=value1;label2=value2`. Default: blank
+* [`IMGPROXY_NEW_RELIC_PROPAGATE_EXTERNAL`]: when `true`, imgproxy will propagate New Relic tracing headers to external requests such as image downloads. Default: `false`
 
 Check out the [New Relic](../monitoring/new_relic.mdx) guide to learn more.
 
@@ -627,6 +694,7 @@ imgproxy can send its metrics to Datadog:
 
 * [`IMGPROXY_DATADOG_ENABLE`]: when `true`, enables sending metrics to Datadog. Default: false
 * [`IMGPROXY_DATADOG_ENABLE_ADDITIONAL_METRICS`]: when `true`, enables sending the additional metrics to Datadog. Default: false
+* [`IMGPROXY_DATADOG_PROPAGATE_EXTERNAL`]: when `true`, imgproxy will propagate Datadog tracing headers to external requests such as image downloads. Default: `false`
 
 :::warning
 Since the additional metrics are treated by Datadog as custom, Datadog can additionally bill you for their usage. Please, check out Datadog's [Custom Metrics Billing](https://docs.datadoghq.com/account_management/billing/custom_metrics/) page for additional details.
@@ -640,10 +708,12 @@ imgproxy can send request traces to an OpenTelemetry collector:
 
 * [`IMGPROXY_OPEN_TELEMETRY_ENABLE`]: when `true`, enables sending request traces to OpenTelemetry collector. Default: false
 * [`IMGPROXY_OPEN_TELEMETRY_ENABLE_METRICS`]: when `true`, imgproxy will send metrics over OpenTelemetry Metrics API. Default: `false`
+* [`IMGPROXY_OPEN_TELEMETRY_ENABLE_LOGS`]: when `true`, imgproxy will send logs to OpenTelemetry collector. Default: `false`
 * [`IMGPROXY_OPEN_TELEMETRY_SERVER_CERT`]: OpenTelemetry collector TLS certificate, PEM-encoded (you can replace line breaks with `\n`). Default: blank
 * [`IMGPROXY_OPEN_TELEMETRY_CLIENT_CERT`]: OpenTelemetry client TLS certificate, PEM-encoded (you can replace line breaks with `\n`). Default: blank
 * [`IMGPROXY_OPEN_TELEMETRY_CLIENT_KEY`]: OpenTelemetry client TLS key, PEM-encoded (you can replace line breaks with `\n`). Default: blank
 * [`IMGPROXY_OPEN_TELEMETRY_TRACE_ID_GENERATOR`]: OpenTelemetry trace ID generator. Supported generators are `xray` and `random`. Default: `xray`
+* [`IMGPROXY_OPEN_TELEMETRY_PROPAGATE_EXTERNAL`]: when `true`, imgproxy will propagate OpenTelemetry tracing headers to external requests such as image downloads. Default: `false`
 
 Check out the [OpenTelemetry](../monitoring/open_telemetry.mdx) guide to learn more.
 
@@ -662,6 +732,7 @@ Check out the [CloudWatch](../monitoring/cloud_watch.mdx) guide to learn more.
 imgproxy can report occurred errors to Bugsnag, Honeybadger and Sentry:
 
 * [`IMGPROXY_REPORT_DOWNLOADING_ERRORS`]: when `true`, imgproxy will report downloading errors. Default: `true`
+* [`IMGPROXY_DEVELOPMENT_ERRORS_MODE`]: when `true`, imgproxy will respond with detailed error messages and stack traces in a pretty HTML format. Useful for development and debugging. If the client does not `Accept: text/html`, imgproxy reponds with plain text error. Default: `false`
 
 ### Bugsnag
 

@@ -10,6 +10,7 @@ imgproxy can send its metrics to New Relic. To use this feature, do the followin
 2. Set the `IMGPROXY_NEW_RELIC_KEY` environment variable to the license key.
 3. _(optional)_ Set the `IMGPROXY_NEW_RELIC_APP_NAME` environment variable to be the desired application name.
 4. _(optional)_ Set the `IMGPROXY_NEW_RELIC_LABELS` environment variable to be the desired list of labels. Example: `label1=value1;label2=value2`.
+5. _(optional)_ Set the `IMGPROXY_NEW_RELIC_PROPAGATE_EXTERNAL` environment variable to `true` to propagate New Relic tracing headers to external requests such as image downloads. Default: `false`.
 
 imgproxy will send the following info to New Relic:
 
@@ -20,15 +21,15 @@ imgproxy will send the following info to New Relic:
 * Image processing time
 * Errors that occurred while downloading and processing an image
 
-Additionally, imgproxy sends the following metrics over [Metrics API](https://docs.newrelic.com/docs/data-apis/ingest-apis/metric-api/introduction-metric-api/):
+Additionally, imgproxy sends the following metrics over [Metrics API](https://docs.newrelic.com/docs/data-apis/ingest-apis/metric-api/introduction-metric-api/) as timescales (all metric names are prefixed with `Custom/imgproxy/`):
 
-* `imgproxy.workers`: the configured number of imgproxy workers
-* `imgproxy.requests_in_progress`: the number of requests currently in progress
-* `imgproxy.images_in_progress`: the number of images currently in progress
-* `imgproxy.workers_utilization`: the percentage of imgproxy's workers utilization. Calculated as `imgproxy.requests_in_progress / imgproxy.workers * 100`
-* `imgproxy.buffer.size`: a summary of the download buffers sizes (in bytes)
-* `imgproxy.buffer.default_size`: calibrated default buffer size (in bytes)
-* `imgproxy.buffer.max_size`: calibrated maximum buffer size (in bytes)
-* `imgproxy.vips.memory`: libvips memory usage (in bytes)
-* `imgproxy.vips.max_memory`: libvips maximum memory usage (in bytes)
-* `imgproxy.vips.allocs`: the number of active vips allocations
+* `workers`: the configured number of imgproxy workers
+* `requests_in_progress`: the number of requests currently in progress
+* `images_in_progress`: the number of images currently in progress
+* `workers_utilization`: the percentage of imgproxy's workers utilization. Calculated as `requests_in_progress / workers * 100`
+* `buffer/size`: a summary of the download buffers sizes (in bytes)
+* `buffer/default_size`: calibrated default buffer size (in bytes)
+* `buffer/max_size`: calibrated maximum buffer size (in bytes)
+* `vips/memory`: libvips memory usage (in bytes)
+* `vips/max_memory`: libvips maximum memory usage (in bytes)
+* `vips/allocs`: the number of active vips allocations

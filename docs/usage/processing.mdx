@@ -582,6 +582,28 @@ dd:%draw:%class_name1:%class_name2:...:%class_nameN
 
 When `draw` is set to `1`, `t` or `true`, imgproxy [detects objects](../features/object_detection.mdx) of the provided classes and draws their bounding boxes, classes, and confidences. If class names are omitted, imgproxy draws the bounding boxes of all the detected objects.
 
+### Crop objects ((pro)) {#crop-objects}
+
+```imgproxy_url_option
+crop_objects:%scale_factor:%class_name1:%class_name2:...:%class_nameN
+co:%scale_factor:%class_name1:%class_name2:...:%class_nameN
+```
+
+imgproxy [detects objects](../features/object_detection.mdx) of the provided classes and crops the image to fit all detected objects.
+
+* `scale_factor`: a float value that defines how much the crop area should be scaled relative to the detected objects. For example, `1.0` crops exactly to the detected objects, while `1.2` adds 20% padding around them.
+* `class_name1`, `class_name2`, ..., `class_nameN`: _(optional)_ names of the object classes to detect. If class names are omitted, imgproxy crops to all detected objects.
+
+This option is useful when you want to automatically extract the area containing specific objects from an image, such as all faces in a group photo or products in a catalog image.
+
+It respects the [`resizing_type`](#resizing-type) option, so if you set it to `fill` or `fill-down`, imgproxy will expand the cropping area to match the output dimensions’ aspect ratio.
+
+It also respects [`IMGPROXY_OBJECT_DETECTION_GRAVITY_MODE`](../configuration/options.mdx#IMGPROXY_OBJECT_DETECTION_GRAVITY_MODE) config option when selecting objects to crop around, and the [`objects_position`](#objects-position) option when deciding where to place the objects in the output image.
+
+:::info
+When no objects are detected, imgproxy will not crop the image and will process it as usual. `crop_objects` option takes precedence over `crop`.
+:::
+
 ### Colorize ((pro)) {#colorize}
 
 ```imgproxy_url_option
@@ -764,6 +786,17 @@ scp:%strip_color_profile
 ```
 
 When set to `1`, `t` or `true`, imgproxy will transform the embedded color profile (ICC) to sRGB and remove it from the image. Otherwise, imgproxy will try to keep it as is. This is normally controlled by the [IMGPROXY_STRIP_COLOR_PROFILE](../configuration/options.mdx#IMGPROXY_STRIP_COLOR_PROFILE) configuration but this processing option allows the configuration to be set for each request.
+
+### Preserve HDR
+
+```imgproxy_url_option
+preserve_hdr:%enable
+ph:%enable
+```
+
+If set to `1`, `t` or `true`, high bit image will [remain high bit](../image_formats_support.mdx#colorspace-and-hdr-preservation). If set to `0`, `f` or `false`, high bit image will be downscaled to 8 bit. Overrides [`IMGPROXY_PRESERVE_HDR`](../configuration/options.mdx#IMGPROXY_PRESERVE_HDR) value.
+
+Default: [`IMGPROXY_PRESERVE_HDR`](../configuration/options.mdx#IMGPROXY_PRESERVE_HDR) value.
 
 ### Color profile ((pro)) {#color-profile}
 

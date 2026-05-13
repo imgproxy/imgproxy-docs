@@ -105,15 +105,10 @@ const config: Config = {
           routeBasePath: "/",
           sidebarPath: require.resolve("./sidebars.js"),
           // sidebarCollapsed: false,
-          lastVersion: "3.31.x",
           versions: {
             current: {
               label: "latest",
               path: "latest",
-              banner: "unreleased",
-            },
-            "4-pre": {
-              label: "4-beta.1",
               banner: "unreleased",
             },
           },

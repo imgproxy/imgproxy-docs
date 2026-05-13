@@ -11,9 +11,7 @@ imgproxy can process images from S3 buckets. To use this feature, do the followi
 3. _(optional)_ Specify the [AWS region](#choosing-the-aws-region) with `IMGPROXY_S3_REGION` or `AWS_REGION`. Default: `us-west-1`
 4. _(optional)_ Specify the S3 endpoint with `IMGPROXY_S3_ENDPOINT`. You can also set `IMGPROXY_S3_ENDPOINT_USE_PATH_STYLE=false` to use the virtual host style for the endpoint.
 5. _(optional)_ Set the `IMGPROXY_S3_USE_DECRYPTION_CLIENT` environment variable to `true` if your objects are client-side encrypted.
-6. _(optional)_ Specify the AWS IAM Role to Assume with `IMGPROXY_S3_ASSUME_ROLE_ARN`.
-7. _(optional)_ Specify the External ID that needs to be passed in along with the AWS IAM Role to Assume with `IMGPROXY_S3_ASSUME_ROLE_EXTERNAL_ID`. This will have no effect if the assume role ARN is not specified.
-8. Use `s3://%bucket_name/%file_key` as the source image URL.
+6. Use `s3://%bucket_name/%file_key` as the source image URL.
 
 If you need to specify the version of the source object, you can use the query string of the source URL:
 
@@ -77,6 +75,17 @@ This allows imgproxy to access buckets in any region. However, the initial reque
 * If you are going to use only one bucket, set the region to the one where the bucket is located.
 * If your most frequently used buckets are in the same region, set the region to that one.
 * If your buckets are spread across multiple regions, set the region to the closest one to your imgproxy instance.
+
+## Restricting bucket access
+
+Restrict which S3 buckets imgproxy can access for security:
+
+* `IMGPROXY_S3_ALLOWED_BUCKETS`: a comma-separated list of bucket names that imgproxy is allowed to access. When set, imgproxy will only process images from these buckets. Default: blank (all buckets allowed)
+* `IMGPROXY_S3_DENIED_BUCKETS`: a comma-separated list of bucket names that imgproxy is not allowed to access. When set, imgproxy will reject requests for images from these buckets. Default: blank
+
+:::tip
+Use `IMGPROXY_S3_ALLOWED_BUCKETS` to allow trusted buckets. Use `IMGPROXY_S3_DENIED_BUCKETS` to block specific ones. If both are set, allowed buckets override denied ones.
+:::
 
 ## MinIO
 
