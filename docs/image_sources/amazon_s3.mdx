@@ -11,7 +11,9 @@ imgproxy can process images from S3 buckets. To use this feature, do the followi
 3. _(optional)_ Specify the [AWS region](#choosing-the-aws-region) with `IMGPROXY_S3_REGION` or `AWS_REGION`. Default: `us-west-1`
 4. _(optional)_ Specify the S3 endpoint with `IMGPROXY_S3_ENDPOINT`. You can also set `IMGPROXY_S3_ENDPOINT_USE_PATH_STYLE=false` to use the virtual host style for the endpoint.
 5. _(optional)_ Set the `IMGPROXY_S3_USE_DECRYPTION_CLIENT` environment variable to `true` if your objects are client-side encrypted.
-6. Use `s3://%bucket_name/%file_key` as the source image URL.
+6. _(optional)_ [Restrict which buckets imgproxy can access](#restricting-bucket-access) with `IMGPROXY_S3_ALLOWED_BUCKETS` and `IMGPROXY_S3_DENIED_BUCKETS`.
+7. _(optional)_ Specify [S3 access points](#access-points) with `IMGPROXY_S3_ACCESS_POINTS`.
+8. Use `s3://%bucket_name/%file_key` as the source image URL.
 
 If you need to specify the version of the source object, you can use the query string of the source URL:
 
@@ -86,6 +88,20 @@ Restrict which S3 buckets imgproxy can access for security:
 :::tip
 Use `IMGPROXY_S3_ALLOWED_BUCKETS` to allow trusted buckets. Use `IMGPROXY_S3_DENIED_BUCKETS` to block specific ones. If both are set, allowed buckets override denied ones.
 :::
+
+## Access points
+
+imgproxy supports accessing S3 buckets through [access points](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-points.html). To enable this feature, set the `IMGPROXY_S3_ACCESS_POINTS` environment variable to a semicolon-separated list of `name=arn` pairs, where `name` is an arbitrary access point name and `arn` is the access point ARN. For example:
+
+```
+IMGPROXY_S3_ACCESS_POINTS="my-access-point1=arn:aws:s3::123456789012:accesspoint/my-access-point1;my-access-point2=arn:aws:s3::123456789012:accesspoint/my-access-point2"
+```
+
+When the name is used as a bucket name in a `s3://...` source URL, imgproxy will use the corresponding ARN to access the bucket. For example, with the above configuration, the following source URL will access the bucket through `arn:aws:s3::123456789012:accesspoint/my-access-point1`:
+
+```
+s3://my-access-point1/my-image.jpg
+```
 
 ## MinIO
 

@@ -597,6 +597,7 @@ imgproxy can process files from Amazon S3 buckets, but this feature is disabled 
 * [`IMGPROXY_S3_ASSUME_ROLE_EXTERNAL_ID`]: the external ID required to assume a custom role
 * [`IMGPROXY_S3_ALLOWED_BUCKETS`]: a comma-separated list of S3 bucket names that imgproxy is allowed to access. When set, imgproxy will only process images from these buckets. Default: blank (all buckets allowed)
 * [`IMGPROXY_S3_DENIED_BUCKETS`]: a comma-separated list of S3 bucket names that imgproxy is not allowed to access. When set, imgproxy will reject requests for images from these buckets. Default: blank
+* [`IMGPROXY_S3_ACCESS_POINTS`]: a semicolon-separated list of `name=arn` pairs, where `name` is an arbitrary access point name and `arn` is the access point ARN. When the name is used as a bucket name in a `s3://...` source URL, imgproxy will use the corresponding ARN to access the bucket. Default: blank
 
 Check out the [Serving files from S3](../image_sources/amazon_s3.mdx) guide to learn more.
 
