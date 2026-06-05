@@ -408,6 +408,16 @@ imgproxy Pro can apply unsharp masking to your images.
   * `center_of_mass`: in this mode, imgproxy calculates the center of mass of the features map and selects the area around it.
 * [`IMGPROXY_SMART_CROP_FACE_DETECTION`]: ((pro)) when `true`, adds an additional fast face detection step to smart crop.
 
+## Machine learning
+
+These options allow you to configure common aspects of machine learning features such as object detection, classification, autoquality, etc.
+
+* [`IMGPROXY_MAX_ML_CONCURRENCY`]: ((pro)) the maximum number of inference requests that can be processed concurrently by each machine learning model. When the limit is reached, additional inference requests will be queued until the previous ones are finished. Default: the number of CPU cores available to imgproxy
+
+:::tip
+The larger the `IMGPROXY_MAX_ML_CONCURRENCY` value, the more memory ML features will consume. If you don't have a lot of RAM, you may want to set it to a value lower than the number of CPU cores.
+:::
+
 ## Object detection
 
 imgproxy can detect objects on the image and use them to perform smart cropping, to blur the detections, or to draw the detections.
