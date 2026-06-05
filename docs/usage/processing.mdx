@@ -562,6 +562,25 @@ The areas' coordinates should be defined with respect to the source image EXIF o
 
 Default: disabled
 
+### Progressive blur ((pro)) {#progressive-blur}
+
+```imgproxy_url_option
+progressive_blur:%sigma:%direction:%start:%stop
+pbl:%sigma:%direction:%start:%stop
+```
+
+When `sigma` is greater than `0`, imgproxy will apply a progressive Gaussian blur filter to the resulting image. The placed progressive blur transitions from no blur at the `start` position to the specified `sigma` at the `stop` position.
+
+* `sigma`: defines the size of the mask imgproxy will use for the maximum blur. When `sigma` is set to `0`, the progressive blur is not applied
+* `direction`: _(optional)_ specifies the direction of the progressive blur. The direction can be specified in two ways:
+  * An angle in degrees (clockwise). For example, `0` will create a progressive blur from top to down (the top side is not blurred, the bottom side is blurred), and `90` will create a progressive blur from right to left (the right side is not blurred, the left side is blurred).
+  * A string value. Available values:
+    * `down`: _(default)_ the top side of the progressive blur is not blurred, the bottom side is blurred
+    * `up`: the bottom side of the progressive blur is not blurred, the top side is blurred
+    * `right`: the left side of the progressive blur is not blurred, the right side is blurred
+    * `left`: the right side of the progressive blur is not blurred, the left side is blurred
+* `start`, `stop`: floating point numbers that define relative positions of where the progressive blur starts and where it ends. Default values are `0.0` and `1.0` respectively.
+
 ### Blur detections ((pro)) {#blur-detections}
 
 ```imgproxy_url_option
