@@ -1131,6 +1131,30 @@ It's highly recommended to prefer the `cachebuster` option over a URL query stri
 
 Default: empty
 
+### Bypass cache ((pro)) {#bypass-cache}
+
+```imgproxy_url_option
+bypass_cache:%bypass
+bc:%bypass
+```
+
+When set to `1`, `t` or `true`, imgproxy will bypass the internal cache and do all the processing and fetching from the source image.
+
+Default: `false`
+
+:::warning
+Since this option allows bypassing the internal cache, its usage is not allowed unless the [IMGPROXY_ALLOW_BYPASS_CACHE](../configuration/options.mdx#IMGPROXY_ALLOW_BYPASS_CACHE) config is set to `true`.
+:::
+
+### Cache tags ((pro)) {#cache-tags}
+
+```imgproxy_url_option
+cache_tags:%tag1:%tag2:...:%tagN
+ct:%tag1:%tag2:...:%tagN
+```
+
+When set, imgproxy will add the provided tags to the cache entry and the response headers. Use the [IMGPROXY_CACHE_TAGS_FORMAT](../configuration/options.mdx#IMGPROXY_CACHE_TAGS_FORMAT) config to change the format of the cache tags in the response headers.
+
 ### Expires
 
 ```imgproxy_url_option

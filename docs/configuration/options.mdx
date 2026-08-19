@@ -173,6 +173,12 @@ Also you may want imgproxy to respond with the same error message that it writes
   `IMGPROXY_ALLOW_SECURITY_OPTIONS` allows bypassing your security restrictions. Don't set it to `true` unless you are completely sure that an attacker can't change your imgproxy URLs.
   :::
 
+* [`IMGPROXY_ALLOW_BYPASS_CACHE`]: ((pro)) when `true`, allows usage of the [bypass_cache](../usage/processing.mdx#bypass-cache) option. Default: `false`.
+
+  :::warning
+  `IMGPROXY_ALLOW_BYPASS_CACHE` allows bypassing your cache, opening the possibility of DoS attacks. Don't set it to `true` unless you are completely sure that an attacker can't change your imgproxy URLs.
+  :::
+
 ## Cookies
 
 imgproxy can pass cookies in image requests. This can be activated with `IMGPROXY_COOKIE_PASSTHROUGH`. Unfortunately the `Cookie` header doesn't contain information about which URLs these cookies are applicable to, so imgproxy can only assume (or must be told).
@@ -487,6 +493,12 @@ imgproxy can cache processed images in various storage backends to improve perfo
 * [`IMGPROXY_CACHE_KEY_HEADERS`]: ((pro)) a comma-separated list of HTTP request headers to include in the cache key. This allows caching different versions of the same image based on request headers. Default: blank
 * [`IMGPROXY_CACHE_KEY_COOKIES`]: ((pro)) a comma-separated list of HTTP request cookies to include in the cache key. This allows caching different versions of the same image based on cookies. Default: blank
 * [`IMGPROXY_CACHE_REPORT_ERRORS`]: ((pro)) when `true`, imgproxy will report cache errors instead of silently falling back to processing without cache. Default: `false`
+
+* [`IMGPROXY_CACHE_TAGS_FORMAT`]: ((pro)) defines how the cache tags added by the [cache_tags](../usage/processing.mdx#cache-tags) option are written to the response headers. Supported values are:
+  * `all`: _(default)_ imgproxy will write cache tags in all supported formats
+  * `cloudfront`: imgproxy will write cache tags in the [CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/manage-caches-with-precision-using-amazon-cloudfront-invalidation-by-cache-tag/) format (`x-amz-meta-cache-tag` header)
+  * `cloudflare`: imgproxy will write cache tags in the [Cloudflare](https://developers.cloudflare.com/cache/how-to/purge-cache/purge-by-tags/) format (`Cache-Tag` header)
+  * `none`: imgproxy will not write cache tags to the response headers
 
 Read the [Internal cache guide](../cache/internal.mdx) for more info.
 
