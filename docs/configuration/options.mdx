@@ -266,6 +266,11 @@ Autoquality requires the image to be saved several times. Use it only when you p
 * [`IMGPROXY_AUTOQUALITY_AVIF_NET`]: ((pro)) the path to the neural network model for AVIF.
 * [`IMGPROXY_AUTOQUALITY_JXL_NET`]: ((pro)) the path to the neural network model for JPEG XL.
 
+* [`IMGPROXY_AUTOQUALITY_ML_INFERENCE_NUM_STREAMS`]: ((pro)) when set, overrides the [IMGPROXY_ML_NUM_STREAMS](#IMGPROXY_ML_NUM_STREAMS) value for the autoquality models.
+* [`IMGPROXY_AUTOQUALITY_ML_INFERENCE_NUM_THREADS`]: ((pro)) when set, overrides the [IMGPROXY_ML_INFERENCE_NUM_THREADS](#IMGPROXY_ML_INFERENCE_NUM_THREADS) value for the autoquality models.
+* [`IMGPROXY_AUTOQUALITY_ML_EXECUTION_MODE`]: ((pro)) when set, overrides the [IMGPROXY_ML_EXECUTION_MODE](#IMGPROXY_ML_EXECUTION_MODE) value for the autoquality models.
+* [`IMGPROXY_AUTOQUALITY_ML_CPU_PINNING`]: ((pro)) when set, overrides the [IMGPROXY_ML_CPU_PINNING](#IMGPROXY_ML_CPU_PINNING) value for the autoquality models.
+
 ## SVG processing
 * [`IMGPROXY_ALWAYS_RASTERIZE_SVG`]: when `true`, imgproxy will always rasterize SVG images unless SVG processing is not [skipped](#skip-processing). Default: `false`
 
@@ -412,11 +417,17 @@ imgproxy Pro can apply unsharp masking to your images.
 
 These options allow you to configure common aspects of machine learning features such as object detection, classification, autoquality, etc.
 
-* [`IMGPROXY_MAX_ML_CONCURRENCY`]: ((pro)) the maximum number of inference requests that can be processed concurrently by each machine learning model. When the limit is reached, additional inference requests will be queued until the previous ones are finished. Default: the number of CPU cores available to imgproxy
+* [`IMGPROXY_ML_NUM_STREAMS`]: ((pro)) the maximum number of inference requests that can be processed concurrently by each machine learning model. When the limit is reached, additional inference requests will be queued until the previous ones are finished. Default: the number of CPU cores available to imgproxy
 
 :::tip
-The larger the `IMGPROXY_MAX_ML_CONCURRENCY` value, the more memory ML features will consume. If you don't have a lot of RAM, you may want to set it to a value lower than the number of CPU cores.
+The larger the `IMGPROXY_ML_NUM_STREAMS` value, the more memory ML features will consume. If you don't have a lot of RAM, you may want to set it to a value lower than the number of CPU cores.
 :::
+
+* [`IMGPROXY_ML_INFERENCE_NUM_THREADS`]: ((pro)) the number of threads that can be used for inference by each machine learning model. If less than the `IMGPROXY_ML_NUM_STREAMS` value, the number of streams will be limited to this value. Default: the number of CPU cores available to imgproxy
+* [`IMGPROXY_ML_EXECUTION_MODE`]: ((pro)) the execution mode of the machine learning models. Supported values are:
+  * `performance`: _(default)_ the model will be optimized for performance. Some model layers may be fused or converted to a different type to improve performance. This may lead to a slight decrease in accuracy.
+  * `accuracy`: the model will be optimized for accuracy. The optimizations that may decrease accuracy will be disabled. This may lead to decreased performance.
+* [`IMGPROXY_ML_CPU_PINNING`]: ((pro)) when `true`, machine learning inference threads will be pinned to CPU cores. This may improve performance on some workloads, but generally it is not recommended to enable this option. Default: `false`
 
 ## Object detection
 
@@ -434,6 +445,11 @@ imgproxy can detect objects on the image and use them to perform smart cropping,
   * `max_score_area`: _(default)_ in this mode, imgproxy will select the area that covers the most detected objects, respecting their weights.
   * `one_best`: in this mode, imgproxy will focus on the object with the highest score based on its area, confidence, and class weight.
   * `one_best_centermost`: the same as `one_best,` but imgproxy will add the object's proximity to the image center to its score.
+
+* [`IMGPROXY_OBJECT_DETECTION_INFERENCE_NUM_STREAMS`]: ((pro)) when set, overrides the [IMGPROXY_ML_NUM_STREAMS](#IMGPROXY_ML_NUM_STREAMS) value for the object detection model.
+* [`IMGPROXY_OBJECT_DETECTION_INFERENCE_NUM_THREADS`]: ((pro)) when set, overrides the [IMGPROXY_ML_INFERENCE_NUM_THREADS](#IMGPROXY_ML_INFERENCE_NUM_THREADS) value for the object detection model.
+* [`IMGPROXY_OBJECT_DETECTION_EXECUTION_MODE`]: ((pro)) when set, overrides the [IMGPROXY_ML_EXECUTION_MODE](#IMGPROXY_ML_EXECUTION_MODE) value for the object detection model.
+* [`IMGPROXY_OBJECT_DETECTION_CPU_PINNING`]: ((pro)) when set, overrides the [IMGPROXY_ML_CPU_PINNING](#IMGPROXY_ML_CPU_PINNING) value for the object detection model.
 
 Read the [Object Detection guide](../features/object_detection.mdx) for more info.
 
@@ -453,6 +469,11 @@ imgproxy can classify images by assigning them to predefined categories based on
 * [`IMGPROXY_CLASSIFICATION_LAYOUT`]: ((pro)) the data layout of the neural network input. Possible values are:
   * `nhwc`: _(default)_ channels last (TensorFlow default)
   * `nchw`: channels first (PyTorch default)
+
+* [`IMGPROXY_CLASSIFICATION_INFERENCE_NUM_STREAMS`]: ((pro)) when set, overrides the [IMGPROXY_ML_NUM_STREAMS](#IMGPROXY_ML_NUM_STREAMS) value for the classification model.
+* [`IMGPROXY_CLASSIFICATION_INFERENCE_NUM_THREADS`]: ((pro)) when set, overrides the [IMGPROXY_ML_INFERENCE_NUM_THREADS](#IMGPROXY_ML_INFERENCE_NUM_THREADS) value for the classification model.
+* [`IMGPROXY_CLASSIFICATION_EXECUTION_MODE`]: ((pro)) when set, overrides the [IMGPROXY_ML_EXECUTION_MODE](#IMGPROXY_ML_EXECUTION_MODE) value for the classification model.
+* [`IMGPROXY_CLASSIFICATION_CPU_PINNING`]: ((pro)) when set, overrides the [IMGPROXY_ML_CPU_PINNING](#IMGPROXY_ML_CPU_PINNING) value for the classification model.
 
 Read the [Classification guide](../features/classification.mdx) for more info.
 
