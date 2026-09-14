@@ -159,6 +159,12 @@ You can limit allowed source URLs with the following variable:
   Disabling the limit on the SVG file size can lead to memory exhaustion and DoS attacks.
   :::
 
+* [`IMGPROXY_TIFF_UNLIMITED`]: when `true`, disables the limit on the TIFF file size (50MB). Default: `false`
+
+  :::warning
+  Disabling the limit on the TIFF file size can lead to memory exhaustion and DoS attacks.
+  :::
+
 * [`IMGPROXY_SANITIZE_SVG`]: when `true`, imgproxy will remove scripts from SVG images to prevent XSS attacks. Defaut: `true`
 
 When using imgproxy in a development environment, it can be useful to ignore SSL verification:
@@ -383,6 +389,13 @@ imgproxy Pro can extract specific video frames to create thumbnails. This featur
 Though using `IMGPROXY_VIDEO_THUMBNAIL_PROBE_SIZE` and `IMGPROXY_VIDEO_THUMBNAIL_MAX_ANALYZE_DURATION` can lower the memory footprint of video thumbnail generation, they should be used in production only when you know what you're doing.
 :::
 
+Check out the [Video thumbnails](../features/video_thumbnails.mdx) guide to learn more.
+
+imgproxy Pro can also use VA-API to hardware-accelerate video frame decoding (and, optionally, scaling) on Intel and AMD GPUs. See the [Hardware acceleration](../features/hardware_acceleration.mdx) page for setup instructions.
+
+* [`IMGPROXY_VIDEO_THUMBNAIL_VAAPI_DEVICE`]: ((pro)) the path to a DRM render node (e.g., `/dev/dri/renderD128`) to use for VA-API hardware-accelerated video decoding. When empty, VA-API is disabled. Default: blank
+* [`IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE`]: ((pro)) when `true`, also uses VA-API hardware scaling in the ffmpeg filter graph instead of only hardware decoding. Default: `false`
+
 ## RAW formats
 
 imgproxy Pro can process digital camera RAW images. Since loading RAW images is pretty resource intensive, their processing is disabled by default. You can enable it with the following variable:
@@ -452,10 +465,10 @@ imgproxy can detect objects on the image and use them to perform smart cropping,
   * `one_best`: in this mode, imgproxy will focus on the object with the highest score based on its area, confidence, and class weight.
   * `one_best_centermost`: the same as `one_best,` but imgproxy will add the object's proximity to the image center to its score.
 
-* [`IMGPROXY_OBJECT_DETECTION_INFERENCE_NUM_STREAMS`]: ((pro)) when set, overrides the [IMGPROXY_ML_NUM_STREAMS](#IMGPROXY_ML_NUM_STREAMS) value for the object detection model.
-* [`IMGPROXY_OBJECT_DETECTION_INFERENCE_NUM_THREADS`]: ((pro)) when set, overrides the [IMGPROXY_ML_INFERENCE_NUM_THREADS](#IMGPROXY_ML_INFERENCE_NUM_THREADS) value for the object detection model.
-* [`IMGPROXY_OBJECT_DETECTION_EXECUTION_MODE`]: ((pro)) when set, overrides the [IMGPROXY_ML_EXECUTION_MODE](#IMGPROXY_ML_EXECUTION_MODE) value for the object detection model.
-* [`IMGPROXY_OBJECT_DETECTION_CPU_PINNING`]: ((pro)) when set, overrides the [IMGPROXY_ML_CPU_PINNING](#IMGPROXY_ML_CPU_PINNING) value for the object detection model.
+* [`IMGPROXY_OBJECT_DETECTION_ML_INFERENCE_NUM_STREAMS`]: ((pro)) when set, overrides the [IMGPROXY_ML_NUM_STREAMS](#IMGPROXY_ML_NUM_STREAMS) value for the object detection model.
+* [`IMGPROXY_OBJECT_DETECTION_ML_INFERENCE_NUM_THREADS`]: ((pro)) when set, overrides the [IMGPROXY_ML_INFERENCE_NUM_THREADS](#IMGPROXY_ML_INFERENCE_NUM_THREADS) value for the object detection model.
+* [`IMGPROXY_OBJECT_DETECTION_ML_EXECUTION_MODE`]: ((pro)) when set, overrides the [IMGPROXY_ML_EXECUTION_MODE](#IMGPROXY_ML_EXECUTION_MODE) value for the object detection model.
+* [`IMGPROXY_OBJECT_DETECTION_ML_CPU_PINNING`]: ((pro)) when set, overrides the [IMGPROXY_ML_CPU_PINNING](#IMGPROXY_ML_CPU_PINNING) value for the object detection model.
 
 Read the [Object Detection guide](../features/object_detection.mdx) for more info.
 
@@ -476,10 +489,10 @@ imgproxy can classify images by assigning them to predefined categories based on
   * `nhwc`: _(default)_ channels last (TensorFlow default)
   * `nchw`: channels first (PyTorch default)
 
-* [`IMGPROXY_CLASSIFICATION_INFERENCE_NUM_STREAMS`]: ((pro)) when set, overrides the [IMGPROXY_ML_NUM_STREAMS](#IMGPROXY_ML_NUM_STREAMS) value for the classification model.
-* [`IMGPROXY_CLASSIFICATION_INFERENCE_NUM_THREADS`]: ((pro)) when set, overrides the [IMGPROXY_ML_INFERENCE_NUM_THREADS](#IMGPROXY_ML_INFERENCE_NUM_THREADS) value for the classification model.
-* [`IMGPROXY_CLASSIFICATION_EXECUTION_MODE`]: ((pro)) when set, overrides the [IMGPROXY_ML_EXECUTION_MODE](#IMGPROXY_ML_EXECUTION_MODE) value for the classification model.
-* [`IMGPROXY_CLASSIFICATION_CPU_PINNING`]: ((pro)) when set, overrides the [IMGPROXY_ML_CPU_PINNING](#IMGPROXY_ML_CPU_PINNING) value for the classification model.
+* [`IMGPROXY_CLASSIFICATION_ML_INFERENCE_NUM_STREAMS`]: ((pro)) when set, overrides the [IMGPROXY_ML_NUM_STREAMS](#IMGPROXY_ML_NUM_STREAMS) value for the classification model.
+* [`IMGPROXY_CLASSIFICATION_ML_INFERENCE_NUM_THREADS`]: ((pro)) when set, overrides the [IMGPROXY_ML_INFERENCE_NUM_THREADS](#IMGPROXY_ML_INFERENCE_NUM_THREADS) value for the classification model.
+* [`IMGPROXY_CLASSIFICATION_ML_EXECUTION_MODE`]: ((pro)) when set, overrides the [IMGPROXY_ML_EXECUTION_MODE](#IMGPROXY_ML_EXECUTION_MODE) value for the classification model.
+* [`IMGPROXY_CLASSIFICATION_ML_CPU_PINNING`]: ((pro)) when set, overrides the [IMGPROXY_ML_CPU_PINNING](#IMGPROXY_ML_CPU_PINNING) value for the classification model.
 
 Read the [Classification guide](../features/classification.mdx) for more info.
 

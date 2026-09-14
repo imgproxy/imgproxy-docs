@@ -159,6 +159,12 @@ You can limit allowed source URLs with the following variable:
   Disabling the limit on the SVG file size can lead to memory exhaustion and DoS attacks.
   :::
 
+* [`IMGPROXY_TIFF_UNLIMITED`]: when `true`, disables the limit on the TIFF file size (50MB). Default: `false`
+
+  :::warning
+  Disabling the limit on the TIFF file size can lead to memory exhaustion and DoS attacks.
+  :::
+
 * [`IMGPROXY_SANITIZE_SVG`]: when `true`, imgproxy will remove scripts from SVG images to prevent XSS attacks. Defaut: `true`
 
 When using imgproxy in a development environment, it can be useful to ignore SSL verification:

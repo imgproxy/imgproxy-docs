@@ -80,6 +80,22 @@ const sidebars: SidebarsConfig = {
           id: "features/chained_pipelines",
           className: "menu__list-item--badge badge--pro",
         },
+        {
+          type: "category",
+          label: "Video thumbnails",
+          link: {
+            type: "doc",
+            id: "features/video_thumbnails",
+          },
+          className: "menu__list-item--badge badge--pro",
+          items: [
+            {
+              type: "doc",
+              id: "features/hardware_acceleration",
+              className: "menu__list-item--badge badge--pro",
+            },
+          ],
+        },
       ],
     },
     {

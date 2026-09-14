@@ -85,12 +85,11 @@ Since MP4 requires use of a `<video>` tag instead of `<img>`, automatic conversi
 
 ## Video thumbnails ((pro)) {#video-thumbnails}
 
-If you provide a video as a source, imgproxy takes a specific frame to create a thumbnail. To do this, imgproxy downloads only the amount of data required to reach the needed frame.
+If you provide a video as a source, imgproxy Pro takes a specific frame — or a tiled sprite sheet or animated preview built from several frames — to create a thumbnail. To do this, imgproxy downloads only the amount of data required to reach the needed frame(s).
 
 Since this still requires more data to be downloaded, video thumbnail generation is disabled by default and should be enabled with `IMGPROXY_ENABLE_VIDEO_THUMBNAILS` config option.
 
-* `IMGPROXY_ENABLE_VIDEO_THUMBNAILS`: when true, enables video thumbnail generation. Default: `false`
-* `IMGPROXY_VIDEO_THUMBNAIL_SECOND`: the timestamp of the frame (in seconds) that will be used for the thumbnail. Default: `1`.
+Check out the [Video thumbnails](features/video_thumbnails.mdx) guide to learn more.
 
 ## Colorspace and HDR preservation
 
