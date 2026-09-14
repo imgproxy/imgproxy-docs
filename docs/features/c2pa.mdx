@@ -1,0 +1,97 @@
+---
+title: C2PA
+description: Learn about how imgproxy adds C2PA content provenance manifests to processed images
+---
+
+# C2PA ((pro))
+
+imgproxy can attach [C2PA](https://c2pa.org/) (Coalition for Content Provenance and Authenticity) manifests — also known as Content Credentials — to processed images. A C2PA manifest is a tamper-evident record embedded in the image that describes its provenance: who created or edited it, what software was used, and, when the source image already carries a manifest, the full edit history inherited from it.
+
+When enabled, imgproxy signs every processed image it outputs with a C2PA manifest, using [c2pa-rs](https://github.com/contentauth/c2pa-rs) under the hood.
+
+## Configuration
+
+* [`IMGPROXY_C2PA_ENABLED`]: when `true`, imgproxy will sign processed images with a C2PA manifest. Default: `false`
+* [`IMGPROXY_C2PA_SETTINGS`]: the raw [c2pa-rs SDK settings](https://github.com/contentauth/c2pa-rs/blob/main/sdk/tests/fixtures/test_settings.toml) string, including signing credentials, trust anchors, and verification/builder options. Takes precedence over `IMGPROXY_C2PA_SETTINGS_PATH` when both are set
+* [`IMGPROXY_C2PA_SETTINGS_PATH`]: the path to a file containing the c2pa-rs SDK settings, as an alternative to providing them inline via `IMGPROXY_C2PA_SETTINGS`
+* [`IMGPROXY_C2PA_FORMAT`]: the format of the C2PA settings. Can be `toml` or `json`. Default: `toml`
+* [`IMGPROXY_C2PA_ACTION`]: the C2PA action recorded in the manifest for processed images. Default: `c2pa.edited`
+* [`IMGPROXY_C2PA_SOFTWARE_AGENT`]: the software agent name recorded in the manifest. Default: `imgproxy`
+* [`IMGPROXY_C2PA_SOFTWARE_AGENT_VERSION`]: the software agent version recorded in the manifest. Default: the running imgproxy version
+
+You need to provide signing credentials (and, optionally, trust anchors and other c2pa-rs options) via `IMGPROXY_C2PA_SETTINGS` or `IMGPROXY_C2PA_SETTINGS_PATH` for signing to work — see the [c2pa-rs settings reference](https://github.com/contentauth/c2pa-rs/blob/main/sdk/tests/fixtures/test_settings.toml) for the full list of supported options, including the `[signer.local]` section.
+
+### Sample configuration
+
+Here's a minimal `IMGPROXY_C2PA_SETTINGS_PATH` TOML file with just a local signer, enough to get C2PA signing working:
+
+```toml
+[signer.local]
+alg = "es256"
+sign_cert = """
+-----BEGIN CERTIFICATE-----
+MIIChzCCAi6gAwIBAgIUcCTmJHYF8dZfG0d1UdT6/LXtkeYwCgYIKoZIzj0EAwIw
+gYwxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJDQTESMBAGA1UEBwwJU29tZXdoZXJl
+MScwJQYDVQQKDB5DMlBBIFRlc3QgSW50ZXJtZWRpYXRlIFJvb3QgQ0ExGTAXBgNV
+BAsMEEZPUiBURVNUSU5HX09OTFkxGDAWBgNVBAMMD0ludGVybWVkaWF0ZSBDQTAe
+Fw0yMjA2MTAxODQ2NDBaFw0zMDA4MjYxODQ2NDBaMIGAMQswCQYDVQQGEwJVUzEL
+MAkGA1UECAwCQ0ExEjAQBgNVBAcMCVNvbWV3aGVyZTEfMB0GA1UECgwWQzJQQSBU
+ZXN0IFNpZ25pbmcgQ2VydDEZMBcGA1UECwwQRk9SIFRFU1RJTkdfT05MWTEUMBIG
+A1UEAwwLQzJQQSBTaWduZXIwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQPaL6R
+kAkYkKU4+IryBSYxJM3h77sFiMrbvbI8fG7w2Bbl9otNG/cch3DAw5rGAPV7NWky
+l3QGuV/wt0MrAPDoo3gwdjAMBgNVHRMBAf8EAjAAMBYGA1UdJQEB/wQMMAoGCCsG
+AQUFBwMEMA4GA1UdDwEB/wQEAwIGwDAdBgNVHQ4EFgQUFznP0y83joiNOCedQkxT
+tAMyNcowHwYDVR0jBBgwFoAUDnyNcma/osnlAJTvtW6A4rYOL2swCgYIKoZIzj0E
+AwIDRwAwRAIgOY/2szXjslg/MyJFZ2y7OH8giPYTsvS7UPRP9GI9NgICIDQPMKrE
+LQUJEtipZ0TqvI/4mieoyRCeIiQtyuS0LACz
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+MIICajCCAg+gAwIBAgIUfXDXHH+6GtA2QEBX2IvJ2YnGMnUwCgYIKoZIzj0EAwIw
+dzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAkNBMRIwEAYDVQQHDAlTb21ld2hlcmUx
+GjAYBgNVBAoMEUMyUEEgVGVzdCBSb290IENBMRkwFwYDVQQLDBBGT1IgVEVTVElO
+R19PTkxZMRAwDgYDVQQDDAdSb290IENBMB4XDTIyMDYxMDE4NDY0MFoXDTMwMDgy
+NzE4NDY0MFowgYwxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJDQTESMBAGA1UEBwwJ
+U29tZXdoZXJlMScwJQYDVQQKDB5DMlBBIFRlc3QgSW50ZXJtZWRpYXRlIFJvb3Qg
+Q0ExGTAXBgNVBAsMEEZPUiBURVNUSU5HX09OTFkxGDAWBgNVBAMMD0ludGVybWVk
+aWF0ZSBDQTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABHllI4O7a0EkpTYAWfPM
+D6Rnfk9iqhEmCQKMOR6J47Rvh2GGjUw4CS+aLT89ySukPTnzGsMQ4jK9d3V4Aq4Q
+LsOjYzBhMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGGMB0GA1UdDgQW
+BBQOfI1yZr+iyeUAlO+1boDitg4vazAfBgNVHSMEGDAWgBRembiG4Xgb2VcVWnUA
+UrYpDsuojDAKBggqhkjOPQQDAgNJADBGAiEAtdZ3+05CzFo90fWeZ4woeJcNQC4B
+84Ill3YeZVvR8ZECIQDVRdha1xEDKuNTAManY0zthSosfXcvLnZui1A/y/DYeg==
+-----END CERTIFICATE-----
+"""
+private_key = """
+-----BEGIN PRIVATE KEY-----
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgfNJBsaRLSeHizv0m
+GL+gcn78QmtfLSm+n+qG9veC2W2hRANCAAQPaL6RkAkYkKU4+IryBSYxJM3h77sF
+iMrbvbI8fG7w2Bbl9otNG/cch3DAw5rGAPV7NWkyl3QGuV/wt0MrAPDo
+-----END PRIVATE KEY-----
+"""
+```
+
+:::warning
+This certificate/key pair is self-signed and intended for testing only (it's marked `FOR TESTING_ONLY` in its Subject). It lets you try C2PA signing end-to-end, but manifests it produces won't validate against real trust anchors. For production, replace `sign_cert`/`private_key` with your own CA-issued (or otherwise trusted) signing credentials — see the [c2pa-rs settings reference](https://github.com/contentauth/c2pa-rs/blob/main/sdk/tests/fixtures/test_settings.toml) for the full `[signer.*]` options, including remote/KMS-backed signers, and [Getting a signing certificate](https://opensource.contentauthenticity.org/docs/signing/get-cert/) for how to obtain one, either a self-signed certificate for testing or one purchased from a C2PA-approved Certificate Authority for production.
+:::
+
+Point `IMGPROXY_C2PA_SETTINGS_PATH` at the file (or inline its contents via `IMGPROXY_C2PA_SETTINGS`) and set `IMGPROXY_C2PA_ENABLED=true` to start signing.
+
+:::info
+C2PA signing is only available for JPEG, PNG, WebP, GIF, JPEG XL, AVIF, HEIC, TIFF, and SVG output. Other output formats are returned unsigned.
+:::
+
+## Provenance and creation info
+
+Every signed image gets an action recorded using [`IMGPROXY_C2PA_ACTION`](../configuration/options.mdx#IMGPROXY_C2PA_ACTION) (`c2pa.edited` by default), with the software agent taken from [`IMGPROXY_C2PA_SOFTWARE_AGENT`](../configuration/options.mdx#IMGPROXY_C2PA_SOFTWARE_AGENT)/[`IMGPROXY_C2PA_SOFTWARE_AGENT_VERSION`](../configuration/options.mdx#IMGPROXY_C2PA_SOFTWARE_AGENT_VERSION). This always applies and can't be overridden per request.  When the source image already contains a C2PA manifest, imgproxy also uses it as an ingredient and inherits its provenance chain.
+
+When the source image has **no** existing manifest, you can additionally attach a `c2pa.created` action — with its own software agent and a required digital source type — using the `c2pa_created_by`/`c2pa_cb` processing option. See the [Processing options](../usage/processing.mdx#c2pa-created-by) reference for its syntax and arguments.
+
+## Reading the manifest
+
+You can read back the C2PA manifest of a source or already-signed image using the `c2pa` info option:
+
+```imgproxy_url
+/info/.../c2pa:1/...
+```
+
+Read more about the `c2pa` info option, including the response format, in the [Info options](../usage/getting_info.mdx#c2pa) reference.
