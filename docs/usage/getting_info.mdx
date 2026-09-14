@@ -686,6 +686,31 @@ Default: empty
 Calculation of video file hashsums is not supported as it would require downloading the whole video file. imgproxy won't throw an error if you try to calculate the hashsum of a video file but it will skip the `hashsums` field
 :::
 
+### C2PA ((pro)) {#c2pa}
+
+```imgproxy_url_option
+c2pa:%c2pa
+```
+
+When set to `1`, `t` or `true`, imgproxy will return the image's C2PA manifest (if any) as a `c2pa_manifest` JSON field. Read more about C2PA in the [C2PA](../features/c2pa.mdx) guide.
+
+Default: `false`
+
+**Response example:**
+
+```json
+{
+  "c2pa_manifest": {
+    "active_manifest": "<manifest ID>",
+    "manifests": {
+      "<manifest ID>": { }
+    }
+  }
+}
+```
+
+`manifests` is keyed by manifest ID, and `active_manifest` points to the currently active one; each manifest object follows the [c2pa-rs manifest store](https://opensource.contentauthenticity.org/docs/manifest/json-ref/manifest-definition-schema) JSON format.
+
 ### Page
 
 ```imgproxy_url_option

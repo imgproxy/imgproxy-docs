@@ -1189,6 +1189,20 @@ att:%return_attachment
 
 When set to `1`, `t` or `true`, imgproxy will return `attachment` in the `Content-Disposition` header, and the browser will open a 'Save as' dialog. This is normally controlled by the [IMGPROXY_RETURN_ATTACHMENT](../configuration/options.mdx#IMGPROXY_RETURN_ATTACHMENT) configuration but this processing option allows the configuration to be set for each request.
 
+### C2PA created by ((pro)) {#c2pa-created-by}
+
+```imgproxy_url_option
+c2pa_created_by:%software_agent:%digital_source_type
+c2pa_cb:%software_agent:%digital_source_type
+```
+
+Sets the creation info used for the `c2pa.created` action when the source image has no existing C2PA manifest to inherit from. This action is added in addition to the standard [IMGPROXY_C2PA_ACTION](../configuration/options.mdx#IMGPROXY_C2PA_ACTION) entry, which is always recorded using [IMGPROXY_C2PA_SOFTWARE_AGENT](../configuration/options.mdx#IMGPROXY_C2PA_SOFTWARE_AGENT) regardless of this option.
+
+* `software_agent`: the software agent name to record for the `c2pa.created` action. Independent of `IMGPROXY_C2PA_SOFTWARE_AGENT` — it does not override it.
+* `digital_source_type`: the [C2PA digital source type](https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_digital_source_type), for example `digitalCapture`, `trainedAlgorithmicMedia`, or `composite`.
+
+Both arguments are required for the option to take effect. Read more about C2PA in the [C2PA](../features/c2pa.mdx) guide.
+
 ### Preset
 
 ```imgproxy_url_option

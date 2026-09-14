@@ -27,6 +27,14 @@ You need to define the following config variables to enable the internal cache:
 * [`IMGPROXY_CACHE_KEY_HEADERS`]: _(optional)_ a list of HTTP request headers (comma-separated) to include in the cache key. This allows caching different versions of the same image based on request headers. Default: blank
 * [`IMGPROXY_CACHE_KEY_COOKIES`]: _(optional)_ a list of HTTP request cookies (comma-separated) to include in the cache key. This allows caching different versions of the same image based on cookies. Default: blank
 * [`IMGPROXY_CACHE_REPORT_ERRORS`]: When `true`, imgproxy will report cache errors instead of silently falling back to processing without cache. Default: `false`
+* [`IMGPROXY_CACHE_SHUTDOWN_TIMEOUT`]: _(optional)_ the maximum time imgproxy will wait for pending background cache writes to complete during a graceful shutdown. Default: `5s`
+* [`IMGPROXY_CACHE_PROCESSING_ENABLED`]: _(optional)_ when `true`, imgproxy will cache processed images. Default: `true`
+* [`IMGPROXY_CACHE_INFO_ENABLED`]: _(optional)_ when `true`, imgproxy will cache `/info` endpoint responses. Default: `true`
+* [`IMGPROXY_CACHE_SOURCE_ENABLE`]: _(optional)_ when `true`, imgproxy caches downloaded source images in addition to processed results. Default: `false`
+
+### Source image caching
+
+In addition to caching processed results, imgproxy can cache the raw bytes of downloaded source images. Set `IMGPROXY_CACHE_SOURCE_ENABLE` to `true` to enable it. This is useful when you request the same source image with many different processing options. Instead of re-downloading the source for every variant, imgproxy fetches it once and serves subsequent requests from the cache.
 
 ### Storage configuration
 
@@ -42,7 +50,7 @@ Configure the storage backend using `IMGPROXY_CACHE_*` variables:
 
 ## Cache key
 
-The cache key is generated based on:
+The cache key for processed images and `/info` responses is generated based on:
 
 * Source image URL
 * Processing options
@@ -52,10 +60,43 @@ The cache key is generated based on:
 
 URL signature is **not** part of the cache key, allowing key rotation without invalidating the cache.
 
+### Source cache key
+
+When [source image caching](#source-image-caching) is enabled, cached sources use their own separate key, based on:
+
+* Source image URL
+* Optional: Request headers specified in `IMGPROXY_CACHE_KEY_HEADERS`
+* Optional: Request cookies specified in `IMGPROXY_CACHE_KEY_COOKIES`
+
+Unlike the processed-image cache key, it doesn’t include processing options or the output format because it stores the downloaded source image, not a processed variant. It also doesn’t include the [cachebuster](../usage/processing.mdx#cache-buster) value, so busting the processed-image cache doesn't invalidate the cached source.
+
+## Cache tags
+
+imgproxy Pro can attach cache tags to a cache entry using the [cache_tags](../usage/processing.mdx#cache-tags) processing option:
+
+```imgproxy_url_option
+cache_tags:%tag1:%tag2:...:%tagN
+ct:%tag1:%tag2:...:%tagN
+```
+
+Each tag can be up to 256 characters long and must consist of visible ASCII characters (character codes 33-126), excluding commas. We consider at most 50 tags per request; any beyond that are silently dropped.
+
+The tags are also written to the response headers, so a CDN in front of imgproxy can use them for tag-based cache invalidation. Use the [`IMGPROXY_CACHE_TAGS_FORMAT`](../configuration/options.mdx#IMGPROXY_CACHE_TAGS_FORMAT) config to choose which format(s) the tags are written in — [CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/manage-caches-with-precision-using-amazon-cloudfront-invalidation-by-cache-tag/), [Cloudflare](https://developers.cloudflare.com/cache/how-to/purge-cache/purge-by-tags/), both (the default), or neither.
+
+## Bypassing the cache
+
+imgproxy Pro can bypass the internal cache for a single request using the [bypass_cache](../usage/processing.mdx#bypass-cache) processing option:
+
+```imgproxy_url_option
+bypass_cache:%bypass
+bc:%bypass
+```
+
+When enabled for a request, imgproxy skips reading and writing the cache entirely—including the source cache, if enabled—and processes and fetches everything from the source image. Because this lets a client bypass your cache, it’s not allowed unless the [`IMGPROXY_ALLOW_BYPASS_CACHE`](../configuration/options.mdx#IMGPROXY_ALLOW_BYPASS_CACHE) config is set to `true`.
+
 ## Limitations
 
 * **No manual cache invalidation**: Currently, imgproxy doesn't provide a built-in means to invalidate the cache. However, imgproxy includes the [cachebuster](../usage/processing.mdx#cache-buster) in the cache key, so you can use it to force cache invalidation when needed. Most storage offerings also support object expiration, so you can set a reasonable expiration time for cached images.
-* **No cache for info requests**: The internal cache is currently used only for image processing requests. Requests to the `/info` endpoint are not cached.
 
 ## How it works
 
@@ -63,6 +104,11 @@ When a request comes in:
 
 1. imgproxy checks the URL signature (if enabled).
 2. imgproxy generates the cache key from the request parameters.
-3. imgproxy checks if a cached image exists in the configured storage.
+3. imgproxy checks if a cached processed image exists in the configured storage.
 4. If the cached image exists and is valid, imgproxy serves it directly.
-5. If not, imgproxy processes the image and stores the result in the cache before serving it.
+5. If not, and [source image caching](#source-image-caching) is enabled, imgproxy checks the source cache (using its own [separate key](#source-cache-key)) before downloading the source image:
+   * On a hit, imgproxy uses the cached source bytes instead of re-downloading them.
+   * On a miss, imgproxy downloads the source image and caches it in the background.
+6. imgproxy processes the image, serves the result, and stores it in the cache in the background — the response isn't delayed while it waits for the cache write to finish.
+
+Cache writes (both processed-image and source) always happen in the background this way. On a graceful shutdown, imgproxy waits up to [`IMGPROXY_CACHE_SHUTDOWN_TIMEOUT`](../configuration/options.mdx#IMGPROXY_CACHE_SHUTDOWN_TIMEOUT) for any still-pending writes to finish before exiting.

@@ -413,6 +413,20 @@ imgproxy Pro can process digital camera RAW images. Since loading RAW images is 
 
 Read more about watermarks in the [Watermark](../features/watermark.mdx) guide.
 
+## C2PA
+
+imgproxy can attach [C2PA](https://c2pa.org/) content provenance manifests to processed images.
+
+* [`IMGPROXY_C2PA_ENABLED`]: ((pro)) when `true`, imgproxy will sign processed images with a C2PA manifest. Default: `false`
+* [`IMGPROXY_C2PA_SETTINGS`]: ((pro)) the raw c2pa-rs SDK settings string, including signing credentials. Takes precedence over `IMGPROXY_C2PA_SETTINGS_PATH`
+* [`IMGPROXY_C2PA_SETTINGS_PATH`]: ((pro)) the path to a file with the c2pa-rs SDK settings, as an alternative to `IMGPROXY_C2PA_SETTINGS`
+* [`IMGPROXY_C2PA_FORMAT`]: ((pro)) the format of the C2PA settings. Can be `toml` or `json`. Default: `toml`
+* [`IMGPROXY_C2PA_ACTION`]: ((pro)) the C2PA action recorded in the manifest for processed images. Default: `c2pa.edited`
+* [`IMGPROXY_C2PA_SOFTWARE_AGENT`]: ((pro)) the software agent name recorded in the manifest. Default: `imgproxy`
+* [`IMGPROXY_C2PA_SOFTWARE_AGENT_VERSION`]: ((pro)) the software agent version recorded in the manifest. Default: the running imgproxy version
+
+Read more about C2PA in the [C2PA](../features/c2pa.mdx) guide.
+
 ## Unsharp masking
 
 imgproxy Pro can apply unsharp masking to your images.
@@ -506,6 +520,10 @@ imgproxy can cache processed images in various storage backends to improve perfo
 * [`IMGPROXY_CACHE_KEY_HEADERS`]: ((pro)) a comma-separated list of HTTP request headers to include in the cache key. This allows caching different versions of the same image based on request headers. Default: blank
 * [`IMGPROXY_CACHE_KEY_COOKIES`]: ((pro)) a comma-separated list of HTTP request cookies to include in the cache key. This allows caching different versions of the same image based on cookies. Default: blank
 * [`IMGPROXY_CACHE_REPORT_ERRORS`]: ((pro)) when `true`, imgproxy will report cache errors instead of silently falling back to processing without cache. Default: `false`
+* [`IMGPROXY_CACHE_SHUTDOWN_TIMEOUT`]: ((pro)) the maximum time imgproxy will wait for pending background cache writes to complete during a graceful shutdown. Default: `5s`
+* [`IMGPROXY_CACHE_PROCESSING_ENABLED`]: ((pro)) when `true`, imgproxy will cache processed images. Default: `true`
+* [`IMGPROXY_CACHE_INFO_ENABLED`]: ((pro)) when `true`, imgproxy will cache `/info` endpoint responses. Default: `true`
+* [`IMGPROXY_CACHE_SOURCE_ENABLE`]: ((pro)) when `true`, imgproxy will cache downloaded source image bytes in addition to processed results. Default: `false`
 
 * [`IMGPROXY_CACHE_TAGS_FORMAT`]: ((pro)) defines how the cache tags added by the [cache_tags](../usage/processing.mdx#cache-tags) option are written to the response headers. Supported values are:
   * `all`: _(default)_ imgproxy will write cache tags in all supported formats
@@ -771,6 +789,7 @@ imgproxy can send request traces to an OpenTelemetry collector:
 * [`IMGPROXY_OPEN_TELEMETRY_CLIENT_KEY`]: OpenTelemetry client TLS key, PEM-encoded (you can replace line breaks with `\n`). Default: blank
 * [`IMGPROXY_OPEN_TELEMETRY_TRACE_ID_GENERATOR`]: OpenTelemetry trace ID generator. Supported generators are `xray` and `random`. Default: `xray`
 * [`IMGPROXY_OPEN_TELEMETRY_PROPAGATE_EXTERNAL`]: when `true`, imgproxy will propagate OpenTelemetry tracing headers to external requests such as image downloads. Default: `false`
+* [`IMGPROXY_OPEN_TELEMETRY_LOGGER_NAME`]: the instrumentation scope name used when sending logs to the OpenTelemetry collector. Default: `imgproxy`
 
 Check out the [OpenTelemetry](../monitoring/open_telemetry.mdx) guide to learn more.
 
@@ -789,6 +808,7 @@ Check out the [CloudWatch](../monitoring/cloud_watch.mdx) guide to learn more.
 imgproxy can report occurred errors to Bugsnag, Honeybadger and Sentry:
 
 * [`IMGPROXY_REPORT_DOWNLOADING_ERRORS`]: when `true`, imgproxy will report downloading errors. Default: `true`
+* [`IMGPROXY_REPORT_IO_ERRORS`]: when `true`, imgproxy will report errors that occur while writing the response body to the client. Default: `false`
 * [`IMGPROXY_DEVELOPMENT_ERRORS_MODE`]: when `true`, imgproxy will respond with detailed error messages and stack traces in a pretty HTML format. Useful for development and debugging. If the client does not `Accept: text/html`, imgproxy reponds with plain text error. Default: `false`
 
 ### Bugsnag

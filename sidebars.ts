@@ -96,6 +96,11 @@ const sidebars: SidebarsConfig = {
             },
           ],
         },
+        {
+          type: "doc",
+          id: "features/c2pa",
+          className: "menu__list-item--badge badge--pro",
+        },
       ],
     },
     {

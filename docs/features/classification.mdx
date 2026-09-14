@@ -601,6 +601,13 @@ You need to define the following config variables to enable object classificatio
 
   Default: `nhwc`
 
+### OpenVINO configuration options
+
+* [`IMGPROXY_CLASSIFICATION_INFERENCE_NUM_STREAMS`]: when set, overrides the [IMGPROXY_ML_NUM_STREAMS](../configuration/options.mdx#IMGPROXY_ML_NUM_STREAMS) value for the classification model.
+* [`IMGPROXY_CLASSIFICATION_INFERENCE_NUM_THREADS`]: when set, overrides the [IMGPROXY_ML_INFERENCE_NUM_THREADS](../configuration/options.mdx#IMGPROXY_ML_INFERENCE_NUM_THREADS) value for the classification model.
+* [`IMGPROXY_CLASSIFICATION_EXECUTION_MODE`]: when set, overrides the [IMGPROXY_ML_EXECUTION_MODE](../configuration/options.mdx#IMGPROXY_ML_EXECUTION_MODE) value for the classification model.
+* [`IMGPROXY_CLASSIFICATION_CPU_PINNING`]: when set, overrides the [IMGPROXY_ML_CPU_PINNING](../configuration/options.mdx#IMGPROXY_ML_CPU_PINNING) value for the classification model.
+
 ### Class names file
 
 The class names file maps the neural network's class indexes to human-readable class names. The path to the class names file should be defined in the `IMGPROXY_CLASSIFICATION_CLASSES` config variable.
