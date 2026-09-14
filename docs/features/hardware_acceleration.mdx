@@ -1,0 +1,152 @@
+---
+title: Hardware acceleration
+description: Learn about how to use VA-API hardware acceleration to speed up video thumbnail generation
+---
+
+# Hardware acceleration ((pro))
+
+imgproxy Pro can use [VA-API](https://en.wikipedia.org/wiki/Video_Acceleration_API) to
+hardware-accelerate video frame decoding (and, optionally, scaling) when
+[generating video thumbnails](../configuration/options.mdx#video-thumbnails). VA-API is supported on both Intel and AMD GPUs
+through the Linux DRM render-node interface, offloading decode/scale work from the CPU to the GPU
+and reducing CPU usage in deployments that process a lot of video.
+
+:::note
+This page covers standard VA-API acceleration on Intel and AMD GPUs. It doesn't apply to
+purpose-built media-accelerator hardware such as Amazon EC2 [VT1 instances](https://aws.amazon.com/ec2/instance-types/vt1/)
+(Xilinx Alveo U30 accelerators). Those rely on the Xilinx Video SDK, which ships its own
+pre-compiled FFmpeg build with proprietary Xilinx plugins instead of VA-API — imgproxy's VA-API
+support can't make use of that hardware.
+:::
+
+## How it works
+
+imgproxy Pro's official Docker images already ship an `ffmpeg` build compiled with VA-API support.
+To actually use hardware acceleration at runtime, you need three things:
+
+1. A vendor VA-API userspace driver installed in the image (imgproxy's official image doesn't
+   include one, since it's vendor-specific and has a significant impact on the resulting image size — see
+   [Building a custom image](#building-a-custom-image) below).
+2. The host's DRM render node (`/dev/dri/renderD128` or similar) exposed to the container, with
+   permissions allowing imgproxy to open it.
+3. The [`IMGPROXY_VIDEO_THUMBNAIL_VAAPI_DEVICE`](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_VAAPI_DEVICE)
+   (and, optionally, [`IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE`](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE))
+   config variables are set.
+
+## Building a custom image
+
+You need to build a custom image based on the official one that adds the driver for your GPU vendor.
+
+### Intel GPUs
+
+```dockerfile
+FROM darthsim/imgproxy-pro:v4 # or v4-ml
+
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  intel-media-va-driver-non-free \
+  && rm -rf /var/lib/apt/lists/*
+```
+
+### AMD GPUs
+
+```dockerfile
+FROM darthsim/imgproxy-pro:v4 # or v4-ml
+
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  mesa-va-drivers \
+  && rm -rf /var/lib/apt/lists/*
+```
+
+In both cases, no rebuild of `ffmpeg`/`libva` is needed — VA-API support is already built into the
+official image; only the vendor driver package is missing.
+
+Build the image:
+
+```bash
+docker build . -t imgproxy-pro-vaapi
+```
+
+## Host requirements
+
+Before running a hardware-accelerated container, the host itself needs a working VA-API render
+node:
+
+1. **A GPU with its kernel driver loaded.** On Linux, AMD GPUs use the `amdgpu` driver. Intel GPUs
+   use either `i915` (the long-standing driver, still the default for Arc Alchemist, Meteor Lake,
+   and older integrated GPUs) or `xe` (Intel's newer driver, the default since Lunar Lake and Arc
+   Battlemage, and optional/experimental on earlier Xe-based GPUs). Both ship with the kernel and
+   load automatically when the GPU is detected — you don't need to install anything for this on
+   bare metal. Verify with:
+
+   ```bash
+   lsmod | grep -E 'i915|xe|amdgpu'
+   ls /dev/dri
+   ```
+
+   You should see device nodes such as `/dev/dri/renderD128` (the render node) and
+   `/dev/dri/card0` (the primary/display node).
+
+2. **You only need the render node, not `card0`.** ffmpeg's VA-API decode/scale path only opens
+   the render node (`/dev/dri/renderD128` or similar). `/dev/dri/card0` is used for
+   mode-setting/display and is unrelated to hardware-accelerated video decoding — there's no need
+   to expose it to the container.
+
+3. **Group permissions.** The render node is owned by the host's `render` group (its gid varies
+   by distro/host). Add the user that runs the container to that group:
+
+   ```bash
+   sudo usermod -aG render $USER
+   ```
+
+4. **Running under a hypervisor or cloud VM.** If imgproxy runs inside a VM rather than on bare
+   metal, the VM also needs the GPU exposed to it (PCI passthrough, SR-IOV, or a vendor virtual-GPU
+   mechanism) before any of the above applies — that's hypervisor/cloud-provider specific and
+   outside the scope of this page.
+
+## Running the container
+
+Expose the host's DRM render node to the container and make sure imgproxy's process can open it.
+If imgproxy's Docker image runs as a non-root user, you typically need to add that user's group to
+the host's `render` (or, on some distros, `video`) group that owns the device node:
+
+```bash
+# Find the gid of the host group that owns the render node
+getent group render
+
+# Run the container with the device exposed and the matching group added
+docker run \
+  --device=/dev/dri \
+  --group-add <render-gid> \
+  -e IMGPROXY_ENABLE_VIDEO_THUMBNAILS=true \
+  -e IMGPROXY_VIDEO_THUMBNAIL_VAAPI_DEVICE=/dev/dri/renderD128 \
+  -e IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE=true \
+  imgproxy-pro-vaapi:latest
+```
+
+:::tip
+If you're running Docker in **rootless** mode, the container's user namespace doesn't automatically
+see the host's `render` group — you need to map it explicitly via `/etc/subgid` and restart the
+rootless daemon, then pass the *namespace-mapped* gid (not the raw host gid) to `--group-add`:
+
+```bash
+# Find the host gid of the render group (the 3rd field, e.g. "993")
+getent group render
+
+# Map that gid into the rootless user's subordinate gid range
+echo "your-user:993:1" | sudo tee -a /etc/subgid
+systemctl --user restart docker
+```
+:::
+
+## Verifying / troubleshooting
+
+If `IMGPROXY_VIDEO_THUMBNAIL_VAAPI_DEVICE` is set but imgproxy can't open the device, it will fail
+fast on startup with an error along the lines of "failed to ensure availability of the hardware
+acceleration device". If you see this:
+
+* Double check the device path matches an actual render node on the host (`ls /dev/dri`).
+* Double check the container's `--device=/dev/dri` mount and that the container process has
+  permission to open the render node (see [Running the container](#running-the-container) above).
+* Make sure the vendor VA-API driver package is installed in the image and matches your GPU.
