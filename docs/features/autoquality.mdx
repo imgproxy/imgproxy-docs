@@ -126,6 +126,13 @@ IMGPROXY_AUTOQUALITY_JXL_NET="/networks/autoquality-jxl.onnx"
 If you trust your neural network model's autoquality, you may want to set `IMGPROXY_AUTOQUALITY_ALLOWED_ERROR` to 1 (the maximum possible DSSIM value). In this case, imgproxy will always use the quality predicted by the neural network model.
 :::
 
+### OpenVINO configuration options
+
+* [`IMGPROXY_AUTOQUALITY_ML_INFERENCE_NUM_STREAMS`]: when set, overrides the [IMGPROXY_ML_NUM_STREAMS](../configuration/options.mdx#IMGPROXY_ML_NUM_STREAMS) value for the autoquality models.
+* [`IMGPROXY_AUTOQUALITY_ML_INFERENCE_NUM_THREADS`]: when set, overrides the [IMGPROXY_ML_INFERENCE_NUM_THREADS](../configuration/options.mdx#IMGPROXY_ML_INFERENCE_NUM_THREADS) value for the autoquality models.
+* [`IMGPROXY_AUTOQUALITY_ML_EXECUTION_MODE`]: when set, overrides the [IMGPROXY_ML_EXECUTION_MODE](../configuration/options.mdx#IMGPROXY_ML_EXECUTION_MODE) value for the autoquality models.
+* [`IMGPROXY_AUTOQUALITY_ML_CPU_PINNING`]: when set, overrides the [IMGPROXY_ML_CPU_PINNING](../configuration/options.mdx#IMGPROXY_ML_CPU_PINNING) value for the autoquality models.
+
 ### Processing options example
 
 ```imgproxy_url
