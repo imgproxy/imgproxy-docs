@@ -30,11 +30,11 @@ You need to define the following config variables to enable the internal cache:
 * [`IMGPROXY_CACHE_SHUTDOWN_TIMEOUT`]: _(optional)_ the maximum time imgproxy will wait for pending background cache writes to complete during a graceful shutdown. Default: `5s`
 * [`IMGPROXY_CACHE_PROCESSING_ENABLED`]: _(optional)_ when `true`, imgproxy will cache processed images. Default: `true`
 * [`IMGPROXY_CACHE_INFO_ENABLED`]: _(optional)_ when `true`, imgproxy will cache `/info` endpoint responses. Default: `true`
-* [`IMGPROXY_CACHE_SOURCE_ENABLE`]: _(optional)_ when `true`, imgproxy caches downloaded source images in addition to processed results. Default: `false`
+* [`IMGPROXY_CACHE_SOURCE_ENABLE`]: _(optional)_ when `true`, imgproxy will cache downloaded source images. Default: `false`
 
 ### Source image caching
 
-In addition to caching processed results, imgproxy can cache the raw bytes of downloaded source images. Set `IMGPROXY_CACHE_SOURCE_ENABLE` to `true` to enable it. This is useful when you request the same source image with many different processing options. Instead of re-downloading the source for every variant, imgproxy fetches it once and serves subsequent requests from the cache.
+If you process remote images, like ones from third-party HTTP sources, you may want to cache source images in your storage to keep them close to imgproxy. You can enable source image caching by setting `IMGPROXY_CACHE_SOURCE_ENABLE` to `true`. This way, imgproxy caches the source image on the first transformation and fetches it from the cache for subsequent ones.
 
 ### Storage configuration
 
@@ -81,18 +81,20 @@ ct:%tag1:%tag2:...:%tagN
 
 Each tag can be up to 256 characters long and must consist of visible ASCII characters (character codes 33-126), excluding commas. We consider at most 50 tags per request; any beyond that are silently dropped.
 
-The tags are also written to the response headers, so a CDN in front of imgproxy can use them for tag-based cache invalidation. Use the [`IMGPROXY_CACHE_TAGS_FORMAT`](../configuration/options.mdx#IMGPROXY_CACHE_TAGS_FORMAT) config to choose which format(s) the tags are written in — [CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/manage-caches-with-precision-using-amazon-cloudfront-invalidation-by-cache-tag/), [Cloudflare](https://developers.cloudflare.com/cache/how-to/purge-cache/purge-by-tags/), both (the default), or neither.
+The tags are also written to the response headers, so a CDN in front of imgproxy can use them for tag-based cache invalidation. Use the [`IMGPROXY_CACHE_TAGS_FORMAT`](../configuration/options.mdx#IMGPROXY_CACHE_TAGS_FORMAT) config to choose which format(s) the tags are written in.
 
 ## Bypassing the cache
 
 imgproxy Pro can bypass the internal cache for a single request using the [bypass_cache](../usage/processing.mdx#bypass-cache) processing option:
 
 ```imgproxy_url_option
-bypass_cache:%bypass
-bc:%bypass
+bypass_cache:%bypass:%bypass_source
+bc:%bypass:%bypass_source
 ```
 
-When enabled for a request, imgproxy skips reading and writing the cache entirely—including the source cache, if enabled—and processes and fetches everything from the source image. Because this lets a client bypass your cache, it’s not allowed unless the [`IMGPROXY_ALLOW_BYPASS_CACHE`](../configuration/options.mdx#IMGPROXY_ALLOW_BYPASS_CACHE) config is set to `true`.
+Requires [`IMGPROXY_ALLOW_BYPASS_CACHE`](../configuration/options.mdx#IMGPROXY_ALLOW_BYPASS_CACHE) set to `true`. `bypass_source` is optional, and equals to `bypass` if not specified, hence, when only `bypass` is set, both processing and source cache are ignored.
+
+Default: `0:0`
 
 ## Limitations
 

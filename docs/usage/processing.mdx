@@ -1134,13 +1134,13 @@ Default: empty
 ### Bypass cache ((pro)) {#bypass-cache}
 
 ```imgproxy_url_option
-bypass_cache:%bypass
-bc:%bypass
+bypass_cache:%bypass:%bypass_source
+bc:%bypass:%bypass_source
 ```
 
-When set to `1`, `t` or `true`, imgproxy will bypass the internal cache and do all the processing and fetching from the source image.
+When set to `1`, `t`, or `true`, imgproxy bypasses the internal cache entirely. When set to `1:0`, only the processing cache is bypassed. When set to `0:1`, only the source cache is bypassed.
 
-Default: `false`
+Default: `0:0`
 
 :::warning
 Since this option allows bypassing the internal cache, its usage is not allowed unless the [IMGPROXY_ALLOW_BYPASS_CACHE](../configuration/options.mdx#IMGPROXY_ALLOW_BYPASS_CACHE) config is set to `true`.

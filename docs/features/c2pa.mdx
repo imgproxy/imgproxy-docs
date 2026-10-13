@@ -80,6 +80,10 @@ Point `IMGPROXY_C2PA_SETTINGS_PATH` at the file (or inline its contents via `IMG
 C2PA signing is only available for JPEG, PNG, WebP, GIF, JPEG XL, AVIF, HEIC, TIFF, and SVG output. Other output formats are returned unsigned.
 :::
 
+:::warning
+imgproxy doesn't extract the parent C2PA manifest from videos. As a workaround, use the [`c2pa_created_by`](../usage/processing.mdx#c2pa-created-by) processing option to record the origin of the image created from a video.
+:::
+
 ## Provenance and creation info
 
 Every signed image gets an action recorded using [`IMGPROXY_C2PA_ACTION`](../configuration/options.mdx#IMGPROXY_C2PA_ACTION) (`c2pa.edited` by default), with the software agent taken from [`IMGPROXY_C2PA_SOFTWARE_AGENT`](../configuration/options.mdx#IMGPROXY_C2PA_SOFTWARE_AGENT)/[`IMGPROXY_C2PA_SOFTWARE_AGENT_VERSION`](../configuration/options.mdx#IMGPROXY_C2PA_SOFTWARE_AGENT_VERSION). This always applies and can't be overridden per request.  When the source image already contains a C2PA manifest, imgproxy also uses it as an ingredient and inherits its provenance chain.
