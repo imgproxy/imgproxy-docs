@@ -30,11 +30,13 @@ You need to define the following config variables to enable the internal cache:
 * [`IMGPROXY_CACHE_SHUTDOWN_TIMEOUT`]: _(optional)_ the maximum time imgproxy will wait for pending background cache writes to complete during a graceful shutdown. Default: `5s`
 * [`IMGPROXY_CACHE_PROCESSING_ENABLED`]: _(optional)_ when `true`, imgproxy will cache processed images. Default: `true`
 * [`IMGPROXY_CACHE_INFO_ENABLED`]: _(optional)_ when `true`, imgproxy will cache `/info` endpoint responses. Default: `true`
-* [`IMGPROXY_CACHE_SOURCE_ENABLE`]: _(optional)_ when `true`, imgproxy will cache downloaded source images. Default: `false`
+* [`IMGPROXY_CACHE_SOURCE_ENABLED_FOR`]: _(optional)_ a comma-separated list of source URL schemes for which imgproxy will cache downloaded source images. Supported values are `fs`, `s3`, `gcs`, `abs`, `swift`, `http`, `https`, and `all`. `all` enables source caching for all schemes in the source URL. When blank, source caching is disabled. Default: blank
 
 ### Source image caching
 
-If you process remote images, like ones from third-party HTTP sources, you may want to cache source images in your storage to keep them close to imgproxy. You can enable source image caching by setting `IMGPROXY_CACHE_SOURCE_ENABLE` to `true`. This way, imgproxy caches the source image on the first transformation and fetches it from the cache for subsequent ones.
+If you process remote images, like ones from third-party HTTP sources, you may want to cache source images in your storage to keep them close to imgproxy. You can enable source image caching by setting `IMGPROXY_CACHE_SOURCE_ENABLED_FOR` to the list of source URL schemes to cache, for example `http,https`. This way, imgproxy caches the source image on the first transformation and fetches it from the cache for subsequent ones.
+
+Supported values are `fs`, `s3`, `gcs`, `abs`, `swift`, `http`, `https`, and `all` (enables source caching for all schemes in the source URL). Note that the value selects which source schemes are cached, not which storage is used for the cache.
 
 ### Storage configuration
 
