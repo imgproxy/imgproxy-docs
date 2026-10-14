@@ -523,7 +523,7 @@ imgproxy can cache processed images in various storage backends to improve perfo
 * [`IMGPROXY_CACHE_SHUTDOWN_TIMEOUT`]: ((pro)) the maximum time imgproxy will wait for pending background cache writes to complete during a graceful shutdown. Default: `5s`
 * [`IMGPROXY_CACHE_PROCESSING_ENABLED`]: ((pro)) when `true`, imgproxy will cache processed images. Default: `true`
 * [`IMGPROXY_CACHE_INFO_ENABLED`]: ((pro)) when `true`, imgproxy will cache `/info` endpoint responses. Default: `true`
-* [`IMGPROXY_CACHE_SOURCE_ENABLE`]: ((pro)) when `true`, imgproxy will cache downloaded source images. Default: `false`
+* [`IMGPROXY_CACHE_SOURCE_ENABLED_FOR`]: ((pro)) a comma-separated list of source URL schemes for which imgproxy will cache downloaded source images. Supported values are `fs`, `s3`, `gcs`, `abs`, `swift`, `http`, `https`, and `all`. `all` enables source caching for all schemes in the source URL. When blank, source caching is disabled. Default: blank
 
 * [`IMGPROXY_CACHE_TAGS_FORMAT`]: ((pro)) defines how the cache tags added by the [cache_tags](../usage/processing.mdx#cache-tags) option are written to the response headers. Supported values are:
   * `all`: _(default)_ imgproxy will write cache tags in all supported formats
