@@ -33,3 +33,7 @@ Additionally, imgproxy sends the following metrics over [Metrics API](https://do
 * `vips/memory`: libvips memory usage (in bytes)
 * `vips/max_memory`: libvips maximum memory usage (in bytes)
 * `vips/allocs`: the number of active vips allocations
+* `cache/hits`: the number of cache hits (sent only when greater than 0)
+* `cache/misses`: the number of cache misses (sent only when greater than 0)
+* `src_cache/hits`: the number of source image cache hits (sent only when greater than 0)
+* `src_cache/misses`: the number of source image cache misses (sent only when greater than 0)

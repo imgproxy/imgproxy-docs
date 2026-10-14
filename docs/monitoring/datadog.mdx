@@ -47,3 +47,7 @@ When the `IMGPROXY_DATADOG_ENABLE_ADDITIONAL_METRICS` environment variable is se
 * `imgproxy.vips.memory`: libvips memory usage (in bytes)
 * `imgproxy.vips.max_memory`: libvips maximum memory usage (in bytes)
 * `imgproxy.vips.allocs`: the number of active vips allocations
+* `imgproxy.cache.hits`: the number of cache hits (sent only when greater than 0)
+* `imgproxy.cache.misses`: the number of cache misses (sent only when greater than 0)
+* `imgproxy.src_cache.hits`: the number of source image cache hits (sent only when greater than 0)
+* `imgproxy.src_cache.misses`: the number of source image cache misses (sent only when greater than 0)

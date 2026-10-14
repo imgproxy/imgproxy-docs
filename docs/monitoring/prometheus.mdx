@@ -27,4 +27,8 @@ imgproxy will collect the following metrics:
 * `vips_memory_bytes`: libvips memory usage
 * `vips_max_memory_bytes`: libvips maximum memory usage
 * `vips_allocs`: the number of active vips allocations
+* `cache_hits_total`: a counter of the total number of cache hits
+* `cache_misses_total`: a counter of the total number of cache misses
+* `src_cache_hits_total`: a counter of the total number of source image cache hits
+* `src_cache_misses_total`: a counter of the total number of source image cache misses
 * Some useful Go metrics like memstats and goroutines count
