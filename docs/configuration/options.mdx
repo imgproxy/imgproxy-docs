@@ -391,7 +391,7 @@ Though using `IMGPROXY_VIDEO_THUMBNAIL_PROBE_SIZE` and `IMGPROXY_VIDEO_THUMBNAIL
 
 Check out the [Video thumbnails](../features/video_thumbnails.mdx) guide to learn more.
 
-imgproxy Pro can also use VA-API to hardware-accelerate video frame decoding (and, optionally, scaling) on Intel and AMD GPUs. See the [Hardware acceleration](../features/hardware_acceleration.mdx) page for setup instructions.
+imgproxy Pro can also use VA-API to hardware-accelerate video frame decoding (and, optionally, scaling) on Intel and AMD GPUs. See the [Hardware acceleration](../features/video_thumbnails/hardware_acceleration.mdx) page for setup instructions.
 
 * [`IMGPROXY_VIDEO_THUMBNAIL_VAAPI_DEVICE`]: ((pro)) the path to a DRM render node (e.g., `/dev/dri/renderD128`) to use for VA-API hardware-accelerated video decoding. When empty, VA-API is disabled. Default: blank
 * [`IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE`]: ((pro)) when `true`, also uses VA-API hardware scaling in the ffmpeg filter graph instead of only hardware decoding. Default: `false`

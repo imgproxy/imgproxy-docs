@@ -91,7 +91,7 @@ const sidebars: SidebarsConfig = {
           items: [
             {
               type: "doc",
-              id: "features/hardware_acceleration",
+              id: "features/video_thumbnails/hardware_acceleration",
               className: "menu__list-item--badge badge--pro",
             },
           ],

@@ -298,7 +298,7 @@ const config: Config = {
             {
               label: "Cookie policy",
               href: "https://www.iubenda.com/privacy-policy/30074201/cookie-policy",
-              class: "footer__link-item",
+              className: "footer__link-item",
             },
             {
               html: `<a href='#' class='iubenda-cs-preferences-link footer__link-item'>Your Privacy Choices</a>`,
@@ -312,7 +312,7 @@ const config: Config = {
     },
 
     prism: {
-      additionalLanguages: ["bash", "json"],
+      additionalLanguages: ["bash", "json", "docker"],
       theme: prismThemes.catppuccinLatte,
       darkTheme: prismThemes.catppuccinMocha,
     },

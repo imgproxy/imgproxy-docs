@@ -1,0 +1,319 @@
+---
+title: Hardware acceleration
+description: Learn about how to use VA-API hardware acceleration to speed up video thumbnail generation
+---
+
+# Hardware acceleration ((pro))
+
+imgproxy Pro can use [VA-API](https://en.wikipedia.org/wiki/Video_Acceleration_API) to hardware-accelerate video frame decoding (and, optionally, scaling) when [generating video thumbnails](../../configuration/options.mdx#video-thumbnails).
+
+## How it works
+
+imgproxy Pro's official Docker images have VA-API support built-in but do not include the vendor-specific userspace VA-API driver. In order to use VA-API hardware acceleration, you need to:
+
+1. Ensure that the appropriate GPU drivers are installed and loaded on your host system. Intel and AMD GPUs typically have their drivers included with the kernel, while NVIDIA GPUs require the proprietary drivers to be installed manually.
+2. Build a custom image with the appropriate VA-API driver for your GPU vendor.
+3. Expose the host's DRM render node (`/dev/dri/renderD128` or similar) to the container.
+4. Set the [`IMGPROXY_VIDEO_THUMBNAIL_VAAPI_DEVICE`](../../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_VAAPI_DEVICE) environment variable in the container to the path of the DRM render node (e.g., `/dev/dri/renderD128`).
+5. Optionally, set the [`IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE`](../../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE) environment variable to `true` if you want to enable hardware-accelerated scaling of video frames. Some GPUs or drivers may not support this feature.
+
+Here are the instructions for setting up VA-API hardware acceleration depending on your GPU:
+
+<details>
+<summary>NVIDIA GPUs</summary>
+
+:::note
+This guide assumes that you already have the NVIDIA GPU drivers installed and loaded on your host system.
+:::
+
+Accessing the NVIDIA GPU from within a container requires the NVIDIA Container Toolkit to be installed and configured for your container runtime. Follow the official NVIDIA documentation for installation and setup: [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html). Here is an example of installing it on a Debian-based system and configuring it for Docker:
+
+```bash
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
+   | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
+   | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
+   | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+sudo apt update && sudo apt install -y nvidia-container-toolkit
+sudo nvidia-ctk runtime configure --runtime=docker
+sudo systemctl restart docker
+```
+
+Next, you need to build a custom imgproxy image that includes the NVIDIA VA-API driver. You can do this on any machine, since the NVIDIA Container Toolkit is only required to run the container, not to build the image.
+
+Create a `Dockerfile` with the following content:
+
+```dockerfile
+# Replace `latest` with the desired version of the imgproxy-pro image
+FROM docker.imgproxy.pro/imgproxy:latest
+
+# Switch to root user to install dependencies and drivers
+USER root
+
+# Install NVIDIA VA-API driver and create a symlink in the imgproxy library path
+# so that imgproxy can find the VA-API driver libraries at runtime
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  nvidia-vaapi-driver \
+  && rm -rf /var/lib/apt/lists/* \
+  && ln -s /usr/lib/$(uname -m)-linux-gnu/dri /opt/imgproxy/lib/dri
+
+# Switch back to the imgproxy for security purposes
+USER imgproxy
+```
+
+Build the image:
+
+```bash
+docker build . -t imgproxy-pro-vaapi
+```
+
+Add your user to the `render` group on the host system to ensure access to the render node:
+
+```bash
+sudo usermod -aG render $USER
+```
+
+And finally, run the container with the built image:
+
+```bash
+docker run \
+  --gpus all \
+  --group-add render \
+  -e IMGPROXY_ENABLE_VIDEO_THUMBNAILS=true \
+  -e IMGPROXY_VIDEO_THUMBNAIL_VAAPI_DEVICE=/dev/dri/renderD128 \
+  imgproxy-pro-vaapi:latest
+```
+</details>
+
+<details>
+<summary>Intel GPUs</summary>
+
+:::note
+You most likely don't need to install the Intel GPU kernel driver manually on your host system, as it is usually included with the kernel and loaded automatically when the GPU is detected.
+
+However, your hosting provider may disable it by default, or it may be disabled in the BIOS/UEFI settings, so you might need to enable it manually. We don't cover those steps here, as they depend on your hardware and environment.
+:::
+
+First, you need to build a custom imgproxy image that includes the Intel VA-API driver. Create a `Dockerfile` with the following content:
+
+```dockerfile
+# Replace `latest` with the desired version of the imgproxy-pro image
+FROM docker.imgproxy.pro/imgproxy:latest
+
+# Switch to root user to install dependencies and drivers
+USER root
+
+# Install Intel VA-API driver and create a symlink in the imgproxy library path
+# so that imgproxy can find the VA-API driver libraries at runtime
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  intel-media-va-driver-non-free \
+  && rm -rf /var/lib/apt/lists/* \
+  && ln -s /usr/lib/$(uname -m)-linux-gnu/dri /opt/imgproxy/lib/dri
+
+# Switch back to the imgproxy user for security purposes
+USER imgproxy
+```
+
+Build the image:
+
+```bash
+docker build . -t imgproxy-pro-vaapi
+```
+
+Add your user to the `render` group on the host system to ensure access to the render node:
+
+```bash
+sudo usermod -aG render $USER
+```
+
+Now you can run the container with the built image:
+
+```bash
+docker run \
+  --device /dev/dri \
+  --group-add render \
+  -e IMGPROXY_ENABLE_VIDEO_THUMBNAILS=true \
+  -e IMGPROXY_VIDEO_THUMBNAIL_VAAPI_DEVICE=/dev/dri/renderD128 \
+  -e IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE=true \
+  imgproxy-pro-vaapi:latest
+```
+
+:::tip
+If you get an error containing `the requested VAProfile is not supported` when generating video thumbnails, it usually means your GPU or driver doesn't support scaling via VA-API. In such cases, you may need to disable VA-API scaling by setting `IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE=false`.
+:::
+</details>
+
+<details>
+<summary>AMD GPUs</summary>
+
+:::warning
+This guide covers VA-API acceleration on general-purpose AMD GPUs. Purpose-built media-accelerator hardware, such as Xilinx Alveo cards or AMD's Video Coding Engine (VCE), can't be used with VA-API.
+:::
+
+:::note
+This guide assumes that you already have the AMD GPU drivers installed and loaded on your host system.
+:::
+
+First, you need to build a custom Docker image that includes the AMD VA-API driver.  Create a `Dockerfile` with the following content:
+
+```dockerfile
+# Replace `latest` with the desired version of the imgproxy-pro image
+FROM docker.imgproxy.pro/imgproxy:latest
+
+# Switch to root user to install dependencies and drivers
+USER root
+
+# Install AMD VA-API driver and create a symlink in the imgproxy library path
+# so that imgproxy can find the VA-API driver libraries at runtime
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  mesa-va-drivers \
+  && rm -rf /var/lib/apt/lists/* \
+  && ln -s /usr/lib/$(uname -m)-linux-gnu/dri /opt/imgproxy/lib/dri
+
+# Switch back to the imgproxy user for security purposes
+USER imgproxy
+```
+
+Build the image:
+
+```bash
+docker build . -t imgproxy-pro-vaapi
+```
+
+Add your user to the `render` group on the host system to ensure access to the render node:
+
+```bash
+sudo usermod -aG render $USER
+```
+
+Now you can run the container with the built image:
+
+```bash
+docker run \
+  --device /dev/dri \
+  --group-add render \
+  -e IMGPROXY_ENABLE_VIDEO_THUMBNAILS=true \
+  -e IMGPROXY_VIDEO_THUMBNAIL_VAAPI_DEVICE=/dev/dri/renderD128 \
+  -e IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE=true \
+  imgproxy-pro-vaapi:latest
+```
+
+:::tip
+If you get an error containing `the requested VAProfile is not supported` when generating video thumbnails, it usually means your GPU or driver doesn't support scaling via VA-API. In such cases, you may need to disable VA-API scaling by setting `IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE=false`.
+:::
+</details>
+
+## Troubleshooting
+
+If you encounter issues enabling hardware-accelerated video thumbnails, we recommend enabling debug logging for imgproxy and VA-API first. Set the following environment variables when running the container:
+
+```bash
+docker run \
+  -e IMGPROXY_LOG_LEVEL=debug \
+  -e LIBVA_MESSAGING_LEVEL=2 \
+  ...
+```
+
+It's also recommended to verify that VA-API works correctly on the host system. You can do this by running a simple VA-API test program: `vainfo`.
+
+```bash
+# Replace intel-media-va-driver-non-free with the VA-API driver for your GPU
+# (as in the instructions above)
+sudo apt update
+sudo apt install -y intel-media-va-driver-non-free vainfo
+
+vainfo --display drm
+```
+
+If everything works correctly, you should see something like this:
+
+```
+libva info: VA-API version 1.20.0
+libva info: Trying to open /usr/lib/x86_64-linux-gnu/dri/iHD_drv_video.so
+libva info: Found init function __vaDriverInit_1_20
+libva info: va_openDriver() returns 0
+vainfo: VA-API version: 1.20 (libva 2.12.0)
+vainfo: Driver version: Intel iHD driver for Intel(R) Gen Graphics - 24.1.0 ()
+vainfo: Supported profile and entrypoints
+      VAProfileNone                   : VAEntrypointVideoProc
+      VAProfileNone                   : VAEntrypointStats
+      VAProfileMPEG2Simple            : VAEntrypointVLD
+      VAProfileMPEG2Simple            : VAEntrypointEncSlice
+      VAProfileMPEG2Main              : VAEntrypointVLD
+      VAProfileMPEG2Main              : VAEntrypointEncSlice
+      ...
+```
+
+### Common issues
+#### The render node is not found
+
+This usually indicates that the render node (`/dev/dri/renderD128` or similar) is not present on the host system or is not accessible by the container. Check the following:
+
+* Ensure that the `renderD*` device nodes exist under `/dev/dri` on the host system.
+* Check that you provide access to the render node to the container, for example by using the `--device /dev/dri` as shown in the example above.
+* Ensure that the device name is correct. Though it is most commonly `/dev/dri/renderD128`, as used in the examples above, it may differ on your system (`/dev/dri/renderD129` or similar). Note that you need a `renderD*` device, not a primary device like `/dev/dri/card0`.
+
+#### VA-API driver is not found
+
+`apt` normally installs the VA-API driver libraries in `/usr/lib/x86_64-linux-gnu/dri` or `/usr/lib/aarch64-linux-gnu/dri`, depending on your architecture, but imgproxy expects to find them in `/opt/imgproxy/lib/dri` by default. Make sure to create the symlink as shown in the instructions above or set the container's `LIBVA_DRIVERS_PATH` environment variable to point to the directory containing the driver libraries.
+
+#### Permission denied on render node
+
+If imgproxy cannot open the render node (`/dev/dri/renderD128` or similar), check that the user running the container is part of the host's `render` group. You can add the user to the group with:
+
+```bash
+sudo usermod -aG render $USER
+```
+
+Also, ensure you add the `render` group to the container using the `--group-add` option, as shown in the example above.
+
+If you are running the container in a rootless mode (e.g., using Podman or Docker with rootless configuration), the container's user namespace doesn't automatically see the host's `render` group — you need to map it explicitly via `/etc/subgid`:
+
+<details>
+<summary>Rootless container render group mapping</summary>
+
+`/etc/subgid` is used to map the host's groups into the rootless user's subordinate GID range. During the rootless mode setup, you've probably already added something like this to `/etc/subgid` (`your-user` being your actual username):
+
+```
+your-user:100000:65536
+```
+
+This line maps the host's group IDs 100000-165535 into the rootless user's subordinate GIDs 1-65536. The mapped range doesn't include the `render` group's GID, so we need to map it explicitly as well. First, we need the GID of the `render` group on the host:
+
+```bash
+getent group render
+# The output will look something like this:
+# render:x:993:...
+# The number after `x:` is the GID of the `render` group (993 in this example)
+```
+
+Next, add a new line to `/etc/subgid` to map the `render` group's ID into the rootless user's subordinate GID range (replace `993` with the actual GID of the `render` group on your host):
+
+```
+your-user:100000:65536
+your-user:993:1
+```
+
+If you are running Docker in rootless mode, restart the user-level Docker daemon to apply the changes:
+
+```bash
+systemctl --user restart docker
+```
+
+Since this adds one more GID to the 65536 already mapped, the GID of the `render` group inside the rootless container will be 65537. Now you can use this GID instead of `render` when adding the group to the container with `--group-add`:
+
+```bash
+docker run \
+  --group-add 65537 \
+  ...
+```
+</details>
+
+#### The requested VAProfile is not supported
+
+If you encounter an error indicating that the requested VAProfile is not supported, it usually means that you enabled `IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE`, but your GPU/driver combination does not support scaling with VA-API (for example, NVIDIA's VA-API implementation supports decoding but not scaling).
+
+In such cases, you can disable VA-API scaling by setting the `IMGPROXY_VIDEO_THUMBNAIL_VAAPI_SCALE` environment variable to `false`. imgproxy will use VA-API for decoding but will fall back to software scaling.
