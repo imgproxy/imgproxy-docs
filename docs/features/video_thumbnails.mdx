@@ -1,0 +1,98 @@
+---
+title: Video thumbnails
+description: Learn about how imgproxy Pro generates thumbnails, sprites, and animated previews from video sources
+---
+
+# Video thumbnails ((pro))
+
+imgproxy Pro can use a video as a source and extract its frames: a single thumbnail, a tiled sprite sheet, or an animated preview. imgproxy downloads only the part of the video file it needs to reach the requested frame(s), rather than requiring the whole file.
+
+Since even partial video downloading and decoding are considerably more expensive than processing a regular image, video thumbnail generation is **turned off by default**. Enable it with [`IMGPROXY_ENABLE_VIDEO_THUMBNAILS`](../configuration/options.mdx#IMGPROXY_ENABLE_VIDEO_THUMBNAILS).
+
+:::info
+imgproxy Pro can also use VA-API to hardware-accelerate video frame decoding. See the [Hardware acceleration](./video_thumbnails/hardware_acceleration.mdx) page.
+:::
+
+## How it works
+
+If video thumbnail generation is enabled and imgproxy receives a video as a source, it extracts its single frame (or multiple frames for [sprites](#tiled-sprite-sheets) or [animated previews](#animated-previews)) and uses it as the source image in the processing pipeline.
+
+Video decoding utilizes [ranged HTTP requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests) to fetch only the necessary portions of the video stream, so it's highly recommended to use a server or CDN that supports them. All storage integrations (local, S3, GCS, etc.) support ranged requests out of the box.
+
+[`IMGPROXY_MAX_SRC_FILE_SIZE`](../configuration/options.mdx#IMGPROXY_MAX_SRC_FILE_SIZE) does **not** apply to video sources in the same way it does to images.
+
+[`IMGPROXY_MAX_SRC_RESOLUTION`](../configuration/options.mdx#IMGPROXY_MAX_SRC_RESOLUTION) applies to the decoded video frame's dimensions exactly as it does to still images.
+
+## Single-frame thumbnails
+
+imgproxy generates single-frame thumbnails by default; no additional processing options are required.
+
+By default, imgproxy uses the video frame at the 1st second for the thumbnail. You can change this behavior using the [video_thumbnail_second](../usage/processing.mdx#video-thumbnail-second) (`vts`) processing option or the [IMGPROXY_VIDEO_THUMBNAIL_SECOND](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_SECOND) config.
+
+```imgproxy_url
+.../resize:fill:300:200/video_thumbnail_second:30/plain/https://example.com/video.mp4@jpg
+```
+
+By default, imgproxy seeks to the nearest keyframe before the requested timestamp and then decodes forward to the exact second specified. Setting
+[video_thumbnail_keyframes](../usage/processing.mdx#video-thumbnail-keyframes) (`vtk`) or the [IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES) config to `true` makes imgproxy use keyframes for thumbnail extraction without decoding intermediate frames. This can significantly speed up thumbnail generation but may result in less precise thumbnail timing.
+
+If the requested timestamp falls beyond the video's duration, imgproxy will return the last successfully decoded frame instead of throwing an error.
+
+## Tiled sprite sheets
+
+The [video_thumbnail_tile](../usage/processing.mdx#video-thumbnail-tile) (`vtt`) processing option generates a grid of frames sampled across the video — handy for building scrubber-preview UIs like the ones used by video players:
+
+```imgproxy_url
+.../video_thumbnail_tile:1:5:2:160:90/plain/https://example.com/video.mp4@jpg
+```
+
+This example generates a 5x2 grid of 160x90 tiles with a step of 1 second between each frame.
+
+When the `step` argument (the first one) is negative, imgproxy spreads the tiles evenly across the remaining duration of the video, calculating the actual step as `(video_duration - start) / (columns * rows)`.
+
+Setting the `step` argument to zero disables tiled sprite generation and switches back to single-frame thumbnail extraction mode.
+
+The [video_thumbnail_second](../usage/processing.mdx#video-thumbnail-second) / [IMGPROXY_VIDEO_THUMBNAIL_SECOND](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_SECOND) value determines the timestamp of the first frame in the tile grid.
+
+The [IMGPROXY_VIDEO_THUMBNAIL_TILE_AUTO_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_TILE_AUTO_KEYFRAMES) config makes imgproxy automatically switch to keyframe-only mode once the step exceeds the keyframe interval, trading a bit of precision for a significant speedup. Useful with a negative `step` value, since you don't know beforehand what the actual step will be.
+
+If the keyframes-only mode is enabled explicitly via [video_thumbnail_keyframes](../usage/processing.mdx#video-thumbnail-keyframes) or [IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES](../configuration/options.mdx#IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES), imgproxy will always use keyframes for thumbnail extraction, regardless of the `IMGPROXY_VIDEO_THUMBNAIL_TILE_AUTO_KEYFRAMES` setting.
+
+imgproxy decodes video frames until it has enough to fulfill the requested tiles or until it reaches the video's end. If imgproxy encounters an error while decoding, it will return whatever frames it has successfully decoded up to that point. However, if it encounters an I/O error while fetching the video, it will return an error instead of partial frames.
+
+## Animated previews
+
+The [video_thumbnail_animation](../usage/processing.mdx#video-thumbnail-animation) (`vta`) processing option generates an animated preview instead of a static grid, sampling frames across the video the same way tiles do:
+
+```imgproxy_url
+.../video_thumbnail_animation:1:500:10:320:180/plain/https://example.com/video.mp4@gif
+```
+
+This example takes 10 frames from the video with a 1-second step between them and assembles them into a 320x180 animated preview with a 500ms delay between frames.
+
+In terms of frame sampling, `video_thumbnail_animation` works similarly to `video_thumbnail_tile`, including support for negative and zero `step` values and automatic keyframe-only mode.
+
+:::info
+`video_thumbnail_tile` and `video_thumbnail_animation` are mutually exclusive — setting one clears any previously set value of the other so that a single request can produce only a tile sheet or an animation, not both.
+:::
+
+## Fetching video metadata
+
+The [`/info` endpoint](../usage/getting_info.mdx)'s [video_meta](../usage/getting_info.mdx#video-meta) (`vm`) option returns video container metadata and per-stream information — codec, duration, bitrate, frame rate, etc.:
+
+```imgproxy_url
+.../info/video_meta:1/plain/https://example.com/video.mp4
+```
+
+## Configuration
+
+* [`IMGPROXY_ENABLE_VIDEO_THUMBNAILS`]: when `true`, enables video thumbnail generation. Default: `false`
+* [`IMGPROXY_VIDEO_THUMBNAIL_SECOND`]: the timestamp (in seconds) used for a thumbnail. Default: `1`
+* [`IMGPROXY_VIDEO_THUMBNAIL_KEYFRAMES`]: when `true`, uses the nearest preceding keyframe instead of the exact requested frame. Default: `false`
+* [`IMGPROXY_VIDEO_THUMBNAIL_TILE_AUTO_KEYFRAMES`]: when `true`, automatically switches tiles to keyframes-only seeking once the `step` exceeds the interval between keyframes. Default: `false`
+* [`IMGPROXY_VIDEO_THUMBNAIL_PROBE_SIZE`]: the maximum number of bytes used to probe the container format. Default: `5000000`
+* [`IMGPROXY_VIDEO_THUMBNAIL_MAX_ANALYZE_DURATION`]: the maximum number of milliseconds spent analyzing streams. When `0`, a heuristic is used. Default: `0`
+
+imgproxy Pro can also use VA-API hardware acceleration to speed up video frame decoding — see the VA-API-specific config variables on the [Hardware acceleration](video_thumbnails/hardware_acceleration.mdx) page.
+
+Check out the [Video thumbnails](../configuration/options.mdx#video-thumbnails) config reference for the complete list of related config variables.
