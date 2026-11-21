@@ -23,6 +23,10 @@ imgproxy sends the following metrics to CloudWatch:
 * `VipsMemory`: libvips memory usage (in bytes)
 * `VipsMaxMemory`: libvips maximum memory usage (in bytes)
 * `VipsAllocs`: the number of active vips allocations
+* `CacheHits`: the number of cache hits (sent only when greater than 0)
+* `CacheMisses`: the number of cache misses (sent only when greater than 0)
+* `SrcCacheHits`: the number of source image cache hits (sent only when greater than 0)
+* `SrcCacheMisses`: the number of source image cache misses (sent only when greater than 0)
 
 ### Set up credentials
 
