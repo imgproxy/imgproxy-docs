@@ -55,8 +55,10 @@ Configure the storage backend using `IMGPROXY_CACHE_*` variables:
 The cache key for processed images and `/info` responses is generated based on:
 
 * Source image URL
-* Processing options
-* Output format
+* Processing options in the URL path
+* Modern image formats support (when its detection is enabled)
+* Client hints (when enabled)
+* [cachebuster](../usage/processing.mdx#cache-buster) value
 * Optional: Request headers specified in `IMGPROXY_CACHE_KEY_HEADERS`
 * Optional: Request cookies specified in `IMGPROXY_CACHE_KEY_COOKIES`
 
@@ -70,7 +72,7 @@ When [source image caching](#source-image-caching) is enabled, cached sources us
 * Optional: Request headers specified in `IMGPROXY_CACHE_KEY_HEADERS`
 * Optional: Request cookies specified in `IMGPROXY_CACHE_KEY_COOKIES`
 
-Unlike the processed-image cache key, it doesn’t include processing options or the output format because it stores the downloaded source image, not a processed variant. It also doesn’t include the [cachebuster](../usage/processing.mdx#cache-buster) value, so busting the processed-image cache doesn't invalidate the cached source.
+Unlike the processed-image cache key, it doesn’t include processing-related parameters because it stores the downloaded source image, not a processed variant. It also doesn’t include the [cachebuster](../usage/processing.mdx#cache-buster) value, so busting the processed-image cache doesn't invalidate the cached source.
 
 ## Cache tags
 
@@ -87,16 +89,7 @@ The tags are also written to the response headers, so a CDN in front of imgproxy
 
 ## Bypassing the cache
 
-imgproxy Pro can bypass the internal cache for a single request using the [bypass_cache](../usage/processing.mdx#bypass-cache) processing option:
-
-```imgproxy_url_option
-bypass_cache:%bypass:%bypass_source
-bc:%bypass:%bypass_source
-```
-
-Requires [`IMGPROXY_ALLOW_BYPASS_CACHE`](../configuration/options.mdx#IMGPROXY_ALLOW_BYPASS_CACHE) set to `true`. `bypass_source` is optional, and equals to `bypass` if not specified, hence, when only `bypass` is set, both processing and source cache are ignored.
-
-Default: `0:0`
+imgproxy Pro can bypass the internal cache for a single request using the [bypass_cache](../usage/processing.mdx#bypass-cache) processing option.
 
 ## Limitations
 
@@ -115,4 +108,4 @@ When a request comes in:
    * On a miss, imgproxy downloads the source image and caches it in the background.
 6. imgproxy processes the image, serves the result, and stores it in the cache in the background — the response isn't delayed while it waits for the cache write to finish.
 
-Cache writes (both processed-image and source) always happen in the background this way. On a graceful shutdown, imgproxy waits up to [`IMGPROXY_CACHE_SHUTDOWN_TIMEOUT`](../configuration/options.mdx#IMGPROXY_CACHE_SHUTDOWN_TIMEOUT) for any still-pending writes to finish before exiting.
+Cache writes (both processed-image and source) always happen in the background. On a graceful shutdown, imgproxy waits up to [`IMGPROXY_CACHE_SHUTDOWN_TIMEOUT`](../configuration/options.mdx#IMGPROXY_CACHE_SHUTDOWN_TIMEOUT) for any still-pending writes to finish before exiting.

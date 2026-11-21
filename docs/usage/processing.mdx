@@ -1138,7 +1138,10 @@ bypass_cache:%bypass:%bypass_source
 bc:%bypass:%bypass_source
 ```
 
-When set to `1`, `t`, or `true`, imgproxy bypasses the internal cache entirely. When set to `1:0`, only the processing cache is bypassed. When set to `0:1`, only the source cache is bypassed.
+Allows bypassing imgproxy's internal cache.
+
+* `bypass`: when set to `1`, `t`, or `true`, imgproxy bypasses the internal cache entirely.
+* `bypass_source`: _(optional)_ defines if imgproxy should bypass source image cache. When not set, its value is equal to `bypass`. When `bypass` is truthy, but `bypass_source` is not (e.g., `1:0`), imgproxy will bypass the results cache but not the source cache. When `bypass_source` is truthy, but `bypass` is not (e.g., `0:1`), imgproxy will bypass the source cache but not the results cache.
 
 Default: `0:0`
 
