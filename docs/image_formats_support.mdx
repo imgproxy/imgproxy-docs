@@ -82,7 +82,7 @@ Since loading RAW images is pretty resource intensive, their processing is disab
 imgproxy detects RAW formats using the following process:
 
 1. **Standard format detection**: First, imgproxy attempts to detect if the file is in a known non-RAW format (such as JPEG, PNG, WebP, etc.) by using magic bytes signatures.
-2. **MIME type checking**: If no standard format is detected through magic bytes, imgproxy checks whether the MIME type matches any of the known RAW MIME types.
+2. **MIME type checking**: If no standard format is detected through magic bytes, imgproxy checks whether the MIME type matches any of the known RAW MIME types. For HTTP(S) sources, this relies on the `Content-Type` header provided by the server.
 3. **Extension checking**: If the MIME type does not match, imgproxy checks if the file extension matches any of the known RAW extensions.
 
 <details>
