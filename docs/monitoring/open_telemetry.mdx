@@ -51,6 +51,11 @@ imgproxy will send the following info to the collector:
 
 If `IMGPROXY_OPEN_TELEMETRY_ENABLE_METRICS` is set to `true`, imgproxy will also send the following metrics to the collector:
 
+* `requests_total`: a counter with the total number of HTTP requests imgproxy has processed
+* `status_codes_total`: a counter of the response status codes separated by status
+* `errors_total`: a counter of the occurred errors separated by type (timeout, downloading, processing)
+* `request_duration_seconds`: a histogram of the request latency (in seconds)
+* `request_span_duration_seconds`: a histogram of the request latency (in seconds) separated by span (queue, downloading, processing)
 * `workers`: the configured number of imgproxy workers
 * `requests_in_progress`: the number of requests currently in progress
 * `images_in_progress`: the number of images currently in progress
@@ -61,6 +66,10 @@ If `IMGPROXY_OPEN_TELEMETRY_ENABLE_METRICS` is set to `true`, imgproxy will also
 * `vips_memory_bytes`: libvips memory usage
 * `vips_max_memory_bytes`: libvips maximum memory usage
 * `vips_allocs`: the number of active vips allocations
+* `cache_hits_total`: a counter of the total number of cache hits
+* `cache_misses_total`: a counter of the total number of cache misses
+* `src_cache_hits_total`: a counter of the total number of source image cache hits
+* `src_cache_misses_total`: a counter of the total number of source image cache misses
 * Some useful Go metrics like memstats and goroutines count
 
 ## Configuration

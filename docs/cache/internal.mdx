@@ -27,6 +27,30 @@ You need to define the following config variables to enable the internal cache:
 * [`IMGPROXY_CACHE_KEY_HEADERS`]: _(optional)_ a list of HTTP request headers (comma-separated) to include in the cache key. This allows caching different versions of the same image based on request headers. Default: blank
 * [`IMGPROXY_CACHE_KEY_COOKIES`]: _(optional)_ a list of HTTP request cookies (comma-separated) to include in the cache key. This allows caching different versions of the same image based on cookies. Default: blank
 * [`IMGPROXY_CACHE_REPORT_ERRORS`]: When `true`, imgproxy will report cache errors instead of silently falling back to processing without cache. Default: `false`
+* [`IMGPROXY_CACHE_SHUTDOWN_TIMEOUT`]: _(optional)_ the maximum time imgproxy will wait for pending background cache writes to complete during a graceful shutdown. Default: `5s`
+* [`IMGPROXY_CACHE_PROCESSING_ENABLED`]: _(optional)_ when `true`, imgproxy will cache processed images. Default: `true`
+* [`IMGPROXY_CACHE_INFO_ENABLED`]: _(optional)_ when `true`, imgproxy will cache `/info` endpoint responses. Default: `true`
+* [`IMGPROXY_CACHE_SOURCE_ENABLED_FOR`]: _(optional)_ a comma-separated list of source URL schemes for which imgproxy will cache downloaded source images. Supported values are:
+  * `all`: enables source caching for all schemes in the source URL, except `local`.
+  * `http`: enables source caching for both `http://` and `https://` URLs
+  * `s3`: enables source caching for AWS S3 (`s3://`) URLs
+  * `gs`: enables source caching for Google Cloud Storage (`gs://`) URLs
+  * `abs`: enables source caching for Azure Blob Storage (`abs://`) URLs
+  * `swift`: enables source caching for OpenStack Swift (`swift://`) URLs
+
+  When blank, source caching is disabled. Default: blank
+
+* [`IMGPROXY_CACHE_TAGS_FORMAT`]: _(optional)_ defines how the cache tags added by the [cache_tags](../usage/processing.mdx#cache-tags) option are written to the response headers. Supported values are:
+  * `all`: _(default)_ imgproxy will write cache tags in all supported formats
+  * `cloudfront`: imgproxy will write cache tags in the [CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/manage-caches-with-precision-using-amazon-cloudfront-invalidation-by-cache-tag/) format (`x-amz-meta-cache-tag` header)
+  * `cloudflare`: imgproxy will write cache tags in the [Cloudflare](https://developers.cloudflare.com/cache/how-to/purge-cache/purge-by-tags/) format (`Cache-Tag` header)
+  * `none`: imgproxy will not write cache tags to the response headers
+
+### Source image caching
+
+If you process remote images, like ones from third-party HTTP sources, you may want to cache source images in your storage to keep them close to imgproxy. You can enable source image caching by setting `IMGPROXY_CACHE_SOURCE_ENABLED_FOR` to the list of source URL schemes to cache, for example `http,s3`. This way, imgproxy caches the source image on the first transformation and fetches it from the cache for subsequent ones.
+
+Supported values are `s3`, `gs`, `abs`, `swift`, `http` (enables source caching for both `http` and `https` schemes), and `all` (enables source caching for all schemes in the source URL, except `local`). Note that the value selects which source schemes are cached, not which storage is used for the cache.
 
 ### Storage configuration
 
@@ -42,20 +66,48 @@ Configure the storage backend using `IMGPROXY_CACHE_*` variables:
 
 ## Cache key
 
-The cache key is generated based on:
+The cache key for processed images and `/info` responses is generated based on:
 
 * Source image URL
-* Processing options
-* Output format
+* Processing options in the URL path
+* Modern image formats support (when its detection is enabled)
+* Client hints (when enabled)
+* [cachebuster](../usage/processing.mdx#cache-buster) value
 * Optional: Request headers specified in `IMGPROXY_CACHE_KEY_HEADERS`
 * Optional: Request cookies specified in `IMGPROXY_CACHE_KEY_COOKIES`
 
 URL signature is **not** part of the cache key, allowing key rotation without invalidating the cache.
 
+### Source cache key
+
+When [source image caching](#source-image-caching) is enabled, cached sources use their own separate key, based on:
+
+* Source image URL
+* Optional: Request headers specified in `IMGPROXY_CACHE_KEY_HEADERS`
+* Optional: Request cookies specified in `IMGPROXY_CACHE_KEY_COOKIES`
+
+Unlike the processed-image cache key, it doesn’t include processing-related parameters because it stores the downloaded source image, not a processed variant. It also doesn’t include the [cachebuster](../usage/processing.mdx#cache-buster) value, so busting the processed-image cache doesn't invalidate the cached source.
+
+## Cache tags
+
+imgproxy Pro can attach cache tags to a cache entry using the [cache_tags](../usage/processing.mdx#cache-tags) processing option:
+
+```imgproxy_url_option
+cache_tags:%tag1:%tag2:...:%tagN
+ct:%tag1:%tag2:...:%tagN
+```
+
+Each tag can be up to 256 characters long and must consist of visible ASCII characters (character codes 33-126), excluding commas. We consider at most 50 tags per request; any beyond that are silently dropped.
+
+The tags are also written to the response headers, so a CDN in front of imgproxy can use them for tag-based cache invalidation. Use the [`IMGPROXY_CACHE_TAGS_FORMAT`](../configuration/options.mdx#IMGPROXY_CACHE_TAGS_FORMAT) config to choose which format(s) the tags are written in.
+
+## Bypassing the cache
+
+imgproxy Pro can bypass the internal cache for a single request using the [bypass_cache](../usage/processing.mdx#bypass-cache) processing option.
+
 ## Limitations
 
 * **No manual cache invalidation**: Currently, imgproxy doesn't provide a built-in means to invalidate the cache. However, imgproxy includes the [cachebuster](../usage/processing.mdx#cache-buster) in the cache key, so you can use it to force cache invalidation when needed. Most storage offerings also support object expiration, so you can set a reasonable expiration time for cached images.
-* **No cache for info requests**: The internal cache is currently used only for image processing requests. Requests to the `/info` endpoint are not cached.
 
 ## How it works
 
@@ -63,6 +115,11 @@ When a request comes in:
 
 1. imgproxy checks the URL signature (if enabled).
 2. imgproxy generates the cache key from the request parameters.
-3. imgproxy checks if a cached image exists in the configured storage.
+3. imgproxy checks if a cached processed image exists in the configured storage.
 4. If the cached image exists and is valid, imgproxy serves it directly.
-5. If not, imgproxy processes the image and stores the result in the cache before serving it.
+5. If not, and [source image caching](#source-image-caching) is enabled, imgproxy checks the source cache (using its own [separate key](#source-cache-key)) before downloading the source image:
+   * On a hit, imgproxy uses the cached source bytes instead of re-downloading them.
+   * On a miss, imgproxy downloads the source image and caches it in the background.
+6. imgproxy processes the image, serves the result, and stores it in the cache in the background — the response isn't delayed while it waits for the cache write to finish.
+
+Cache writes (both processed-image and source) always happen in the background. On a graceful shutdown, imgproxy waits up to [`IMGPROXY_CACHE_SHUTDOWN_TIMEOUT`](../configuration/options.mdx#IMGPROXY_CACHE_SHUTDOWN_TIMEOUT) for any still-pending writes to finish before exiting.
